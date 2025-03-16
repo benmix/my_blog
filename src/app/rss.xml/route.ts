@@ -1,4 +1,5 @@
 import { getPosts } from "@lib/get-post";
+import { format } from "date-fns";
 
 const CONFIG = {
   title: "BenMix's Blog",
@@ -12,10 +13,10 @@ export async function GET() {
   const posts = allPosts
     .map(
       (post) => `    <item>
-        <title>${post.title}</title>
+        <title>${post.frontMatter.title_en}</title>
         <description>${post.frontMatter.description}</description>
         <link>${CONFIG.siteUrl}${post.route}</link>
-        <pubDate>${new Date(post.frontMatter.date).toUTCString()}</pubDate>
+        <pubDate>${format(post.frontMatter.date, "MMM d, y")}</pubDate>
     </item>`,
     )
     .join("\n");

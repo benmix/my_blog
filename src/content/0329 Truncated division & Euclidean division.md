@@ -1,6 +1,6 @@
 ---
-title_en: 0329 Truncated division & Euclidean division
-title: 0329 Truncated division & Euclidean division
+title_en: Truncated division & Euclidean division
+title: Truncated division & Euclidean division
 date: 2023-03-29
 ---
 

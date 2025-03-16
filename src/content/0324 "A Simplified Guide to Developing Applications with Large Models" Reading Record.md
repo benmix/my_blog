@@ -1,7 +1,7 @@
 ---
-title_en: 0324 "A Simplified Guide to Developing Applications with Large Models" Reading Record
-title: 0324 《大模型应用开发极简入门》阅读记录
-date: 2023-03-24
+title_en: <A Simplified Guide to Developing Applications with Large Models> Reading Record
+title: 《大模型应用开发极简入门》阅读记录
+date: 2024-03-24
 ---
 
 - 基础术语速览

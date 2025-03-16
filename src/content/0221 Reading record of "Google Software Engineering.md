@@ -1,11 +1,11 @@
 ---
-title_en: 0221 Reading record of "Google Software Engineering”
-title: 0221 《Google 软件工程》阅读记录
+title_en: Reading record of "<Google Software Engineering>
+title: 《Google 软件工程》阅读记录
 date: 2023-02-21
 ---
 
 
-我一直很好奇一家具有世界影响力的软件技术公司的工程师文化是怎样的，我想《[Google 软件工程](https://abseil.io/resources/swe-book)》这本书给了我一个了解和学习的机会。在翻阅这本书，解答了我工作以来一直对领导工作的误解和好奇，这本书也是一家大型软件公司的工程团队的运作经验的参考范本。书中虽然有些方案不是很完美但还是有许多值得学习借鉴的。
+我一直很好奇一家具有世界影响力的软件技术公司的工程师文化是怎样的，我想  [《Google 软件工程》](https://abseil.io/resources/swe-book)  这本书给了我一个了解和学习的机会。在翻阅这本书，解答了我工作以来一直对领导工作的误解和好奇，这本书也是一家大型软件公司的工程团队的运作经验的参考范本。书中虽然有些方案不是很完美但还是有许多值得学习借鉴的。
 
 
 ## 1. 什么是软件工程

@@ -1,48 +1,40 @@
-import { Footer, Layout, Navbar, ThemeSwitch } from 'nextra-theme-blog'
-import { Banner, Head, Search } from 'nextra/components'
-import { getPageMap } from 'nextra/page-map'
-import 'nextra-theme-blog/style.css'
+import { Head } from "nextra/components";
+import { FC, PropsWithChildren } from "react";
+import { Layout, Content, Footer } from "@/components/layout";
+import "@/global.css";
+import { ThemeSwitch } from "@/components/theme-switch";
+import { Link } from "@/components/link";
+import { RiGithubLine } from "@remixicon/react";
 
-export const metadata = {
-  title: 'Blog Example'
-}
-
-export default async function RootLayout({ children }) {
-  const banner = (
-    <Banner storageKey="4.0-release">
-      🎉 Nextra 4.0 is released.{' '}
-      <a href="#" className="x:text-primary-600">
-        Read more →
-      </a>
-    </Banner>
-  )
-
+const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head backgroundColor={{ dark: '#0f172a', light: '#fefce8' }} />
+      <Head />
       <body>
-        <Layout banner={banner}>
-          <Navbar pageMap={await getPageMap()}>
-            <Search />
-            <ThemeSwitch />
-          </Navbar>
-
-          {children}
-
+        <Layout>
+          <Content>{children}</Content>
           <Footer>
-            <abbr
-              title="This site and all its content are licensed under a Creative Commons Attribution-NonCommercial 4.0 International License."
-              style={{ cursor: 'help' }}
-            >
-              CC BY-NC 4.0
-            </abbr>{' '}
-            {new Date().getFullYear()} © Dimitri POSTOLOV.
-            <a href="/feed.xml" style={{ float: 'right' }}>
-              RSS
-            </a>
+            <span className="text-gray-400 flex gap-1">
+              <span> © 2025 BenMix </span>
+              <span>·</span>
+              <Link href="/rss.xml" className="text-gray-400">
+                RSS
+              </Link>
+              <span>·</span>
+              <Link
+                href="https://github.com/benmix"
+                target="_blank"
+                className="text-gray-400 inline-flex"
+              >
+                <RiGithubLine size="14" /> Github
+              </Link>
+            </span>
+            <ThemeSwitch />
           </Footer>
         </Layout>
       </body>
     </html>
-  )
-}
+  );
+};
+
+export default RootLayout;

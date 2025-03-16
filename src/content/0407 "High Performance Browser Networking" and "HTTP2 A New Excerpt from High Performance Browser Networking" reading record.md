@@ -1,6 +1,6 @@
 ---
-title_en: 0407 "High Performance Browser Networking" and "HTTP2 A New Excerpt from High Performance Browser Networking" reading record
-title: 0407《Hight Performance Browser Networking》和《HTTP2 A New Excerpt from High Performance Browser Networking》阅读记录
+title_en:  <High Performance Browser Networking> and <HTTP2 A New Excerpt from High Performance Browser Networking> reading record
+title: 《Hight Performance Browser Networking》和《HTTP2 A New Excerpt from High Performance Browser Networking》阅读记录
 date: 2023-04-07
 ---
 

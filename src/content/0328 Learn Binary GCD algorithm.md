@@ -1,6 +1,6 @@
 ---
-title_en: 0328 Learn Binary GCD algorithm
-title: 0328 Learn Binary GCD algorithm
+title_en: Learn Binary GCD algorithm
+title: Learn Binary GCD algorithm
 date: 2023-03-28
 ---
 

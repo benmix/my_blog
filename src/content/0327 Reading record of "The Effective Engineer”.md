@@ -1,6 +1,6 @@
 ---
-title_en: 0327 Reading record of "The Effective Engineer”
-title: 0327 《卓有成效的工程师》阅读记录
+title_en: Reading record of <The Effective Engineer>
+title: 《卓有成效的工程师》阅读记录
 date: 2023-03-27
 ---
 

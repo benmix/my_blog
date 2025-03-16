@@ -1,6 +1,6 @@
 ---
-title_en: 0601 Lookahead & Lookbehind RegExp Cheat Sheet
-title: 0601 Lookahead & Lookbehind RegExp Cheat Sheet
+title_en: Lookahead & Lookbehind RegExp Cheat Sheet
+title: Lookahead & Lookbehind RegExp Cheat Sheet
 date: 2022-09-01
 ---
 

@@ -1,6 +1,6 @@
 ---
-title_en: 0622 "Beyond the Impossible" Reading Record
-title: 0622 《超越不可能》 阅读记录
+title_en: <Beyond the Impossible> Reading Record
+title: 《超越不可能》 阅读记录
 date: 2023-06-22
 ---
 

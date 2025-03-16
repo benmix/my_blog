@@ -1,0 +1,9 @@
+@import "tailwindcss" source(none);
+@plugin "@tailwindcss/typography";
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@source './**/*.{ts,tsx}';
+
+@import "./styles/default.css";

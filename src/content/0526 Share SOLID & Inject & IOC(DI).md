@@ -1,6 +1,6 @@
 ---
-title_en: 0526 Share SOLID & Inject & IOC(DI)
-title: 0526 分享 SOLID & Inject & IOC(DI)
+title_en: Share SOLID & Inject & IOC(DI)
+title: 分享 SOLID & Inject & IOC(DI)
 date: 2022-05-26
 ---
 
