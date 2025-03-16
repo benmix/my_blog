@@ -1,7 +1,7 @@
 import { Client, LogLevel } from "@notionhq/client";
 import { NOTION_BLOG_DATABASE_ID, NOTION_TOKEN } from "./env";
 import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
-import { filterPages, getPropertyDate, getPropertyTitle } from "./utils";
+import { filterPages, getPropertyDate, getPropertyTitle } from "./notion-utils";
 
 // Initializing a client
 const notion = new Client({
