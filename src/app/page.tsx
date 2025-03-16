@@ -1,6 +1,6 @@
-import { Link } from "@/components/link";
-import { PostLink } from "@/components/post-link";
-import { getPosts } from "@/lib/get-post";
+import { Link } from "@components/link";
+import { PostLink } from "@components/post-link";
+import { getPosts } from "@lib/get-post";
 import { Image } from "nextra/components";
 
 export default async function IndexPage() {

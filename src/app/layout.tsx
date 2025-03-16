@@ -1,9 +1,9 @@
 import { Head } from "nextra/components";
 import { FC, PropsWithChildren } from "react";
-import { Layout, Content, Footer } from "@/components/layout";
+import { Layout, Content, Footer } from "@components/layout";
 import "@/global.css";
-import { ThemeSwitch } from "@/components/theme-switch";
-import { Link } from "@/components/link";
+import { ThemeSwitch } from "@components/theme-switch";
+import { Link } from "@components/link";
 import { RiGithubLine } from "@remixicon/react";
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {

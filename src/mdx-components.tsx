@@ -10,11 +10,10 @@ import {
 } from "nextra/components";
 import { useMDXComponents as getNextraMDXComponents } from "nextra/mdx-components";
 import type { MDXComponents } from "nextra/mdx-components";
-import { Meta } from "./components/meta";
-import { Link } from "./components/Link";
-import { Blockquote } from "./components/block-quote";
-import { H1, H2, H3, H4, H5, H6 } from "./components/typopraghy-header";
-import { Wrapper } from "./components/mdx-wrapper";
+import { Link } from "@components/link";
+import { Blockquote } from "@components//block-quote";
+import { H2, H3, H4, H5, H6 } from "@components//typopraghy-header";
+import { Wrapper } from "@components//mdx-wrapper";
 
 const DEFAULT_COMPONENTS = getNextraMDXComponents({
   blockquote: Blockquote,

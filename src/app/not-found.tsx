@@ -1,4 +1,4 @@
-import { GoBack, GoHome } from "@/components/go-back";
+import { GoBack, GoHome } from "@components/go-back";
 
 export default function NotFound() {
   return (
