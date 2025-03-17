@@ -24,7 +24,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
               <Link
                 href="https://github.com/benmix"
                 target="_blank"
-                className="text-gray-400 inline-flex"
+                className="text-gray-400 inline-flex gap-1"
               >
                 <RiGithubLine size="14" /> Github
               </Link>
