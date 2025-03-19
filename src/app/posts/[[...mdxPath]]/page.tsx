@@ -8,7 +8,7 @@ export async function generateStaticParams() {
   return articles.map((article) => {
     const splits = article.route.split("/");
     return {
-      mdxPath: [encodeURI(splits[splits.length - 1])],
+      mdxPath: [splits[splits.length - 1]],
     };
   });
 }
