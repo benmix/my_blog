@@ -1,7 +1,7 @@
 import { Link } from "@components/link";
 import { PostLink } from "@components/post-link";
 import { getPosts } from "@lib/get-post";
-import { Image } from "nextra/components";
+import { Image } from "@components/image";
 
 export default async function IndexPage() {
   const articles = await getPosts();

@@ -7,12 +7,7 @@ export const Wrapper: Required<MDXComponents>["wrapper"] = ({
 }) => {
   return (
     <>
-      <h1
-        className={"not-prose text-3xl mb-8"}
-        style={{ color: "var(--color-gray-600)" }}
-      >
-        {metadata.title}
-      </h1>
+      <h1 className={"not-prose text-3xl mb-8"}>{metadata.title}</h1>
       <Meta metadata={metadata} />
       {children}
     </>

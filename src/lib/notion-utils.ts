@@ -31,3 +31,11 @@ export const getPropertyTitle = (property: PageProperty) => {
     return "";
   }
 };
+
+export const getPropertyText = (property: PageProperty) => {
+  if (property.type === "rich_text") {
+    return property.rich_text[0]?.plain_text || "";
+  } else {
+    return "";
+  }
+};

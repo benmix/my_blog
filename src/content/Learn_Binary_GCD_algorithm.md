@@ -45,9 +45,9 @@ fn gcd_euclid(a: u32, b: u32) -> u32 {
 
 - 交换 `a` 和 `b` 确保 `a` > `b`
 - 进入循环
-	- 如果 `b = 0` 则 `gcd(a, b) = a`，  即 `gcd(a, 0) = a`, 此时我们可以结束循环。
-	- 交换 `a` 和 `b`， `temp = a`， `a = b`， `b = temp`
-	- 计算  `b % a = r` ，`b = r`
+    - 如果 `b = 0` 则 `gcd(a, b) = a`，  即 `gcd(a, 0) = a`, 此时我们可以结束循环。
+    - 交换 `a` 和 `b`， `temp = a`， `a = b`， `b = temp`
+    - 计算  `b % a = r` ，`b = r`
 
 ### Binary GCD Algorithm
 
@@ -61,7 +61,7 @@ fn gcd_euclid(a: u32, b: u32) -> u32 {
 - `gcd(`_`2a`_`,` _`2b`_`) = 2 * gcd(a, b)`
 - `gcd(`_`2a`_`, b) = gcd(a, b)` ， `b % 2 != 0` ，即 `2` 不是公约数
 
-	`gcd(a,` _`2b`_`) = gcd(a, b)`， `a % 2 != 0`
+    `gcd(a,` _`2b`_`) = gcd(a, b)`， `a % 2 != 0`
 
 - `gcd(a, b) = gcd(|a − b|, min(a, b))`， `b % 2 != 0` && `a % 2 != 0`
 

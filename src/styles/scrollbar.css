@@ -1,0 +1,31 @@
+/* 针对 Webkit 浏览器（Chrome、Safari 等） */
+::-webkit-scrollbar {
+  width: 8px /* 滚动条 */;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent /* 滚动条轨道 */;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b566945 /* 滚动条滑块 */;
+  border-radius: 8px /* 圆角 */;
+}
+
+.dark {
+  /* 针对 Webkit 浏览器（Chrome、Safari 等） */
+  ::-webkit-scrollbar {
+    width: 8px /* 滚动条 */;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent /* 滚动条轨道 */;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #555454c7 /* 滚动条滑块 */;
+    border-radius: 8px /* 圆角 */;
+  }
+}

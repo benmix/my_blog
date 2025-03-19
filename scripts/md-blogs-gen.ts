@@ -1,8 +1,14 @@
 import { pageToMarkdownString } from "@lib/md";
 import { getBlogs } from "@lib/notion-api";
-import * as fs from "node:fs";
+import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 
 async function main() {
+  if (existsSync("./public/content_images/")) {
+    rmSync("./public/content_images/", { recursive: true });
+  }
+
+  mkdirSync("./public/content_images/", { recursive: true });
+
   const blogs = await getBlogs();
 
   for (const blog of blogs) {
@@ -17,7 +23,10 @@ async function main() {
     markdown.push(``);
     markdown.push(`${markdownContent?.parent}`);
 
-    fs.writeFileSync(`./src/blogs/${blog.title_en}.md`, markdown.join("\n"));
+    writeFileSync(
+      `./src/content/${blog.title_en.replace(/[\s\/]+/g, "_")}.md`,
+      markdown.join("\n"),
+    );
   }
 }
 

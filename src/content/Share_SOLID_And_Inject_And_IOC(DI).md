@@ -1,6 +1,6 @@
 ---
-title_en: Share SOLID & Inject & IOC(DI)
-title: 分享 SOLID & Inject & IOC(DI)
+title_en: Share SOLID And Inject And IOC(DI)
+title: 分享 SOLID 和 Inject 和 IOC(DI)
 date: 2022-05-26
 ---
 
@@ -291,17 +291,17 @@ class Cube implements IShape,IThreeDimensionalShape {
 
 假设有四样家具：
 
-	- 木头桌子
-	- 木头椅子
-	- 塑料桌子
-	- 塑料椅子
+    - 木头桌子
+    - 木头椅子
+    - 塑料桌子
+    - 塑料椅子
 
 每个家具有四个属性：
 
-	- 燃点
-	- 密度
-	- 价格
-	- 重量
+    - 燃点
+    - 密度
+    - 价格
+    - 重量
 
 我们如何实现四个家具类呢？
 
@@ -468,99 +468,99 @@ PS： 控制反转还有很多种实现方式（例如策略模式或者模板�
 ### 前置知识
 
 - Metadata API （[Metadata Proposal - ECMAScript (rbuckton.github.io](https://rbuckton.github.io/reflect-metadata/)）
-	- 元数据 API，提供在目标类，方法属性上获取和设置元数据使用。
-	- TypeScript 提供了结合这一特性来和装饰器来自动弹射出参数，类，方法属性的元信息，需要在 tsconfig 里设置来开启，并配合 [https://github.com/rbuckton/reflect-metadata](https://github.com/rbuckton/reflect-metadata) 或者 [https://github.com/abraham/reflection](https://github.com/abraham/reflection) 使用（polyfill）
+    - 元数据 API，提供在目标类，方法属性上获取和设置元数据使用。
+    - TypeScript 提供了结合这一特性来和装饰器来自动弹射出参数，类，方法属性的元信息，需要在 tsconfig 里设置来开启，并配合 [https://github.com/rbuckton/reflect-metadata](https://github.com/rbuckton/reflect-metadata) 或者 [https://github.com/abraham/reflection](https://github.com/abraham/reflection) 使用（polyfill）
 
-		```typescript
-		{
-		  "compilerOptions": {
-				...
-		    "experimentalDecorators": true,
-		    "emitDecoratorMetadata": true
-		  }
-		}
-		```
+        ```typescript
+        {
+          "compilerOptions": {
+        		...
+            "experimentalDecorators": true,
+            "emitDecoratorMetadata": true
+          }
+        }
+        ```
 
-	- 详细的装饰器元信息介绍：[TypeScript: Documentation - Decorators (typescriptlang.org)](https://www.typescriptlang.org/docs/handbook/decorators.html#metadata)
+    - 详细的装饰器元信息介绍：[TypeScript: Documentation - Decorators (typescriptlang.org)](https://www.typescriptlang.org/docs/handbook/decorators.html#metadata)
 - 我们只需要先了解
 
-	```typescript
-	// define metadata on an object or property
-	Reflect.defineMetadata(metadataKey, metadataValue, target);
-	Reflect.defineMetadata(metadataKey, metadataValue, target, propertyKey);
+    ```typescript
+    // define metadata on an object or property
+    Reflect.defineMetadata(metadataKey, metadataValue, target);
+    Reflect.defineMetadata(metadataKey, metadataValue, target, propertyKey);
 
-	// get metadata value of a metadata key on the prototype chain of an object or property
-	Reflect.getMetadata(metadataKey, target);
-	Reflect.getMetadata(metadataKey, target, propertyKey);
+    // get metadata value of a metadata key on the prototype chain of an object or property
+    Reflect.getMetadata(metadataKey, target);
+    Reflect.getMetadata(metadataKey, target, propertyKey);
 
-	// get metadata value of an own metadata key of an object or property
-	Reflect.getOwnMetadata(metadataKey, target);
-	Reflect.getOwnMetadata(metadataKey, target, propertyKey);
+    // get metadata value of an own metadata key of an object or property
+    Reflect.getOwnMetadata(metadataKey, target);
+    Reflect.getOwnMetadata(metadataKey, target, propertyKey);
 
-	// equal to Reflect.defineMetadata(Symbol("design:paramtypes"), metadataValue, target，propertyKey)
-	@Reflect.metadata("design:paramtypes", types)
+    // equal to Reflect.defineMetadata(Symbol("design:paramtypes"), metadataValue, target，propertyKey)
+    @Reflect.metadata("design:paramtypes", types)
 
-	// get metadata value of `design:paramtypes` of an object or property
-	Reflect.getMetadata("design:paramtypes", target, propertyKey)
-	```
+    // get metadata value of `design:paramtypes` of an object or property
+    Reflect.getMetadata("design:paramtypes", target, propertyKey)
+    ```
 
 
-	```typescript
-	// Design-time type annotations
-	function Type(type) { return Reflect.metadata("design:type", type); }
-	function ParamTypes(...types) { return Reflect.metadata("design:paramtypes", types); }
-	function ReturnType(type) { return Reflect.metadata("design:returntype", type); }
+    ```typescript
+    // Design-time type annotations
+    function Type(type) { return Reflect.metadata("design:type", type); }
+    function ParamTypes(...types) { return Reflect.metadata("design:paramtypes", types); }
+    function ReturnType(type) { return Reflect.metadata("design:returntype", type); }
 
-	// Decorator application
-	// equal to: `@Reflect.metadata("design:paramtypes", [String, Number])`  or  `Reflect.defineMetadata(Symbol("design:paramtypes"), C，[String, Number])`
-	@ParamTypes(String, Number)
-	class C {
-	  constructor(text, i) {
-	  }
+    // Decorator application
+    // equal to: `@Reflect.metadata("design:paramtypes", [String, Number])`  or  `Reflect.defineMetadata(Symbol("design:paramtypes"), C，[String, Number])`
+    @ParamTypes(String, Number)
+    class C {
+      constructor(text, i) {
+      }
 
-		// equal to: `@Reflect.metadata("design:type", String)`  or  `Reflect.defineMetadata(Symbol("design:type"), C， 'name', [String, Number])`
-	  @Type(String)
-	  get name() { return "text"; }
+    	// equal to: `@Reflect.metadata("design:type", String)`  or  `Reflect.defineMetadata(Symbol("design:type"), C， 'name', [String, Number])`
+      @Type(String)
+      get name() { return "text"; }
 
-		// equal to: `@Reflect.metadata("design:type", Function)`  or  `Reflect.defineMetadata(Symbol("design:type"), C， 'add', Function)`
-	  @Type(Function)
-		// equal to: @Reflect.metadata("design:paramtypes", [Number, Number])  or  `Reflect.defineMetadata(Symbol("design:paramtypes"), C， 'add', [Number, Number])`
-	  @ParamTypes(Number, Number)
-		// equal to: @Reflect.metadata("design:returntype", Number)  or  `Reflect.defineMetadata(Symbol("design:returntype"), C， 'add', Number)`
-	  @ReturnType(Number)
-	  add(x, y) {
-	    return x + y;
-	  }
-	}
+    	// equal to: `@Reflect.metadata("design:type", Function)`  or  `Reflect.defineMetadata(Symbol("design:type"), C， 'add', Function)`
+      @Type(Function)
+    	// equal to: @Reflect.metadata("design:paramtypes", [Number, Number])  or  `Reflect.defineMetadata(Symbol("design:paramtypes"), C， 'add', [Number, Number])`
+      @ParamTypes(Number, Number)
+    	// equal to: @Reflect.metadata("design:returntype", Number)  or  `Reflect.defineMetadata(Symbol("design:returntype"), C， 'add', Number)`
+      @ReturnType(Number)
+      add(x, y) {
+        return x + y;
+      }
+    }
 
-	// Metadata introspection
-	let obj = new C("a", 1);
-	let paramTypes = Reflect.getMetadata("design:paramtypes", inst, "add"); // [Number, Number]
-	```
+    // Metadata introspection
+    let obj = new C("a", 1);
+    let paramTypes = Reflect.getMetadata("design:paramtypes", inst, "add"); // [Number, Number]
+    ```
 
 - Decorator 装饰器
-	- **Decorator Factories**
-		- [TypeScript: Documentation - Decorators (typescriptlang.org)](https://www.typescriptlang.org/docs/handbook/decorators.html#decorator-factories)
+    - **Decorator Factories**
+        - [TypeScript: Documentation - Decorators (typescriptlang.org)](https://www.typescriptlang.org/docs/handbook/decorators.html#decorator-factories)
 
-	```typescript
-	function factoryDecorator(...args) {
-	    return function (target, ...others) {} // 返回生成的装饰器
-	}
-	```
+    ```typescript
+    function factoryDecorator(...args) {
+        return function (target, ...others) {} // 返回生成的装饰器
+    }
+    ```
 
-	- **Class Decorators**
-		- [TypeScript: Documentation - Decorators (typescriptlang.org)](https://www.typescriptlang.org/docs/handbook/decorators.html#class-decorators)
+    - **Class Decorators**
+        - [TypeScript: Documentation - Decorators (typescriptlang.org)](https://www.typescriptlang.org/docs/handbook/decorators.html#class-decorators)
 
-	```typescript
-	function classDecorator(target: any) {} // 可以返回新的类替换被装饰的类声明，或者返回空（返回空，则回继续使用原来的类声明）
-	```
+    ```typescript
+    function classDecorator(target: any) {} // 可以返回新的类替换被装饰的类声明，或者返回空（返回空，则回继续使用原来的类声明）
+    ```
 
-	- **Parameter Decorators**
-		- [TypeScript: Documentation - Decorators (typescriptlang.org)](https://www.typescriptlang.org/docs/handbook/decorators.html#parameter-decorators)
+    - **Parameter Decorators**
+        - [TypeScript: Documentation - Decorators (typescriptlang.org)](https://www.typescriptlang.org/docs/handbook/decorators.html#parameter-decorators)
 
-	```typescript
-	function parameterDecorator(target: any, propertyKey: string | symbol, parameterIndex: number) => void {} // 参数装饰器不返回值，一般用来实现副作用功能
-	```
+    ```typescript
+    function parameterDecorator(target: any, propertyKey: string | symbol, parameterIndex: number) => void {} // 参数装饰器不返回值，一般用来实现副作用功能
+    ```
 
 
 ### TSyringeJS 使用方式
@@ -667,7 +667,7 @@ const instance = container.resolve(Foo);
 ### TSyringeJS 模块依赖图解
 
 
-![Untitled.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/84c53fa3-d037-4575-b4cf-05110cc5600a/1b1eb59d-8d4d-4523-9cb0-822f39ab8fb4/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466THYBJKEN%2F20250301%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20250301T182633Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEG4aCXVzLXdlc3QtMiJGMEQCIGR9%2FVUtAIQyo0YZ0rKojL%2BSSOa01TzL6tnksskmlqNPAiBHjbqw7opvicxEk0pERt0cW7tt%2FssdjiTYUTEAPseYrSqIBAin%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDYzNzQyMzE4MzgwNSIMWWe9cI57eMCEmq0OKtwDiWfFDv33XyWTTd19mnu3yGIE9cdwoXwmYcjOHicKp%2Fo5qSlTaKbCFsTNwaFcvj5iUj9czUF63mCpjQVKdaPwN8i7YQL99bpICWUzNHfOsTC9HcId6oRcDmp8m%2FB3NRvf7B8hukLvrxZkDc%2FEpHiy7a3WKS3paMReirEm%2FN4DujGlkpZQIcG%2BBQtCLbFCyJXsnRLC3IqyDKUpKSwmpamSl2j%2BpWpyQg%2Bt96XUznnlPfFZyeT853FiAa1RL9iJGW5krGU2f%2F9yZvGNvcPoT1wK%2BtK794MVo%2BCqhwkkFQmEE1VpKQbyQdolZhrW3%2BCK115lI%2BK41RYH%2BK%2Biknr4wYsnZbFlcfjcmI05ZmUzq67kiA4ZZ3pl8NB5E5TZKXgpx1Kt3BXwZylunhzKf6ydyPcp9onZ2enW3bH0X81q%2BAkDTGMiChpRi7yP6ZGovK86TLBHVWEi745JMV2VUWSc2%2Bcq5omRDpL3VHjFep3us9IfkcxpCUhTEzTiNYiD0gdfmgg8eoVG1oWOE6JkpGFb9Ae3TeglSHbgaC3sAsGhYX8gNBEF5SnC5%2BaRCpcjOip0YCAUHIKzM4r1u3vcZXVCxQFKeXKT09clNJCOyiudq7HvHvx8OPrZ%2F3AvfGUpO0UwvZWMvgY6pgEgdkcORWBX2ZTZ5j1MldHv9MlYG%2FYhIwyKwFRy4ur8%2BaRhz8gLJWUCnarH%2BF46e02W4ZeSKtw3CLO9DQvki8tNA9%2FFMkFN48YCN893gQlLnCBHOd%2FpZfImp8g9T6%2F8%2Bnhjp4AKsZWD9WBryrhSKQ7KnKrisYlHBdsdWxUHx00wT6zjI8S0Q%2Fvs0c17X%2FKkZF%2Btza4A0R8c9aF1VeOgRxh4FnBuEC47&X-Amz-Signature=d795f2c21c4240a9185e86d24b30860ad49968949327115e2e5e90c87ce4aea7&X-Amz-SignedHeaders=host&x-id=GetObject)
+![unknown](/content_images/unknown__5bd7c531-1361-4ab8-a1d1-d05bed92b52f.png)
 
 
 ### TSyringeJS 代碼走读

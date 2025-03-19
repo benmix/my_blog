@@ -1,7 +1,12 @@
 import { Client, LogLevel } from "@notionhq/client";
 import { NOTION_BLOG_DATABASE_ID, NOTION_TOKEN } from "./env";
 import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
-import { filterPages, getPropertyDate, getPropertyTitle } from "./notion-utils";
+import {
+  filterPages,
+  getPropertyDate,
+  getPropertyText,
+  getPropertyTitle,
+} from "./notion-utils";
 
 // Initializing a client
 const notion = new Client({
@@ -47,7 +52,7 @@ export const getBlogs = async () => {
       page_id: page.id,
       date: getPropertyDate(page?.properties?.["Public Date"]),
       title: getPropertyTitle(page?.properties?.["Name"]),
-      title_en: getPropertyTitle(page?.properties?.["English Name"]),
+      title_en: getPropertyText(page?.properties?.["English Name"]),
     };
   });
 };
