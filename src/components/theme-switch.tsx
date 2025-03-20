@@ -1,9 +1,9 @@
 "use client";
 
+import { RiMoonLine, RiSunLine } from "@remixicon/react";
 import { useTheme } from "next-themes";
 import { Button } from "nextra/components";
 import { useMounted } from "nextra/hooks";
-import { MoonIcon, SunIcon } from "nextra/icons";
 
 export function ThemeSwitch() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -15,7 +15,7 @@ export function ThemeSwitch() {
     setTheme(isDark ? "light" : "dark");
   };
 
-  const IconToUse = mounted && isDark ? MoonIcon : SunIcon;
+  const IconToUse = mounted && isDark ? RiMoonLine : RiSunLine;
 
   return (
     <Button
@@ -23,7 +23,7 @@ export function ThemeSwitch() {
       onClick={toggleTheme}
       className="text-gray-400"
     >
-      <IconToUse height="11" />
+      <IconToUse size="16" />
     </Button>
   );
 }

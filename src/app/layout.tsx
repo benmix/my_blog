@@ -5,6 +5,7 @@ import "@/global.css";
 import { ThemeSwitch } from "@components/theme-switch";
 import { Link } from "@components/link";
 import { RiGithubLine } from "@remixicon/react";
+import { getYear } from "date-fns";
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -15,7 +16,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
           <Content>{children}</Content>
           <Footer>
             <span className="text-gray-400 flex gap-1">
-              <span> © 2025 BenMix </span>
+              <span>{`© ${getYear(new Date())} BenMix`}</span>
               <span>·</span>
               <Link href="/rss.xml" className="text-gray-400">
                 RSS
@@ -26,7 +27,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
                 target="_blank"
                 className="text-gray-400 inline-flex gap-1"
               >
-                <RiGithubLine size="14" /> Github
+                <RiGithubLine size="16" /> Github
               </Link>
             </span>
             <ThemeSwitch />
