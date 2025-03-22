@@ -6,11 +6,41 @@ import { ThemeSwitch } from "@components/theme-switch";
 import { Link } from "@components/link";
 import { RiGithubLine } from "@remixicon/react";
 import { getYear } from "date-fns";
+import type { Metadata } from "next";
+import { CONFIG_SITE } from "@/lib/constant";
+
+export const metadata: Metadata = {
+  title: "benmix's blog",
+  description: "share thoughts and life about me",
+  icons: "/icon.svg",
+  alternates: {
+    types: {
+      ["application/rss+xml"]: [
+        {
+          title: CONFIG_SITE.title,
+          url: CONFIG_SITE.siteUrl + "/rss.xml",
+        },
+      ],
+    },
+  },
+  openGraph: {
+    title: CONFIG_SITE.title,
+    description: "share thoughts and life about me",
+    url: CONFIG_SITE.siteUrl,
+    images: [
+      {
+        url: "/og_image.webp",
+      },
+    ],
+  },
+};
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head />
+      <Head>
+        <link rel="sitemap" href="/sitemap.xml" />
+      </Head>
       <body>
         <Layout>
           <Content>{children}</Content>

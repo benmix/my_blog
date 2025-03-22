@@ -2,6 +2,7 @@ import { Wrapper } from "@/components/mdx-wrapper";
 import { getPosts } from "@/lib/get-post";
 import { importPage } from "nextra/pages";
 import type { NextPage, Metadata } from "next";
+import { CONFIG_SITE } from "@/lib/constant";
 
 export async function generateStaticParams() {
   const articles = await getPosts();
@@ -9,23 +10,36 @@ export async function generateStaticParams() {
     const splits = article.route.split("/");
     return {
       mdxPath: [splits[splits.length - 1]],
+      siteUrl: CONFIG_SITE.siteUrl + article.route.replace(/&/g, "&amp;"),
     };
   });
 }
 
 type PageProps = {
-  params: Promise<{ mdxPath: string[] }>;
+  params: Promise<{ mdxPath: string[]; siteUrl: string }>;
 };
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { mdxPath } = await params;
+  const { mdxPath, siteUrl } = await params;
   const result = await importPage(mdxPath);
+  console.log(result);
   const { metadata } = result;
 
   return {
     title: metadata.title,
+    description: "...",
+    openGraph: {
+      title: metadata.title,
+      description: "...",
+      url: siteUrl,
+      images: [
+        {
+          url: "/og_image.webp",
+        },
+      ],
+    },
   };
 }
 

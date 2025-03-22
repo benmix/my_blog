@@ -2,11 +2,6 @@ import { Link } from "@components/link";
 import { PostLink } from "@components/post-link";
 import { getPosts } from "@lib/get-post";
 import { Image } from "@components/image";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "benmix's blog",
-};
 
 export default async function IndexPage() {
   const articles = await getPosts();
