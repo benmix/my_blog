@@ -2,6 +2,11 @@ import { Link } from "@components/link";
 import { PostLink } from "@components/post-link";
 import { getPosts } from "@lib/get-post";
 import { Image } from "@components/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "benmix's blog",
+};
 
 export default async function IndexPage() {
   const articles = await getPosts();
@@ -17,11 +22,11 @@ export default async function IndexPage() {
       {/* <p className="indent-8">你好，下面是我写的文章，我想把他们分享给你。</p> */}
       <div>
         <h2 className="text-gray-600 max-md:text-sm"> 文章 </h2>
-        <p>
+        <div>
           {articles.map((post) => {
-            return <PostLink post={post} />;
+            return <PostLink key={post.route} post={post} />;
           })}
-        </p>
+        </div>
         <h2 className="text-gray-600 max-md:text-sm">最近阅读的书</h2>
         <Link
           className="text-gray-400 max-md:text-xs"

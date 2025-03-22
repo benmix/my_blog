@@ -1,7 +1,7 @@
 import { Wrapper } from "@/components/mdx-wrapper";
 import { getPosts } from "@/lib/get-post";
-import { NextPage } from "next";
 import { importPage } from "nextra/pages";
+import type { NextPage, Metadata } from "next";
 
 export async function generateStaticParams() {
   const articles = await getPosts();
@@ -13,16 +13,33 @@ export async function generateStaticParams() {
   });
 }
 
-const Page: NextPage<{ params: Promise<{ mdxPath: string[] }> }> =
-  async function (props) {
-    const params = await props.params;
-    const result = await importPage(params.mdxPath);
-    const { default: MDXContent, toc, metadata } = result;
-    return (
-      <Wrapper toc={toc} metadata={metadata}>
-        <MDXContent {...props} params={params} />
-      </Wrapper>
-    );
+type PageProps = {
+  params: Promise<{ mdxPath: string[] }>;
+};
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { mdxPath } = await params;
+  const result = await importPage(mdxPath);
+  const { metadata } = result;
+
+  return {
+    title: metadata.title,
   };
+}
+
+const Page: NextPage<PageProps> = async function (props) {
+  const { params } = props;
+  const { mdxPath } = await params;
+  const result = await importPage(mdxPath);
+  const { default: MDXContent, toc, metadata } = result;
+
+  return (
+    <Wrapper toc={toc} metadata={metadata}>
+      <MDXContent {...props} params={params} />
+    </Wrapper>
+  );
+};
 
 export default Page;
