@@ -36,7 +36,7 @@ export async function generateMetadata({
       url: siteUrl,
       images: [
         {
-          url: "/og_image.webp",
+          url: "/og_image_logo.webp",
         },
       ],
     },

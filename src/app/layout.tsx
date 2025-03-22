@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     url: CONFIG_SITE.siteUrl,
     images: [
       {
-        url: "/og_image.webp",
+        url: "/og_image_logo.webp",
       },
     ],
   },
