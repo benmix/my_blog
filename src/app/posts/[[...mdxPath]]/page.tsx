@@ -24,7 +24,6 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { mdxPath, siteUrl } = await params;
   const result = await importPage(mdxPath);
-  console.log(result);
   const { metadata } = result;
 
   return {
