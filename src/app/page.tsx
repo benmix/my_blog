@@ -15,7 +15,8 @@ export default async function IndexPage() {
         className="object-center object-cover h-[280] w-full rounded-sm max-md:h-[200]"
       />
       <blockquote className="indent-4 text-lg max-md:text-sm text-gray-600">
-        你好，欢迎到访，请随意浏览，愿有所得。
+        <p>你好，欢迎到访。</p>
+        <p>请随意浏览，愿有所得。</p>
       </blockquote>
       <div className="mt-16 max-md:mt-12">
         <h2 className="text-slate-500 max-md:text-sm"> 文章 </h2>
