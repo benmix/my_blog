@@ -46,12 +46,12 @@ export const TocSider: FC<{ toc: Heading[] }> = ({ toc }) => {
         data-state={expand ? "open" : "closed"}
         data-animate-state={done ? "done" : "animating"}
         className={cn(
-          "w-[20vw] p-4 max-h-[40vh] overflow-hidden shadow-md rounded-l-md",
+          "p-4 shadow-md rounded-l-md",
           "data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=open]:fade-in-0 data-[state=open]:data-[animate-state=done]:block",
           "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=closed]:fade-out-0 data-[state=closed]:data-[animate-state=done]:hidden",
         )}
       >
-        <div className="overflow-auto scroll-hidden h-full">
+        <div className="w-[20vw] overflow-auto scroll-hidden max-h-[40vh]">
           <ul>
             {toc.map((heading) => (
               <li key={heading.id}>
