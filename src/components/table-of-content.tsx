@@ -51,7 +51,7 @@ export const TocSider: FC<{ toc: Heading[] }> = ({ toc }) => {
           "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=closed]:fade-out-0 data-[state=closed]:data-[animate-state=done]:hidden",
         )}
       >
-        <div className="w-[20vw] overflow-auto scroll-hidden max-h-[40vh]">
+        <div className="w-[18vw] overflow-auto scroll-hidden max-h-[40vh]">
           <ul>
             {toc.map((heading) => (
               <li key={heading.id}>

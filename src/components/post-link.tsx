@@ -13,11 +13,11 @@ export const PostLink: FC<PostCardProps> = ({ post }) => {
     <Link
       key={post.route}
       href={post.route}
-      className="block pt-2 pb-4 text-gray-400 max-md:text-xs"
+      className="block pt-2 pb-4 text-gray-400 max-md:text-xs hover:text-gray-500  no-underline! font-light"
     >
       <div className="flex justify-between">
-        <span className="font-base grow-1  pr-4">{title}</span>
-        <time className="text-sm text-gray-400 grow-0 basis-24 w-max flex-shrink-0 text-end max-md:hidden">
+        <span className="font-base grow-1 pr-4 underline">{title}</span>
+        <time className="text-sm text-gray-400 grow-0 basis-24 w-max flex-shrink-0 text-end max-md:hidden no-underline!">
           {format(date || "", "MMM d, y")}
         </time>
       </div>

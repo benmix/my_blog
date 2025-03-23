@@ -6,7 +6,7 @@ export const Footer: FC<{
   children?: ReactNode;
 }> = ({ children }) => {
   return (
-    <footer className="relative w-full grow-0 flex gap-2 text-xs pt-4 justify-between pb-8">
+    <footer className="relative w-full grow-0 flex gap-2 text-xs pt-4 justify-between pb-8 mt-16 max-md:mt-12">
       {children}
     </footer>
   );
@@ -25,7 +25,7 @@ export const Layout: FC<{
   return (
     <ThemeProvider attribute="class" {...nextThemes}>
       <main
-        className="container mx-auto flex flex-col relative prose max-md:prose-sm dark:prose-invert prose-zinc prose-sm max-md:px-4"
+        className="container mx-auto flex flex-col relative prose min-xl:max-w-[85ch] max-md:prose-sm dark:prose-invert prose-zinc prose-sm max-md:px-4"
         dir="ltr"
       >
         <ViewTransitions>{children}</ViewTransitions>

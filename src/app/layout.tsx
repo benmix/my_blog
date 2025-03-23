@@ -48,14 +48,17 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
             <span className="text-gray-400 flex gap-1">
               <span>{`© ${getYear(new Date())} BenMix`}</span>
               <span>·</span>
-              <Link href="/rss.xml" className="text-gray-400">
+              <Link
+                href="/rss.xml"
+                className="text-gray-400 hover:text-gray-500 font-light"
+              >
                 RSS
               </Link>
               <span>·</span>
               <Link
                 href="https://github.com/benmix"
                 target="_blank"
-                className="text-gray-400 inline-flex gap-1"
+                className="text-gray-400 inline-flex gap-1 hover:text-gray-500 font-light"
               >
                 <RiGithubLine size="16" /> Github
               </Link>
