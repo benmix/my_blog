@@ -2,7 +2,6 @@ import { Wrapper } from "@/components/mdx-wrapper";
 import { getPosts } from "@/lib/get-post";
 import { importPage } from "nextra/pages";
 import type { NextPage, Metadata } from "next";
-import { CONFIG_SITE } from "@/lib/constant";
 
 export async function generateStaticParams() {
   const articles = await getPosts();
