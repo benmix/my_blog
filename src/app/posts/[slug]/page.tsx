@@ -1,5 +1,5 @@
 import { Wrapper } from "@/components/mdx-wrapper";
-import { getPost, getPosts } from "@/lib/get-post";
+import { getPosts } from "@/lib/get-post";
 import { importPage } from "nextra/pages";
 import type { NextPage, Metadata, ResolvedMetadata } from "next";
 import { CONFIG_SITE } from "@/lib/constant";
@@ -16,7 +16,6 @@ export async function generateStaticParams() {
 
 type PageProps = {
   params: Promise<{ slug: string; path: string }>;
-  parent: ResolvedMetadata;
 };
 
 export async function generateMetadata({
