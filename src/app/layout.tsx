@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import { CONFIG_SITE } from "@/lib/constant";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(CONFIG_SITE.siteUrl),
   title: "benmix's blog",
   description: "share thoughts and life about me",
   icons: "/icon.svg",
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
       ["application/rss+xml"]: [
         {
           title: CONFIG_SITE.title,
-          url: CONFIG_SITE.siteUrl + "/rss.xml",
+          url: "/rss.xml",
         },
       ],
     },
@@ -26,10 +27,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: CONFIG_SITE.title,
     description: "share thoughts and life about me",
-    url: CONFIG_SITE.siteUrl,
+    url: "/",
     images: [
       {
-        url: CONFIG_SITE.siteUrl + "/og_image_logo.webp",
+        url: "/og_image_logo.webp",
       },
     ],
   },

@@ -1,7 +1,7 @@
 import { Wrapper } from "@/components/mdx-wrapper";
-import { getPosts } from "@/lib/get-post";
+import { getPost, getPosts } from "@/lib/get-post";
 import { importPage } from "nextra/pages";
-import type { NextPage, Metadata } from "next";
+import type { NextPage, Metadata, ResolvedMetadata } from "next";
 import { CONFIG_SITE } from "@/lib/constant";
 
 export async function generateStaticParams() {
@@ -9,30 +9,30 @@ export async function generateStaticParams() {
   return articles.map((article) => {
     const splits = article.route.split("/");
     return {
-      mdxPath: [splits[splits.length - 1]],
-      siteUrl: CONFIG_SITE.siteUrl + article.route.replace(/&/g, "&amp;"),
+      slug: splits[splits.length - 1],
     };
   });
 }
 
 type PageProps = {
-  params: Promise<{ mdxPath: string[]; siteUrl: string }>;
+  params: Promise<{ slug: string; path: string }>;
+  parent: ResolvedMetadata;
 };
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { mdxPath, siteUrl } = await params;
-  const result = await importPage(mdxPath);
+  const { slug } = await params;
+  const result = await importPage([slug]);
   const { metadata } = result;
-
   return {
+    metadataBase: new URL(CONFIG_SITE.siteUrl + "/posts"),
     title: metadata.title,
     description: "...",
     openGraph: {
       title: metadata.title,
       description: "...",
-      url: siteUrl,
+      url: slug,
       images: [
         {
           url: "/og_image_logo.webp",
@@ -44,8 +44,8 @@ export async function generateMetadata({
 
 const Page: NextPage<PageProps> = async function (props) {
   const { params } = props;
-  const { mdxPath } = await params;
-  const result = await importPage(mdxPath);
+  const { slug } = await params;
+  const result = await importPage([slug]);
   const { default: MDXContent, toc, metadata } = result;
 
   return (
