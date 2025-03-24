@@ -25,13 +25,12 @@ export async function generateMetadata({
   const result = await importPage([slug]);
   const { metadata } = result;
   return {
-    metadataBase: new URL(CONFIG_SITE.siteUrl + "/posts"),
     title: metadata.title,
     description: "...",
     openGraph: {
       title: metadata.title,
       description: "...",
-      url: slug,
+      url: "/posts" + slug,
       images: [
         {
           url: "/og_image_logo.webp",
