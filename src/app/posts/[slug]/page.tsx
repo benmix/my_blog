@@ -14,7 +14,7 @@ export async function generateStaticParams() {
 }
 
 type PageProps = {
-  params: Promise<{ slug: string; path: string }>;
+  params: Promise<{ slug: string; }>;
 };
 
 export async function generateMetadata({
@@ -29,7 +29,7 @@ export async function generateMetadata({
     openGraph: {
       title: metadata.title,
       description: "...",
-      url: "/posts" + slug,
+      url: "/posts/" + slug,
       images: [
         {
           url: "/og_image_logo.webp",
