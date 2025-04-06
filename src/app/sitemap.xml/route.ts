@@ -33,7 +33,7 @@ export async function GET() {
     ...sitemap
       .map((site) => [
         `    <url>`,
-        `      <loc> ${site.url} </loc>`,
+        `      <loc>${site.url}</loc>`,
         `      <changefreq>${site.changeFrequency}</changefreq>`,
         `      <lastmod>${site.lastModified}</lastmod>`,
         `      <priority>${site.priority}</priority>`,

@@ -21,9 +21,9 @@ export async function GET() {
     ...posts
       .map((post) => [
         `    <item>`,
-        `      <title> ${post.frontMatter.title.replace(/&/g, "&amp;")} </title>`,
-        `      <link> ${CONFIG_SITE.siteUrl}${post.route.replace(/&/g, "&amp;")} </link>`,
-        `      <pubDate> ${format(post.frontMatter.date, "MMM d, y")} </pubDate>`,
+        `      <title>${post.frontMatter.title.replace(/&/g, "&amp;")}</title>`,
+        `      <link>${CONFIG_SITE.siteUrl}${post.route.replace(/&/g, "&amp;")}</link>`,
+        `      <pubDate>${format(post.frontMatter.date, "MMM d, y")}</pubDate>`,
         `    </item>`,
       ])
       .flat(),
