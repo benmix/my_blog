@@ -7,7 +7,7 @@ import { Link } from "@components/link";
 import { RiGithubLine } from "@remixicon/react";
 import { getYear } from "date-fns";
 import type { Metadata } from "next";
-import { CONFIG_SITE } from "@/lib/constant";
+import { CONFIG_SITE } from "@lib/constant";
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONFIG_SITE.siteUrl),
@@ -46,20 +46,17 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <Layout>
           <Content>{children}</Content>
           <Footer>
-            <span className="text-gray-400 flex gap-1">
+            <span className="flex gap-1 text-gray-400">
               <span>{`© ${getYear(new Date())} BenMix`}</span>
               <span>·</span>
-              <Link
-                href="/rss.xml"
-                className="text-gray-400 hover:text-gray-500 font-light"
-              >
+              <Link href="/rss.xml" className="font-light text-gray-400 hover:text-gray-500">
                 RSS
               </Link>
               <span>·</span>
               <Link
                 href="https://github.com/benmix"
                 target="_blank"
-                className="text-gray-400 inline-flex gap-1 hover:text-gray-500 font-light"
+                className="inline-flex gap-1 font-light text-gray-400 hover:text-gray-500"
               >
                 <RiGithubLine size="16" /> Github
               </Link>

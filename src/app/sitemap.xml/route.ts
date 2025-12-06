@@ -26,7 +26,7 @@ export async function GET() {
       lastModified: new Date(post.frontMatter.date).toISOString(),
       changeFrequency: "monthly",
       priority: 0.8,
-    })) as MetadataRoute.Sitemap),
+    })) as MetadataRoute.Sitemap)
   );
 
   xmls.push(
@@ -39,7 +39,7 @@ export async function GET() {
         `      <priority>${site.priority}</priority>`,
         `    </url>`,
       ])
-      .flat(),
+      .flat()
   );
 
   xmls.push(...["</urlset>"]);

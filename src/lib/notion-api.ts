@@ -1,12 +1,7 @@
-import { Client, LogLevel } from "@notionhq/client";
+import { Client, LogLevel, isFullDatabase } from "@notionhq/client";
 import { NOTION_BLOG_DATABASE_ID, NOTION_TOKEN } from "./env";
-import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
-import {
-  filterPages,
-  getPropertyDate,
-  getPropertyText,
-  getPropertyTitle,
-} from "./notion-utils";
+import { QueryDataSourceResponse } from "@notionhq/client/build/src/api-endpoints";
+import { filterPages, getPropertyDate, getPropertyText, getPropertyTitle } from "./notion-utils";
 
 // Initializing a client
 const notion = new Client({
@@ -14,13 +9,31 @@ const notion = new Client({
   logLevel: LogLevel.DEBUG,
 });
 
-const queryDataBaseLoop = async (
-  database_id: string,
-  pages: QueryDatabaseResponse["results"],
-  start_cursor?: string,
+const getDataSourceId = async (databaseId: string) => {
+  const database = await notion.databases.retrieve({
+    database_id: databaseId,
+  });
+
+  if (!isFullDatabase(database)) {
+    throw new Error(`Database ${databaseId} could not be retrieved`);
+  }
+
+  const dataSourceId = database.data_sources?.[0]?.id;
+
+  if (!dataSourceId) {
+    throw new Error(`No data source found for database ${databaseId}`);
+  }
+
+  return dataSourceId;
+};
+
+const queryDataSourceLoop = async (
+  data_source_id: string,
+  pages: QueryDataSourceResponse["results"],
+  start_cursor?: string
 ) => {
-  const result = await notion.databases.query({
-    database_id,
+  const result = await notion.dataSources.query({
+    data_source_id,
     filter: {
       property: "Tags",
       multi_select: {
@@ -39,14 +52,15 @@ const queryDataBaseLoop = async (
   pages.push(...result.results);
 
   if (result.has_more && result.next_cursor) {
-    await queryDataBaseLoop(database_id, pages, result.next_cursor);
+    await queryDataSourceLoop(data_source_id, pages, result.next_cursor);
   }
 
   return pages;
 };
 
 export const getBlogs = async () => {
-  const results = await queryDataBaseLoop(NOTION_BLOG_DATABASE_ID, []);
+  const dataSourceId = await getDataSourceId(NOTION_BLOG_DATABASE_ID);
+  const results = await queryDataSourceLoop(dataSourceId, []);
   return results.filter(filterPages).map((page) => {
     return {
       page_id: page.id,

@@ -26,7 +26,7 @@ export async function GET() {
         `      <pubDate>${format(post.frontMatter.date, "MMM d, y")}</pubDate>`,
         `    </item>`,
       ])
-      .flat(),
+      .flat()
   );
 
   xmls.push(...[`  </channel>`, "</rss>"]);

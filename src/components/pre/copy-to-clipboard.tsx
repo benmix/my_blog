@@ -2,7 +2,7 @@
 
 import type { ComponentProps, FC, MouseEvent } from "react";
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@components/ui/button";
 import { RiCheckLine, RiFileCopyLine } from "@remixicon/react";
 
 export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
@@ -34,12 +34,7 @@ export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
   const IconToUse = isCopied ? RiCheckLine : RiFileCopyLine;
 
   return (
-    <Button
-      onClick={handleClick}
-      title="Copy code"
-      variant="outline"
-      {...props}
-    >
+    <Button onClick={handleClick} title="Copy code" variant="outline" {...props}>
       <IconToUse size="1em" />
     </Button>
   );

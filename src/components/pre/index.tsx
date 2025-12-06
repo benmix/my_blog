@@ -1,11 +1,11 @@
 import type { ComponentProps, FC, ReactNode } from "react";
 import { CopyToClipboard } from "./copy-to-clipboard";
-import { cn } from "@/lib/utils";
+import { cn } from "@lib/utils";
 
 export const classes = {
   border: cn(
     "border border-gray-300 dark:border-neutral-700",
-    "contrast-more:border-gray-900 contrast-more:dark:border-gray-50",
+    "contrast-more:border-gray-900 contrast-more:dark:border-gray-50"
   ),
 };
 
@@ -34,8 +34,8 @@ export const Pre: FC<PreProps> = ({
       {filename && (
         <div
           className={cn(
-            "px-4 text-xs text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-neutral-900 flex items-center h-12 gap-2 rounded-t-md border-b-0",
-            classes.border,
+            "flex h-12 items-center gap-2 rounded-t-md border-b-0 bg-gray-100 px-4 text-xs text-gray-700 dark:bg-neutral-900 dark:text-gray-200",
+            classes.border
           )}
         >
           {icon}
@@ -45,16 +45,16 @@ export const Pre: FC<PreProps> = ({
       )}
       <pre
         className={cn(
-          "group overflow-x-auto subpixel-antialiased text-[.9em] bg-white dark:bg-black py-4 ring-1 ring-inset ring-gray-300 dark:ring-neutral-700 contrast-more:ring-gray-900 contrast-more:dark:ring-gray-50 contrast-more:contrast-150 not-prose",
+          "group not-prose overflow-x-auto bg-white py-4 text-[.9em] subpixel-antialiased ring-1 ring-gray-300 ring-inset contrast-more:ring-gray-900 contrast-more:contrast-150 dark:bg-black dark:ring-neutral-700 contrast-more:dark:ring-gray-50",
           filename ? "rounded-b-md" : "rounded-md",
-          className,
+          className
         )}
         {...props}
       >
         <div
           className={cn(
-            "group-hover:opacity-100 group-focus:opacity-100 opacity-0 transition focus-within:opacity-100 flex gap-1 absolute right-4",
-            filename ? "top-14" : "top-2",
+            "absolute right-4 flex gap-1 opacity-0 transition group-hover:opacity-100 group-focus:opacity-100 focus-within:opacity-100",
+            filename ? "top-14" : "top-2"
           )}
         >
           {!filename && copyButton}

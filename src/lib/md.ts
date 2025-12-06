@@ -22,9 +22,7 @@ notionToMDService.setCustomTransformer("image", async (block) => {
     url = image.external.url;
   }
 
-  const name =
-    image.caption[0]?.plain_text.replace(/[\s\/\(\)\[\]\!]+/g, "_") ||
-    "unknown";
+  const name = image.caption[0]?.plain_text.replace(/[\s\/\(\)\[\]\!]+/g, "_") || "unknown";
 
   const resourceURL = await saveFile(url, name + "__" + randomUUID());
 

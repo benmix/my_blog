@@ -5,7 +5,7 @@
 
 [data-rmiz-btn-zoom],
 [data-rmiz-btn-unzoom] {
-  @apply bg-black/70 text-white dark:bg-white/70 dark:text-black rounded-full size-10;
+  @apply size-10 rounded-full bg-black/70 text-white dark:bg-white/70 dark:text-black;
   outline-offset: 2px;
   padding: 9px;
   touch-action: manipulation;

@@ -1,19 +1,24 @@
 import {
   DatabaseObjectResponse,
+  DataSourceObjectResponse,
   PageObjectResponse,
   PartialDatabaseObjectResponse,
+  PartialDataSourceObjectResponse,
   PartialPageObjectResponse,
+  QueryDataSourceResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 
-type PageProperty =
-  PageObjectResponse["properties"][keyof PageObjectResponse["properties"]];
+type PageProperty = PageObjectResponse["properties"][keyof PageObjectResponse["properties"]];
+
+type QueryResultItem =
+  | QueryDataSourceResponse["results"][number]
+  | PartialDatabaseObjectResponse
+  | DatabaseObjectResponse
+  | PartialDataSourceObjectResponse
+  | DataSourceObjectResponse;
 
 export const filterPages = (
-  item:
-    | PageObjectResponse
-    | PartialPageObjectResponse
-    | PartialDatabaseObjectResponse
-    | DatabaseObjectResponse,
+  item: QueryResultItem | PartialPageObjectResponse
 ): item is PageObjectResponse => item.object === "page" && "properties" in item;
 
 export const getPropertyDate = (property: PageProperty) => {

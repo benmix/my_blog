@@ -1,5 +1,5 @@
-import { Wrapper } from "@/components/mdx-wrapper";
-import { getPosts } from "@/lib/get-post";
+import { Wrapper } from "@components/mdx-wrapper";
+import { getPosts } from "@lib/get-post";
 import { importPage } from "nextra/pages";
 import type { NextPage, Metadata } from "next";
 
@@ -14,12 +14,10 @@ export async function generateStaticParams() {
 }
 
 type PageProps = {
-  params: Promise<{ slug: string; }>;
+  params: Promise<{ slug: string }>;
 };
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const result = await importPage([slug]);
   const { metadata } = result;
@@ -43,10 +41,10 @@ const Page: NextPage<PageProps> = async function (props) {
   const { params } = props;
   const { slug } = await params;
   const result = await importPage([slug]);
-  const { default: MDXContent, toc, metadata } = result;
+  const { default: MDXContent, toc, metadata, sourceCode } = result;
 
   return (
-    <Wrapper toc={toc} metadata={metadata}>
+    <Wrapper toc={toc} metadata={metadata} sourceCode={sourceCode}>
       <MDXContent {...props} params={params} />
     </Wrapper>
   );

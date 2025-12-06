@@ -12,7 +12,7 @@ code.code-block {
   @apply text-sm;
 
   :not(pre) > &:not([class*="twoslash-"]) {
-    @apply border-black/[0.04] bg-black/[0.03] break-words rounded-md border py-0.5 px-[.25em] text-[.9em];
+    @apply rounded-md border border-black/[0.04] bg-black/[0.03] px-[.25em] py-0.5 text-[.9em] break-words;
     @apply dark:border-white/10 dark:bg-white/10;
   }
 }
@@ -27,7 +27,7 @@ pre code.code-block:not([class*="twoslash-"]) {
     &::before {
       counter-increment: line;
       content: counter(line);
-      @apply inline-block pr-4 text-right min-w-[2.6rem] text-gray-500;
+      @apply inline-block min-w-[2.6rem] pr-4 text-right text-gray-500;
     }
   }
 
@@ -35,7 +35,7 @@ pre code.code-block:not([class*="twoslash-"]) {
     @apply px-4;
 
     &[data-highlighted-line] {
-      @apply bg-primary/10 dark:bg-primary/20 text-primary/80! shadow-[2px_0_currentColor_inset];
+      @apply bg-primary/10 text-primary/80! shadow-[2px_0_currentColor_inset] dark:bg-primary/20;
     }
 
     [data-highlighted-chars] {
@@ -107,7 +107,7 @@ pre code.code-block:not([class*="twoslash-"]) {
 }
 
 .twoslash-popup-container {
-  @apply inline-flex flex-col absolute transition-opacity duration-300 z-10 mt-1.5 rounded;
+  @apply absolute z-10 mt-1.5 inline-flex flex-col rounded transition-opacity duration-300;
   transform: translateY(1.1em);
   background: var(--twoslash-popup-bg) !important;
   color: var(--twoslash-popup-color);
@@ -122,7 +122,7 @@ pre code.code-block:not([class*="twoslash-"]) {
 }
 
 .twoslash-popup-arrow {
-  @apply absolute -top-1 border-t border-r size-1.5 -rotate-45;
+  @apply absolute -top-1 size-1.5 -rotate-45 border-t border-r;
   @apply border-(--twoslash-border-color) bg-(--twoslash-popup-bg);
   left: 1em;
   pointer-events: none;
@@ -173,14 +173,14 @@ pre code.code-block:not([class*="twoslash-"]) {
 }
 
 .twoslash-completion-cursor .twoslash-completion-list {
-  @apply absolute left-0 border top-1 rounded;
+  @apply absolute top-1 left-0 rounded border;
   transform: translate(0, 1.2em);
   background: var(--twoslash-popup-bg);
   border-color: var(--twoslash-border-color);
 }
 
 .twoslash-completion-list {
-  @apply py-1 px-2 w-60;
+  @apply w-60 px-2 py-1;
 }
 
 .twoslash-completion-list::before {

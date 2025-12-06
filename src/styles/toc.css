@@ -1,0 +1,39 @@
+.toc-panel[data-state="open"] {
+  animation: toc-fade-in 200ms ease-out forwards;
+  visibility: visible;
+}
+
+.toc-panel[data-state="closed"] {
+  animation: toc-fade-out 200ms ease-in forwards;
+}
+
+@keyframes toc-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateX(1rem);
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+  }
+}
+
+@keyframes toc-fade-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+  }
+  99% {
+    opacity: 0;
+    transform: translateX(1rem);
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(1rem);
+    visibility: hidden;
+  }
+}

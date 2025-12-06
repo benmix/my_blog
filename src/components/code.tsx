@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@lib/utils";
 import type { ComponentProps, FC } from "react";
 
 export const Code: FC<
@@ -11,7 +11,7 @@ export const Code: FC<
       className={cn(
         "code-block",
         "data-line-numbers" in props && "[counter-reset:line]",
-        className,
+        className
       )}
       dir="ltr"
       {...props}

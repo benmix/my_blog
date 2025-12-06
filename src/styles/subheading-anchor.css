@@ -18,7 +18,7 @@
   }
 
   &:after {
-    @apply content-['#'] px-1;
+    @apply px-1 content-['#'];
   }
   /* https://github.com/tailwindlabs/tailwindcss/issues/15597#issuecomment-2582673546 */
   @apply after:text-gray-400 dark:after:text-neutral-600;
