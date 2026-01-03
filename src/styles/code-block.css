@@ -4,35 +4,34 @@
 }
 
 code.code-block {
-  box-decoration-break: slice;
-  font-feature-settings:
-    "rlig" 1,
-    "calt" 1,
-    "ss01" 1;
-  @apply text-sm;
 
   :not(pre) > &:not([class*="twoslash-"]) {
     @apply rounded-md border border-black/[0.04] bg-black/[0.03] px-[.25em] py-0.5 text-[.9em] break-words;
     @apply dark:border-white/10 dark:bg-white/10;
   }
+
+  @apply text-sm;
+  box-decoration-break: slice;
+  font-feature-settings:
+    "rlig" 1,
+    "calt" 1,
+    "ss01" 1;
 }
 
 pre code.code-block:not([class*="twoslash-"]) {
-  @apply grid;
-  counter-reset: line;
 
   &[data-line-numbers] > span {
-    @apply pl-2;
 
     &::before {
+
+      @apply inline-block min-w-[2.6rem] pr-4 text-right text-base-600;
       counter-increment: line;
       content: counter(line);
-      @apply inline-block min-w-[2.6rem] pr-4 text-right text-gray-500;
     }
+    @apply pl-2;
   }
 
   & > span {
-    @apply px-4;
 
     &[data-highlighted-line] {
       @apply bg-primary/10 text-primary/80! shadow-[2px_0_currentColor_inset] dark:bg-primary/20;
@@ -42,11 +41,15 @@ pre code.code-block:not([class*="twoslash-"]) {
       @apply rounded-sm ring-2 ring-primary/20 dark:ring-primary/40;
       @apply bg-primary/20 dark:bg-primary/40;
     }
+    @apply px-4;
   }
 
   html[data-nextra-word-wrap] & {
     @apply max-md:whitespace-pre-wrap;
   }
+  @apply grid;
+
+  counter-reset: line;
 }
 
 .nextra-copy-icon {
@@ -57,6 +60,7 @@ pre code.code-block:not([class*="twoslash-"]) {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -64,27 +68,27 @@ pre code.code-block:not([class*="twoslash-"]) {
 
 /* ===== Basic ===== */
 :root {
-  --twoslash-border-color: #8888;
-  --twoslash-underline-color: currentColor;
-  --twoslash-highlighted-border: 195, 125, 13;
-  --twoslash-popup-bg: #f8f8f8;
+  --twoslash-border-color: color-mix(in oklab, var(--color-base-600) 55%, transparent);
+  --twoslash-underline-color: currentcolor;
+  --twoslash-highlighted-border: 188, 82, 21;
+  --twoslash-popup-bg: var(--color-light-bg-2);
   --twoslash-popup-color: inherit;
-  --twoslash-popup-shadow: rgba(0, 0, 0.08) 0px 1px 4px;
-  --twoslash-docs-color: #888;
+  --twoslash-popup-shadow: rgb(0 0 0 / 8%) 0px 1px 4px;
+  --twoslash-docs-color: var(--color-base-600);
   --twoslash-docs-font: sans-serif;
   --twoslash-matched-color: inherit;
-  --twoslash-unmatched-color: #888;
-  --twoslash-cursor-color: #8888;
-  --twoslash-error-color: 212, 86, 86;
+  --twoslash-unmatched-color: var(--color-base-600);
+  --twoslash-cursor-color: color-mix(in oklab, var(--color-base-600) 55%, transparent);
+  --twoslash-error-color: 175, 48, 41;
   --twoslash-error-bg: rgba(var(--twoslash-error-color), 0.13);
-  --twoslash-tag-color: 55, 114, 207;
-  --twoslash-tag-warn-color: 195, 125, 13;
-  --twoslash-tag-annotate-color: 27, 166, 115;
+  --twoslash-tag-color: 32, 94, 166;
+  --twoslash-tag-warn-color: 173, 131, 1;
+  --twoslash-tag-annotate-color: 102, 128, 11;
 }
 
 .dark {
-  --twoslash-popup-bg: #000;
-  --twoslash-border-color: #404040;
+  --twoslash-popup-bg: var(--color-dark-bg-2);
+  --twoslash-border-color: color-mix(in oklab, var(--color-base-700) 65%, transparent);
 }
 
 /* Respect people's wishes to not have animations */
@@ -95,25 +99,28 @@ pre code.code-block:not([class*="twoslash-"]) {
 }
 
 /* ===== Hover Info ===== */
+.twoslash-hover {
+  border-bottom: 1px dotted transparent;
+  transition-timing-function: ease;
+  transition-property: border-color;
+  transition-duration: 0.3s;
+  position: relative;
+}
+
 .twoslash:hover .twoslash-hover {
   border-color: var(--twoslash-underline-color);
 }
 
-.twoslash-hover {
-  border-bottom: 1px dotted transparent;
-  transition-timing-function: ease;
-  transition: border-color 0.3s;
-  position: relative;
-}
-
 .twoslash-popup-container {
   @apply absolute z-10 mt-1.5 inline-flex flex-col rounded transition-opacity duration-300;
+
   transform: translateY(1.1em);
   background: var(--twoslash-popup-bg) !important;
   color: var(--twoslash-popup-color);
   border: 1px solid var(--twoslash-border-color);
   text-align: left;
-  /*box-shadow: var(--twoslash-popup-shadow);*/
+
+  /* box-shadow: var(--twoslash-popup-shadow); */
 }
 
 .twoslash-query-presisted .twoslash-popup-container {
@@ -124,6 +131,7 @@ pre code.code-block:not([class*="twoslash-"]) {
 .twoslash-popup-arrow {
   @apply absolute -top-1 size-1.5 -rotate-45 border-t border-r;
   @apply border-(--twoslash-border-color) bg-(--twoslash-popup-bg);
+
   left: 1em;
   pointer-events: none;
 }
@@ -135,6 +143,7 @@ pre code.code-block:not([class*="twoslash-"]) {
 
 .twoslash-popup-docs {
   @apply text-sm;
+
   color: var(--twoslash-docs-color);
   font-family: var(--twoslash-docs-font);
   border-top: 1px solid var(--twoslash-border-color);
@@ -155,14 +164,14 @@ pre code.code-block:not([class*="twoslash-"]) {
 .twoslash-error-line {
   position: relative;
   background-color: var(--twoslash-error-bg);
-  border-left: 3px solid currentColor;
+  border-left: 3px solid currentcolor;
   color: rgb(var(--twoslash-error-color));
   padding: 6px 12px;
   margin: 0.2em 0;
 }
 
 .twoslash-error {
-  background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23c94824'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")
+  background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23af3029'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")
     repeat-x bottom left;
   padding-bottom: 2px;
 }
@@ -174,6 +183,7 @@ pre code.code-block:not([class*="twoslash-"]) {
 
 .twoslash-completion-cursor .twoslash-completion-list {
   @apply absolute top-1 left-0 rounded border;
+
   transform: translate(0, 1.2em);
   background: var(--twoslash-popup-bg);
   border-color: var(--twoslash-border-color);
@@ -234,7 +244,7 @@ pre code.code-block:not([class*="twoslash-"]) {
 .twoslash-tag-line {
   position: relative;
   background-color: rgba(var(--twoslash-tag-color), 0.13);
-  border-left: 3px solid currentColor;
+  border-left: 3px solid currentcolor;
   color: rgb(var(--twoslash-tag-color));
   padding: 6px 10px;
   margin: 0.2em 0;

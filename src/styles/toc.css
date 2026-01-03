@@ -13,6 +13,7 @@
     transform: translateX(1rem);
     visibility: visible;
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -26,11 +27,13 @@
     transform: translateX(0);
     visibility: visible;
   }
+
   99% {
     opacity: 0;
     transform: translateX(1rem);
     visibility: visible;
   }
+
   100% {
     opacity: 0;
     transform: translateX(1rem);

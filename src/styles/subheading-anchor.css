@@ -3,9 +3,6 @@
 }
 
 .subheading-anchor {
-  @apply ms-1;
-
-  @apply opacity-0 transition;
 
   :target > &,
   &:focus {
@@ -14,12 +11,15 @@
 
   :target > & {
     /* https://github.com/tailwindlabs/tailwindcss/issues/15597#issuecomment-2582673546 */
-    @apply after:text-gray-500 dark:after:text-neutral-500;
+    @apply after:text-base-500 dark:after:text-base-400;
   }
 
-  &:after {
+  &::after {
     @apply px-1 content-['#'];
   }
+  @apply ms-1;
+  @apply opacity-0 transition;
+
   /* https://github.com/tailwindlabs/tailwindcss/issues/15597#issuecomment-2582673546 */
-  @apply after:text-gray-400 dark:after:text-neutral-600;
+  @apply after:text-base-400 dark:after:text-base-500;
 }

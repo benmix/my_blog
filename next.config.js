@@ -1,17 +1,17 @@
-import nextra from 'nextra'
+import nextra from "nextra";
 
 const withNextra = nextra({
-  contentDirBasePath: '/posts',
+  contentDirBasePath: "/posts",
   defaultShowCopyCode: true,
   readingTime: true,
-  latex: true
-})
+  latex: true,
+});
 
 export default withNextra({
   reactStrictMode: true,
   cleanDistDir: true,
-  output: 'export',
+  output: "export",
   images: {
-    unoptimized: true
-  }
-})
+    unoptimized: true,
+  },
+});

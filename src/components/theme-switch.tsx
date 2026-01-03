@@ -10,9 +10,35 @@ export function ThemeSwitch() {
   const mounted = useMounted();
   const isDark = resolvedTheme === "dark";
 
-  // TODO: system theme
-  const toggleTheme = () => {
-    setTheme(isDark ? "light" : "dark");
+  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const nextTheme = isDark ? "light" : "dark";
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const startViewTransition = document.startViewTransition.bind(document);
+
+    if (!startViewTransition || prefersReducedMotion) {
+      setTheme(nextTheme);
+      return;
+    }
+
+    const x = event.clientX;
+    const y = event.clientY;
+    const maxX = Math.max(x, window.innerWidth - x);
+    const maxY = Math.max(y, window.innerHeight - y);
+    const endRadius = Math.hypot(maxX, maxY);
+
+    const root = document.documentElement;
+    root.dataset.themeTransition = "1";
+    root.style.setProperty("--theme-transition-x", `${x}px`);
+    root.style.setProperty("--theme-transition-y", `${y}px`);
+    root.style.setProperty("--theme-transition-end-radius", `${endRadius}px`);
+
+    const transition = startViewTransition(() => {
+      setTheme(nextTheme);
+    });
+
+    transition.finished.finally(() => {
+      delete root.dataset.themeTransition;
+    });
   };
 
   const IconToUse = mounted && isDark ? RiMoonLine : RiSunLine;
@@ -21,7 +47,7 @@ export function ThemeSwitch() {
     <Button
       aria-label="Toggle Dark Mode"
       onClick={toggleTheme}
-      className="cursor-pointer text-gray-400"
+      className="cursor-pointer text-base-500"
     >
       <IconToUse size="16" />
     </Button>

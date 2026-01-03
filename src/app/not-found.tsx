@@ -1,10 +1,5 @@
-import { GoBack, GoHome } from "@components/go-back";
+import { redirect } from "next/navigation";
 
 export default function NotFound() {
-  return (
-    <div className="m-[40vh_auto] flex w-fit flex-col gap-4">
-      <GoBack />
-      <GoHome />
-    </div>
-  );
+  redirect("/");
 }

@@ -4,8 +4,8 @@ import { cn } from "@lib/utils";
 
 export const classes = {
   border: cn(
-    "border border-gray-300 dark:border-neutral-700",
-    "contrast-more:border-gray-900 contrast-more:dark:border-gray-50"
+    "border border-base-300 dark:border-base-700",
+    "contrast-more:border-base-900 contrast-more:dark:border-base-50"
   ),
 };
 
@@ -34,7 +34,7 @@ export const Pre: FC<PreProps> = ({
       {filename && (
         <div
           className={cn(
-            "flex h-12 items-center gap-2 rounded-t-md border-b-0 bg-gray-100 px-4 text-xs text-gray-700 dark:bg-neutral-900 dark:text-gray-200",
+            "flex h-12 items-center gap-2 rounded-t-md border-b-0 bg-base-100 px-4 text-xs text-base-700 dark:bg-base-900 dark:text-base-200",
             classes.border
           )}
         >
@@ -45,7 +45,7 @@ export const Pre: FC<PreProps> = ({
       )}
       <pre
         className={cn(
-          "group not-prose overflow-x-auto bg-white py-4 text-[.9em] subpixel-antialiased ring-1 ring-gray-300 ring-inset contrast-more:ring-gray-900 contrast-more:contrast-150 dark:bg-black dark:ring-neutral-700 contrast-more:dark:ring-gray-50",
+          "group not-prose overflow-x-auto bg-paper py-4 text-[.9em] subpixel-antialiased ring-1 ring-base-300 ring-inset contrast-more:ring-base-900 contrast-more:contrast-150 dark:bg-black dark:ring-base-700 contrast-more:dark:ring-base-50",
           filename ? "rounded-b-md" : "rounded-md",
           className
         )}

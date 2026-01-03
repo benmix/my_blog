@@ -16,7 +16,6 @@ export const GoBack: FC<{ className?: string }> = ({ className }) => {
       variant="link"
     >
       <RiArrowLeftLine />
-      <span>Back</span>
     </Button>
   );
 };
@@ -31,7 +30,6 @@ export const GoHome: FC<{ className?: string }> = ({ className }) => {
       variant="link"
     >
       <RiHome2Line />
-      <span>Home</span>
     </Button>
   );
 };

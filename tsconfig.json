@@ -11,7 +11,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -33,6 +33,13 @@
       "@mdx-components": ["src/mdx-components.tsx"]
     }
   },
-  "include": ["./dist/types/**/*.ts", "./next-env.d.ts", "./scripts", "./src"],
+  "include": [
+    "./dist/types/**/*.ts",
+    "./next-env.d.ts",
+    "./scripts",
+    "./src",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
   "exclude": ["./node_modules"]
 }

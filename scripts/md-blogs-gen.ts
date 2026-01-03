@@ -24,7 +24,7 @@ async function main() {
     markdown.push(`${markdownContent?.parent}`);
 
     writeFileSync(
-      `./src/content/${blog.title_en.replace(/[\s\/'"]+/g, "_")}.md`,
+      `./src/content/${blog.title_en.replace(/[\s/'"]+/g, "_")}.md`,
       markdown.join("\n")
     );
   }

@@ -4,9 +4,9 @@ const config = {
   printWidth: 100,
   semi: true,
   singleQuote: false,
-  trailingComma: 'es5',
-  plugins: ['prettier-plugin-tailwindcss'],
-  tailwindStylesheet: './src/global.css'
-}
+  trailingComma: "es5",
+  plugins: ["prettier-plugin-tailwindcss"],
+  tailwindStylesheet: "./src/global.css",
+};
 
-export default config
+export default config;

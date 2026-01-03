@@ -25,7 +25,7 @@ export const Layout: FC<{
   return (
     <ThemeProvider attribute="class" {...nextThemes}>
       <main
-        className="relative container mx-auto prose prose-sm flex flex-col prose-zinc max-md:prose-sm max-md:px-4 min-xl:max-w-[85ch] dark:prose-invert"
+        className="relative container mx-auto prose prose-sm flex flex-col prose-zinc max-md:prose-sm max-md:px-4 xl:max-w-[85ch] dark:prose-invert"
         dir="ltr"
       >
         <ViewTransitions>{children}</ViewTransitions>

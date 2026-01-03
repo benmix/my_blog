@@ -6,6 +6,7 @@
 [data-rmiz-btn-zoom],
 [data-rmiz-btn-unzoom] {
   @apply size-10 rounded-full bg-black/70 text-white dark:bg-white/70 dark:text-black;
+
   outline-offset: 2px;
   padding: 9px;
   touch-action: manipulation;
@@ -13,11 +14,8 @@
 }
 
 [data-rmiz-btn-zoom] {
-  position: absolute;
-  inset: 10px 10px auto auto;
-  cursor: zoom-in;
 
-  &:not(:focus):not(:active) {
+  &:not(:focus, :active) {
     position: absolute;
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -27,6 +25,9 @@
     white-space: nowrap;
     width: 1px;
   }
+  position: absolute;
+  inset: 10px 10px auto auto;
+  cursor: zoom-in;
 }
 
 [data-rmiz-btn-unzoom] {
@@ -72,11 +73,11 @@
 }
 
 [data-rmiz-modal-overlay="hidden"] {
-  opacity: 0%;
+  opacity: 0;
 }
 
 [data-rmiz-modal-overlay="visible"] {
-  opacity: 100%;
+  opacity: 1;
 }
 
 [data-rmiz-modal-content] {

@@ -68,8 +68,8 @@ export const TocSider: FC<{ toc: Heading[] }> = ({ toc }) => {
                 <a
                   href={`#${heading.id}`}
                   className={cn(
-                    "text-gray-400 hover:text-gray-600",
-                    activeId === heading.id && "text-gray-600"
+                    "text-base-600 hover:text-base-800",
+                    activeId === heading.id && "font-medium text-base-900"
                   )}
                   aria-current={activeId === heading.id ? "true" : undefined}
                 >
