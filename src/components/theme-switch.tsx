@@ -47,7 +47,7 @@ export function ThemeSwitch() {
     <Button
       aria-label="Toggle Dark Mode"
       onClick={toggleTheme}
-      className="cursor-pointer text-base-500"
+      className="cursor-pointer text-muted-foreground hover:text-foreground"
     >
       <IconToUse size="16" />
     </Button>

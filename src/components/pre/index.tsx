@@ -3,10 +3,7 @@ import { CopyToClipboard } from "./copy-to-clipboard";
 import { cn } from "@lib/utils";
 
 export const classes = {
-  border: cn(
-    "border border-base-300 dark:border-base-700",
-    "contrast-more:border-base-900 contrast-more:dark:border-base-50"
-  ),
+  border: cn("border border-border", "contrast-more:border-foreground"),
 };
 
 export type PreProps = ComponentProps<"pre"> & {
@@ -34,7 +31,7 @@ export const Pre: FC<PreProps> = ({
       {filename && (
         <div
           className={cn(
-            "flex h-12 items-center gap-2 rounded-t-md border-b-0 bg-base-100 px-4 text-xs text-base-700 dark:bg-base-900 dark:text-base-200",
+            "flex h-12 items-center gap-2 rounded-t-md border-b-0 bg-muted px-4 text-xs text-muted-foreground",
             classes.border
           )}
         >
@@ -45,7 +42,7 @@ export const Pre: FC<PreProps> = ({
       )}
       <pre
         className={cn(
-          "group not-prose overflow-x-auto bg-paper py-4 text-[.9em] subpixel-antialiased ring-1 ring-base-300 ring-inset contrast-more:ring-base-900 contrast-more:contrast-150 dark:bg-black dark:ring-base-700 contrast-more:dark:ring-base-50",
+          "group not-prose overflow-x-auto bg-background py-4 text-[.9em] subpixel-antialiased ring-1 ring-border ring-inset contrast-more:ring-foreground contrast-more:contrast-150",
           filename ? "rounded-b-md" : "rounded-md",
           className
         )}

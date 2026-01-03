@@ -3,7 +3,6 @@
 }
 
 .subheading-anchor {
-
   :target > &,
   &:focus {
     @apply opacity-100;
@@ -11,7 +10,7 @@
 
   :target > & {
     /* https://github.com/tailwindlabs/tailwindcss/issues/15597#issuecomment-2582673546 */
-    @apply after:text-base-500 dark:after:text-base-400;
+    @apply after:text-muted-foreground;
   }
 
   &::after {
@@ -21,5 +20,5 @@
   @apply opacity-0 transition;
 
   /* https://github.com/tailwindlabs/tailwindcss/issues/15597#issuecomment-2582673546 */
-  @apply after:text-base-400 dark:after:text-base-500;
+  @apply after:text-muted-foreground;
 }

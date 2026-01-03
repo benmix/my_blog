@@ -46,7 +46,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <Layout>
           <Content>{children}</Content>
           <Footer>
-            <div className="flex gap-1 font-light text-base-500">
+            <div className="flex gap-1 font-light text-muted-foreground">
               {CONFIG_SITE.footerLinks.map((link, index) => {
                 const Icon = link.icon;
 
@@ -58,7 +58,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
                     <Link
                       href={link.href}
                       target={link.external ? "_blank" : undefined}
-                      className="inline-flex gap-1 text-base-500 hover:text-base-600"
+                      className="inline-flex gap-1 text-muted-foreground hover:text-foreground"
                     >
                       <Icon size="16" />
                     </Link>

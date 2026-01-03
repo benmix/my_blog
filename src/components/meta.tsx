@@ -11,10 +11,10 @@ export const Meta: FC<{ metadata: BlogMetadata } & { children?: ReactNode }> = (
   return (
     <div className="mb-8 flex">
       <div className="not-prose grow">
-        <GoHome className="text-base-500" />
-        <GoBack className="text-base-500" />
+        <GoHome className="text-muted-foreground hover:text-foreground" />
+        <GoBack className="text-muted-foreground hover:text-foreground" />
       </div>
-      <div className="flex flex-wrap items-center gap-1 text-base-500">
+      <div className="flex flex-wrap items-center gap-1 text-muted-foreground">
         {format(date || "", "MMM d, y")}
         <span className="px-1">•</span>
         {readingTimeText}

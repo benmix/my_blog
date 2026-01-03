@@ -58,7 +58,7 @@ export const TocSider: FC<{ toc: Heading[] }> = ({ toc }) => {
       <div
         data-state={expand ? "open" : "closed"}
         className={cn(
-          "toc-panel scroll-hidden h-fit max-h-full overflow-auto rounded-l-md p-4 shadow-md"
+          "toc-panel scroll-hidden h-fit max-h-full overflow-auto rounded-l-md border border-border bg-background/85 p-4 shadow-md backdrop-blur"
         )}
       >
         <div className={cn("w-[18vw] pr-2")}>
@@ -68,8 +68,8 @@ export const TocSider: FC<{ toc: Heading[] }> = ({ toc }) => {
                 <a
                   href={`#${heading.id}`}
                   className={cn(
-                    "text-base-600 hover:text-base-800",
-                    activeId === heading.id && "font-medium text-base-900"
+                    "text-muted-foreground hover:text-foreground",
+                    activeId === heading.id && "font-medium text-foreground"
                   )}
                   aria-current={activeId === heading.id ? "true" : undefined}
                 >

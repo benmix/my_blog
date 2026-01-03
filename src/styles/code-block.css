@@ -4,10 +4,8 @@
 }
 
 code.code-block {
-
   :not(pre) > &:not([class*="twoslash-"]) {
-    @apply rounded-md border border-black/[0.04] bg-black/[0.03] px-[.25em] py-0.5 text-[.9em] break-words;
-    @apply dark:border-white/10 dark:bg-white/10;
+    @apply rounded-md border border-border bg-muted/40 px-[.25em] py-0.5 text-[.9em] break-words;
   }
 
   @apply text-sm;
@@ -19,12 +17,9 @@ code.code-block {
 }
 
 pre code.code-block:not([class*="twoslash-"]) {
-
   &[data-line-numbers] > span {
-
     &::before {
-
-      @apply inline-block min-w-[2.6rem] pr-4 text-right text-base-600;
+      @apply inline-block min-w-[2.6rem] pr-4 text-right text-muted-foreground;
       counter-increment: line;
       content: counter(line);
     }
@@ -32,7 +27,6 @@ pre code.code-block:not([class*="twoslash-"]) {
   }
 
   & > span {
-
     &[data-highlighted-line] {
       @apply bg-primary/10 text-primary/80! shadow-[2px_0_currentColor_inset] dark:bg-primary/20;
     }
@@ -74,11 +68,11 @@ pre code.code-block:not([class*="twoslash-"]) {
   --twoslash-popup-bg: var(--color-light-bg-2);
   --twoslash-popup-color: inherit;
   --twoslash-popup-shadow: rgb(0 0 0 / 8%) 0px 1px 4px;
-  --twoslash-docs-color: var(--color-base-600);
+  --twoslash-docs-color: var(--color-light-tx-2);
   --twoslash-docs-font: sans-serif;
   --twoslash-matched-color: inherit;
-  --twoslash-unmatched-color: var(--color-base-600);
-  --twoslash-cursor-color: color-mix(in oklab, var(--color-base-600) 55%, transparent);
+  --twoslash-unmatched-color: var(--color-light-tx-2);
+  --twoslash-cursor-color: color-mix(in oklab, var(--color-light-tx-2) 55%, transparent);
   --twoslash-error-color: 175, 48, 41;
   --twoslash-error-bg: rgba(var(--twoslash-error-color), 0.13);
   --twoslash-tag-color: 32, 94, 166;
@@ -89,6 +83,9 @@ pre code.code-block:not([class*="twoslash-"]) {
 .dark {
   --twoslash-popup-bg: var(--color-dark-bg-2);
   --twoslash-border-color: color-mix(in oklab, var(--color-base-700) 65%, transparent);
+  --twoslash-docs-color: var(--color-dark-tx-2);
+  --twoslash-unmatched-color: var(--color-dark-tx-2);
+  --twoslash-cursor-color: color-mix(in oklab, var(--color-dark-tx-2) 55%, transparent);
 }
 
 /* Respect people's wishes to not have animations */
