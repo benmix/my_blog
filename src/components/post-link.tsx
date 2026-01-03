@@ -28,10 +28,10 @@ export const PostLink: FC<PostCardProps> = ({ post }) => {
       className="block pt-2 pb-4 font-light text-muted-foreground no-underline! hover:text-foreground max-md:text-xs"
     >
       <div className="flex justify-between">
-        <span className="block grow-1 pr-4 font-light" style={titleStyle}>
+        <span className="block grow pr-4 font-light" style={titleStyle}>
           {title}
         </span>
-        <time className="w-max flex-shrink-0 grow-0 basis-24 text-end text-sm text-muted-foreground max-md:hidden">
+        <time className="w-max shrink-0 grow-0 basis-24 text-end text-sm text-muted-foreground max-md:hidden">
           {format(date || "", "MMM dd, y")}
         </time>
       </div>

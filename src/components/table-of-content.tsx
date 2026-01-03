@@ -58,7 +58,7 @@ export const TocSider: FC<{ toc: Heading[] }> = ({ toc }) => {
       <div
         data-state={expand ? "open" : "closed"}
         className={cn(
-          "toc-panel scroll-hidden h-fit max-h-full overflow-auto rounded-l-md border border-border bg-background p-4 shadow-md backdrop-blur"
+          "toc-panel scroll-hidden h-fit max-h-full overflow-auto rounded-l-md border-none bg-background p-4 backdrop-blur"
         )}
       >
         <div className={cn("w-[18vw] pr-2")}>

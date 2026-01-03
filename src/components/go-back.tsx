@@ -33,3 +33,17 @@ export const GoHome: FC<{ className?: string }> = ({ className }) => {
     </Button>
   );
 };
+
+export const GoBackHome: FC<{ className?: string }> = ({ className }) => {
+  const router = useTransitionRouter();
+
+  return (
+    <Button
+      onClick={() => router.push("/")}
+      className={cn(className, "flex, justify-start, cursor-pointer p-0!")}
+      variant="link"
+    >
+      <RiArrowLeftLine />
+    </Button>
+  );
+};
