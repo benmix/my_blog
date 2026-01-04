@@ -1,12 +1,12 @@
 "use client";
 
-import type { Heading } from "nextra";
 import { FC, useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from "@remixicon/react";
 import { cn } from "@lib/utils";
+import type { TocItem } from "@/types";
 
-export const TocSider: FC<{ toc: Heading[] }> = ({ toc }) => {
+export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
   const [expand, setExpand] = useState<boolean>(true);
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -73,7 +73,7 @@ export const TocSider: FC<{ toc: Heading[] }> = ({ toc }) => {
                   )}
                   aria-current={activeId === heading.id ? "true" : undefined}
                 >
-                  {heading.value}
+                  {heading.title}
                 </a>
               </li>
             ))}

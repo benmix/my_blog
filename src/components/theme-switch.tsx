@@ -2,18 +2,23 @@
 
 import { RiMoonLine, RiSunLine } from "@remixicon/react";
 import { useTheme } from "next-themes";
-import { Button } from "nextra/components";
-import { useMounted } from "nextra/hooks";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { Button } from "@components/ui/button";
 
 export function ThemeSwitch() {
   const { setTheme, resolvedTheme } = useTheme();
-  const mounted = useMounted();
+  const [mounted, setMounted] = useState(false);
   const isDark = resolvedTheme === "dark";
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
     const nextTheme = isDark ? "light" : "dark";
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const startViewTransition = document.startViewTransition.bind(document);
+    const startViewTransition = (document as any).startViewTransition?.bind(document);
 
     if (!startViewTransition || prefersReducedMotion) {
       setTheme(nextTheme);

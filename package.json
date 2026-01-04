@@ -30,18 +30,20 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "fumadocs-core": "^14.3.2",
+    "fumadocs-mdx": "^14.3.2",
     "lucide-react": "^0.556.0",
     "next": "^16.0.7",
     "next-themes": "^0.4.6",
     "next-view-transitions": "^0.3.5",
-    "nextra": "^4.6.1",
     "notion-to-md": "^3.1.9",
     "postcss": "^8.5.6",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.51.1",

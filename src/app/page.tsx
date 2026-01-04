@@ -18,7 +18,8 @@ export default async function IndexPage() {
         <h2 className="text-muted-foreground max-md:text-sm"> 文章 </h2>
         <div>
           {articles.map((post) => {
-            return <PostLink key={post.route} post={post} />;
+            const key = post.url ?? post.slugs?.join("/") ?? post.data.title ?? "post";
+            return <PostLink key={key} post={post} />;
           })}
         </div>
         {/*<h2 className="text-base-600 max-md:text-sm">最近阅读的书</h2>
