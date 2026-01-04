@@ -5,7 +5,7 @@ import type { BlogPage } from "@/types";
 export async function getPosts() {
   const pages = (await blogSource.getPages()) as BlogPage[];
   return pages
-    .sort((a, b) => toDate(b.data.date ?? 0) - toDate(a.data.date ?? 0))
+    .sort((a, b) => toDate(b.data.date ?? 0).getTime() - toDate(a.data.date ?? 0).getTime())
     .map((page) => {
       const slug = page.slugs?.[page.slugs.length - 1];
       if (!slug && page.source) {
