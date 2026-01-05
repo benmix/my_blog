@@ -6,7 +6,7 @@ export const Footer: FC<{
   children?: ReactNode;
 }> = ({ children }) => {
   return (
-    <footer className="relative mt-16 flex w-full grow-0 justify-between gap-2 pt-4 pb-8 text-xs max-md:mt-12">
+    <footer className="relative mt-16 flex w-full grow-0 items-center justify-between gap-2 pt-4 pb-8 text-xs max-md:mt-12">
       {children}
     </footer>
   );
