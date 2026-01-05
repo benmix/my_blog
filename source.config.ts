@@ -1,4 +1,6 @@
 import { defineConfig } from "fumadocs-mdx/config";
+import flexokiDark from "./src/styles/flexoki-dark.json";
+import flexokiLight from "./src/styles/flexoki-light.json";
 
 export default defineConfig({
   mdxOptions: {
@@ -7,8 +9,8 @@ export default defineConfig({
     },
     rehypeCodeOptions: {
       themes: {
-        light: "github-light-default",
-        dark: "github-dark-default",
+        light: flexokiLight,
+        dark: flexokiDark,
       },
       lazy: false,
       defaultColor: false,
