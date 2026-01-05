@@ -15,12 +15,14 @@ export async function generateStaticParams() {
     .filter((item): item is { slug: string } => Boolean(item));
 }
 
+type PageParams = { slug: string };
+
 type PageProps = {
-  params: Promise<{ slug: string }>;
+  params: PageParams | Promise<PageParams>;
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug } = await Promise.resolve(params);
   const page = (await blogSource.getPage([slug])) as BlogPage;
   const metadata = page.data;
   return {
@@ -41,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 const Page: NextPage<PageProps> = async function (props) {
   const { params } = props;
-  const { slug } = await params;
+  const { slug } = await Promise.resolve(params);
   const page = (await blogSource.getPage([slug])) as BlogPage;
   const { data: metadata } = page;
   const MDXContent = page.body ?? (page as any).default;

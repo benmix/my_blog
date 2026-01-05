@@ -44,10 +44,9 @@ async function loadPages(): Promise<BlogPage[]> {
   return files
     .filter((file): file is { type: "page"; data: any; path: string } => file.type === "page")
     .map((file) => {
-      const slugSegments = file.path
-        .replace(/^\/+|\.+$/g, "")
-        .split("/")
-        .filter(Boolean);
+      const normalizedPath = file.path.replace(/^\/+/, "").replace(/\.(mdx?|md)$/i, "");
+
+      const slugSegments = normalizedPath.split("/").filter(Boolean);
 
       const frontmatter = {
         title: file.data.title,
@@ -63,7 +62,7 @@ async function loadPages(): Promise<BlogPage[]> {
         body: file.data.body,
         source: file.data.info?.path ?? file.path,
         slugs: slugSegments,
-        url: file.data.url ?? file.path,
+        url: file.data.url ?? `/posts/${slugSegments.join("/")}`,
       } as BlogPage;
     });
 }
@@ -75,6 +74,7 @@ export const blogSource = {
 
   async getPage(slugs: string[]) {
     const pages = await loadPages();
-    return pages.find((page) => (page.slugs ?? []).join("/") === slugs.join("/"));
+    const joined = slugs.join("/");
+    return pages.find((page) => (page.slugs ?? []).join("/") === joined);
   },
 };
