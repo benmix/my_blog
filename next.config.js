@@ -1,17 +1,13 @@
-import nextra from "nextra";
+import { withContentCollections } from "@content-collections/next";
 
-const withNextra = nextra({
-  contentDirBasePath: "/posts",
-  defaultShowCopyCode: true,
-  readingTime: true,
-  latex: true,
-});
-
-export default withNextra({
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
   cleanDistDir: true,
   output: "export",
   images: {
     unoptimized: true,
   },
-});
+};
+
+export default withContentCollections(nextConfig);

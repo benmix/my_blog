@@ -10,6 +10,7 @@
 @import "./styles/flexoki.css";
 @import "./styles/default.css";
 @import "./styles/code-block.css";
+@import "katex/dist/katex.min.css";
 @import "./styles/react-medium-image-zoom.css";
 @import "./styles/scrollbar.css";
 @import "./styles/subheading-anchor.css";

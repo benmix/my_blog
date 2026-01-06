@@ -1,4 +1,3 @@
-import { Head } from "nextra/components";
 import { FC, PropsWithChildren } from "react";
 import { Layout, Content, Footer } from "@components/layout";
 import "@/global.css";
@@ -39,9 +38,9 @@ export const metadata: Metadata = {
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head>
+      <head>
         <link rel="sitemap" href="/sitemap.xml" />
-      </Head>
+      </head>
       <body>
         <Layout>
           <Content>{children}</Content>

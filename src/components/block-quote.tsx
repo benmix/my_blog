@@ -1,15 +1,31 @@
-import { Callout, withGitHubAlert } from "nextra/components";
+import type { FC, ReactNode } from "react";
+import { cn } from "@lib/utils";
 
-export const Blockquote = withGitHubAlert(({ type, ...props }) => {
-  const calloutType = (
-    {
-      caution: "error",
-      important: "error", // TODO
-      note: "info",
-      tip: "default",
-      warning: "warning",
-    } as const
-  )[type];
+type CalloutType = "caution" | "important" | "note" | "tip" | "warning";
 
-  return <Callout type={calloutType} {...props} />;
-});
+const TYPE_TO_CLASS: Record<CalloutType, string> = {
+  caution: "border-destructive/40 bg-destructive/5 text-destructive",
+  important: "border-destructive/40 bg-destructive/5 text-destructive",
+  note: "border-muted-foreground/20 bg-muted/50 text-foreground",
+  tip: "border-emerald-300/60 bg-emerald-100/30 text-foreground",
+  warning: "border-amber-300/60 bg-amber-100/30 text-foreground",
+};
+
+type BlockquoteProps = {
+  type?: CalloutType;
+  children?: ReactNode;
+};
+
+export const Blockquote: FC<BlockquoteProps> = ({ type = "note", children, ...props }) => {
+  return (
+    <blockquote
+      className={cn(
+        "my-4 rounded-md border px-4 py-2 text-sm leading-relaxed shadow-sm",
+        TYPE_TO_CLASS[type]
+      )}
+      {...props}
+    >
+      {children}
+    </blockquote>
+  );
+};

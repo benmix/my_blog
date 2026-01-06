@@ -1,10 +1,10 @@
 import { Link } from "next-view-transitions";
 import type { FC } from "react";
-import { format } from "date-fns";
-import { Item } from "nextra/normalize-pages";
+import { format, toDate } from "date-fns";
+import type { BlogPage } from "@/types";
 
 type PostCardProps = {
-  post: Item;
+  post: BlogPage;
 };
 
 const HANGING_PUNCTUATION_RE =
@@ -19,20 +19,25 @@ const getTitleStyle = (title: string) =>
     : undefined;
 
 export const PostLink: FC<PostCardProps> = ({ post }) => {
-  const { date, title } = post.frontMatter;
-  const titleStyle = typeof title === "string" ? getTitleStyle(title) : undefined;
+  const { date, title, title_en } = post.data;
+  const slug = post.slugs?.[post.slugs.length - 1];
+  const displayTitle = title ?? title_en ?? slug ?? "";
+  const titleStyle = typeof displayTitle === "string" ? getTitleStyle(displayTitle) : undefined;
+  const formattedDate = date ? format(toDate(date), "MMM dd, y") : null;
+  const href = post.url ?? (slug ? `/posts/${slug}` : "#");
+
   return (
     <Link
-      key={post.route}
-      href={post.route}
+      key={href}
+      href={href}
       className="block pt-2 pb-4 font-light text-muted-foreground no-underline! hover:text-foreground max-md:text-xs"
     >
       <div className="flex justify-between">
         <span className="block grow pr-4 font-light" style={titleStyle}>
-          {title}
+          {displayTitle}
         </span>
         <time className="w-max shrink-0 grow-0 basis-24 text-end text-sm text-muted-foreground max-md:hidden">
-          {format(date || "", "MMM dd, y")}
+          {formattedDate}
         </time>
       </div>
     </Link>
