@@ -1,37 +1,27 @@
-/* 针对 Webkit 浏览器（Chrome、Safari 等） */
-::-webkit-scrollbar {
-  width: 8px /* 滚动条 */;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent /* 滚动条轨道 */;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #4b566945 /* 滚动条滑块 */;
-  border-radius: 8px /* 圆角 */;
+:root {
+  --scrollbar-thumb: rgba(75, 86, 105, 0.27);
 }
 
 .dark {
-  /* 针对 Webkit 浏览器（Chrome、Safari 等） */
-  ::-webkit-scrollbar {
-    width: 8px /* 滚动条 */;
-    height: 8px;
-  }
+  --scrollbar-thumb: rgba(85, 84, 84, 0.78);
+}
 
-  ::-webkit-scrollbar-track {
-    background: transparent /* 滚动条轨道 */;
-  }
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
 
-  ::-webkit-scrollbar-thumb {
-    background: #555454c7 /* 滚动条滑块 */;
-    border-radius: 8px /* 圆角 */;
-  }
+html:hover,
+body:hover,
+*:hover {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
 @layer components {
   .scroll-hidden::-webkit-scrollbar {
-    display: none;
+      scrollbar-width: none;
   }
 }

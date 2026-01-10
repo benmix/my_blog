@@ -54,7 +54,7 @@ export function ThemeSwitch() {
       onClick={toggleTheme}
       variant="ghost"
       size="icon"
-      className="cursor-pointer text-muted-foreground hover:text-foreground"
+      className="cursor-pointer text-muted-foreground hover:bg-transparent hover:text-foreground"
     >
       <IconToUse size="16" />
     </Button>

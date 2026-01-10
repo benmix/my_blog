@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from "react";
 import { Layout, Content, Footer } from "@components/layout";
-import "@/global.css";
+import "@/styles/global.css";
 import { ThemeSwitch } from "@components/theme-switch";
 import { Link } from "@components/link";
 import { RiCopyrightLine } from "@remixicon/react";

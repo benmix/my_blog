@@ -5,17 +5,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@source "./**/*.{ts,tsx}";
+@source "../**/*.{ts,tsx}";
 
-@import "./styles/flexoki.css";
-@import "./styles/default.css";
-@import "./styles/code-block.css";
+@import "./flexoki.css";
+@import "./default.css";
 @import "katex/dist/katex.min.css";
-@import "./styles/react-medium-image-zoom.css";
-@import "./styles/scrollbar.css";
-@import "./styles/subheading-anchor.css";
-@import "./styles/toc.css";
-@import "./styles/theme-transition.css";
+@import "./react-medium-image-zoom.css";
+@import "./scrollbar.css";
+@import "./subheading-anchor.css";
+@import "./toc.css";
+@import "./theme-transition.css";
 
 html {
   scroll-behavior: smooth;

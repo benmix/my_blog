@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 import { Meta } from "@components/meta";
 import { TocSider } from "@components/table-of-content";
-import type { BlogFrontmatter, TocItem } from "@/types";
+import type { Post } from "content-collections";
+import type { TocItem } from "@/types/blog";
 
 type WrapperProps = {
   children?: ReactNode;
   toc?: TocItem[];
-  metadata: BlogFrontmatter;
+  metadata: Post;
 };
 
 export const Wrapper = ({ children, toc, metadata }: WrapperProps) => {

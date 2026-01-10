@@ -1,12 +1,12 @@
 import type { FC, ReactNode } from "react";
 import { format, toDate } from "date-fns";
-import type { BlogFrontmatter } from "@/types";
+import type { BlogFrontmatter } from "@/types/blog";
 import { GoBackHome } from "@components/go-back";
 
 export const Meta: FC<{ metadata: BlogFrontmatter } & { children?: ReactNode }> = ({
-  metadata: { date, readingTime },
+  metadata: { date, reading_time },
 }) => {
-  const readingTimeText = readingTime?.text;
+  const readingTimeText = reading_time?.text;
   const normalizedDate = date ? toDate(date) : null;
 
   return (

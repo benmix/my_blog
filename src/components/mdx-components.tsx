@@ -10,7 +10,7 @@ export type MDXComponents = Record<string, ComponentType<any>> & {
   wrapper?: ComponentType<any>;
 };
 
-const DEFAULT_COMPONENTS: MDXComponents = {
+export const MDXComponents: MDXComponents = {
   blockquote: Blockquote,
   code: Code,
   h2: H2,
@@ -25,8 +25,3 @@ const DEFAULT_COMPONENTS: MDXComponents = {
   tr: Table.Tr,
   a: Link,
 };
-
-export const useMDXComponents = ({ ...components }: MDXComponents = {}) => ({
-  ...DEFAULT_COMPONENTS,
-  ...components,
-});
