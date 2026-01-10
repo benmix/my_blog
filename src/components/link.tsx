@@ -1,6 +1,8 @@
+import type { ComponentProps } from "react";
 import NextLink from "next/link";
-import { MDXComponents } from "nextra/mdx-components";
 
-export const Link: Required<MDXComponents>["a"] = (props) => {
+type LinkProps = ComponentProps<typeof NextLink>;
+
+export const Link = (props: LinkProps) => {
   return <NextLink {...props} href={props.href || ""} rel="noopener noreferrer" />;
 };

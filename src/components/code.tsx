@@ -1,16 +1,11 @@
 import { cn } from "@lib/utils";
 import type { ComponentProps, FC } from "react";
 
-export const Code: FC<
-  ComponentProps<"code"> & {
-    "data-language"?: string;
-  }
-> = ({ children, className, "data-language": _language, ...props }) => {
+export const Code: FC<ComponentProps<"code">> = ({ children, className, ...props }) => {
   return (
     <code
       className={cn(
-        "code-block",
-        "data-line-numbers" in props && "[counter-reset:line]",
+        "code-block [&_span]:text-(--shiki-light) dark:[&_span]:text-(--shiki-dark)",
         className
       )}
       dir="ltr"

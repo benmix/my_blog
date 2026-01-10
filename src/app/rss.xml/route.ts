@@ -1,6 +1,6 @@
 import { CONFIG_SITE } from "@/lib/constant";
 import { getPosts } from "@lib/get-post";
-import { format } from "date-fns";
+import { format, toDate } from "date-fns";
 
 export const dynamic = "force-static";
 
@@ -19,13 +19,20 @@ export async function GET() {
 
   xmls.push(
     ...posts
-      .map((post) => [
-        `    <item>`,
-        `      <title>${post.frontMatter.title.replace(/&/g, "&amp;")}</title>`,
-        `      <link>${CONFIG_SITE.siteUrl}${post.route.replace(/&/g, "&amp;")}</link>`,
-        `      <pubDate>${format(post.frontMatter.date, "MMM d, y")}</pubDate>`,
-        `    </item>`,
-      ])
+      .map((post) => {
+        const slug = post.slugs?.[post.slugs.length - 1];
+        const title = (post.data.title ?? post.data.title_en ?? "").replace(/&/g, "&amp;");
+        const href = `${CONFIG_SITE.siteUrl}${post.url ?? (slug ? `/posts/${slug}` : "")}`;
+        const formattedDate = post.data.date ? format(toDate(post.data.date), "MMM d, y") : "";
+
+        return [
+          `    <item>`,
+          `      <title>${title}</title>`,
+          `      <link>${href.replace(/&/g, "&amp;")}</link>`,
+          `      <pubDate>${formattedDate}</pubDate>`,
+          `    </item>`,
+        ];
+      })
       .flat()
   );
 

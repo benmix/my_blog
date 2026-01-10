@@ -21,12 +21,21 @@ export async function GET() {
   ];
 
   sitemap.push(
-    ...(posts.map((post) => ({
-      url: `${CONFIG_SITE.siteUrl}${post.route}`.replace(/&/g, "&amp;"),
-      lastModified: new Date(post.frontMatter.date).toISOString(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    })) as MetadataRoute.Sitemap)
+    ...(posts.map((post) => {
+      const slug = post.slugs?.[post.slugs.length - 1];
+      const url = `${CONFIG_SITE.siteUrl}${post.url ?? (slug ? `/posts/${slug}` : "")}`.replace(
+        /&/g,
+        "&amp;"
+      );
+      return {
+        url,
+        lastModified: post.data.date
+          ? new Date(post.data.date).toISOString()
+          : new Date().toISOString(),
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      } satisfies MetadataRoute.Sitemap[number];
+    }) as MetadataRoute.Sitemap)
   );
 
   xmls.push(

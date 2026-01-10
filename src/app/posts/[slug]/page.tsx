@@ -1,26 +1,36 @@
+import type { Metadata, NextPage } from "next";
 import { Wrapper } from "@components/mdx-wrapper";
+import { MDXComponents } from "@components/mdx-components";
+import { blogSource } from "@lib/content-source";
 import { getPosts } from "@lib/get-post";
-import { importPage } from "nextra/pages";
-import type { NextPage, Metadata } from "next";
+import { MDXContent } from "@content-collections/mdx/react";
 
 export async function generateStaticParams() {
   const articles = await getPosts();
-  return articles.map((article) => {
-    const splits = article.route.split("/");
-    return {
-      slug: splits[splits.length - 1],
-    };
-  });
+  return articles
+    .map((article) => {
+      const slug = article.slugs?.[article.slugs.length - 1];
+      return slug ? { slug } : null;
+    })
+    .filter((item): item is { slug: string } => Boolean(item));
 }
 
+type PageParams = { slug: string };
+
 type PageProps = {
-  params: Promise<{ slug: string }>;
+  params: PageParams | Promise<PageParams>;
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const result = await importPage([slug]);
-  const { metadata } = result;
+  const { slug } = await Promise.resolve(params);
+  const page = await blogSource.getPage([slug]);
+
+  if (!page) {
+    return {};
+  }
+
+  const { data: metadata } = page;
+
   return {
     title: metadata.title,
     description: "...",
@@ -39,13 +49,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 const Page: NextPage<PageProps> = async function (props) {
   const { params } = props;
-  const { slug } = await params;
-  const result = await importPage([slug]);
-  const { default: MDXContent, toc, metadata, sourceCode } = result;
+
+  const { slug } = await Promise.resolve(params);
+
+  const page = await blogSource.getPage([slug]);
+
+  if (!page) {
+    return null;
+  }
+
+  const { data: metadata } = page;
 
   return (
-    <Wrapper toc={toc} metadata={metadata} sourceCode={sourceCode}>
-      <MDXContent {...props} params={params} />
+    <Wrapper toc={page.toc} metadata={metadata}>
+      <MDXContent components={MDXComponents} code={page.data.mdx} {...props} params={params} />
     </Wrapper>
   );
 };

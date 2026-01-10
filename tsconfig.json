@@ -24,20 +24,23 @@
         "name": "next"
       }
     ],
-    "baseUrl": "./",
+    "rootDir": "./src",
     "paths": {
-      "@/*": ["src/*"],
-      "@app/*": ["src/app/*"],
-      "@lib/*": ["src/lib/*"],
-      "@components/*": ["src/components/*"],
-      "@mdx-components": ["src/mdx-components.tsx"]
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@components/*": ["./src/components/*"],
+      "content-collections": ["./.content-collections/generated"],
+      "content-collections/*": ["./.content-collections/generated/*"]
     }
   },
   "include": [
-    "./dist/types/**/*.ts",
-    "./next-env.d.ts",
-    "./scripts",
     "./src",
+    "./scripts",
+    "./next-env.d.ts",
+    "./.next/types/**/*.ts",
+    "./.next/dev/types/**/*.ts",
+    "./.content-collections/**/*",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],

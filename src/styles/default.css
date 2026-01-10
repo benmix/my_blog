@@ -165,9 +165,6 @@
   --tw-prose-td-borders: var(--border);
 }
 
-.prose a:visited {
-  color: var(--link-visited);
-}
 
 .prose code:not(pre code) {
   background: var(--code-bg);

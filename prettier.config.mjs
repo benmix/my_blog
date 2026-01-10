@@ -6,7 +6,7 @@ const config = {
   singleQuote: false,
   trailingComma: "es5",
   plugins: ["prettier-plugin-tailwindcss"],
-  tailwindStylesheet: "./src/global.css",
+  tailwindStylesheet: "./src/styles/global.css",
 };
 
 export default config;

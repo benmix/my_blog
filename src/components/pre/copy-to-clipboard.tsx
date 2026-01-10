@@ -34,7 +34,7 @@ export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
   const IconToUse = isCopied ? RiCheckLine : RiFileCopyLine;
 
   return (
-    <Button onClick={handleClick} title="Copy code" variant="outline" {...props}>
+    <Button onClick={handleClick} title="Copy code" variant="secondary" size="sm" {...props}>
       <IconToUse size="1em" />
     </Button>
   );
