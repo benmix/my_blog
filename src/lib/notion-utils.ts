@@ -8,7 +8,8 @@ import {
   QueryDataSourceResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 
-type PageProperty = PageObjectResponse["properties"][keyof PageObjectResponse["properties"]];
+type PageProperty =
+  PageObjectResponse["properties"][keyof PageObjectResponse["properties"]];
 
 type QueryResultItem =
   | QueryDataSourceResponse["results"][number]
@@ -18,7 +19,7 @@ type QueryResultItem =
   | DataSourceObjectResponse;
 
 export const filterPages = (
-  item: QueryResultItem | PartialPageObjectResponse
+  item: QueryResultItem | PartialPageObjectResponse,
 ): item is PageObjectResponse => item.object === "page" && "properties" in item;
 
 export const getPropertyDate = (property: PageProperty) => {

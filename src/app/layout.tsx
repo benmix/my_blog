@@ -1,12 +1,12 @@
-import { FC, PropsWithChildren } from "react";
 import { Layout, Content, Footer } from "@components/layout";
+import { Link } from "@components/link";
 import "@/styles/global.css";
 import { ThemeSwitch } from "@components/theme-switch";
-import { Link } from "@components/link";
+import { CONFIG_SITE } from "@lib/constant";
 import { RiCopyrightLine } from "@remixicon/react";
 import { getYear } from "date-fns";
 import type { Metadata } from "next";
-import { CONFIG_SITE } from "@lib/constant";
+import { FC, PropsWithChildren } from "react";
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONFIG_SITE.siteUrl),
@@ -52,7 +52,10 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
                 if (!Icon) return null;
 
                 return (
-                  <span key={link.id} className="inline-flex items-center gap-1">
+                  <span
+                    key={link.id}
+                    className="inline-flex items-center gap-1"
+                  >
                     {index > 0 ? <span>·</span> : null}
                     <Link
                       href={link.href}

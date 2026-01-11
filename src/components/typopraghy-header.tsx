@@ -1,6 +1,8 @@
 import { FC, ComponentProps } from "react";
 
-const createHeading = (Tag: `h${2 | 3 | 4 | 5 | 6}`): FC<ComponentProps<typeof Tag>> =>
+const createHeading = (
+  Tag: `h${2 | 3 | 4 | 5 | 6}`,
+): FC<ComponentProps<typeof Tag>> =>
   function HeadingLink({ children, id, className, ...props }) {
     return (
       <Tag id={id} className={className} {...props}>

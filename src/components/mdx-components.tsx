@@ -1,10 +1,10 @@
-import type { ComponentType } from "react";
-import { Link } from "@components/link";
 import { Blockquote } from "@components/block-quote";
-import { H2, H3, H4, H5, H6 } from "@components/typopraghy-header";
 import { Code } from "@components/code";
+import { Link } from "@components/link";
 import { Pre } from "@components/pre";
 import { Table } from "@components/table";
+import { H2, H3, H4, H5, H6 } from "@components/typopraghy-header";
+import type { ComponentType } from "react";
 
 export type MDXComponents = Record<string, ComponentType<any>> & {
   wrapper?: ComponentType<any>;

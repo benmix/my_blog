@@ -1,0 +1,14 @@
+{
+  "experimentalSortImports": {
+    "ignoreCase": true,
+    "order": "asc",
+    "partitionByComment": false,
+    "partitionByNewline": true,
+    "sortSideEffects": false
+  },
+  "experimentalTailwindcss": {
+    "stylesheet": "./src/styles/global.css",
+    "attributes": ["class", "className"],
+    "functions": ["clsx", "cva", "cn", "twMerge"]
+  }
+}
