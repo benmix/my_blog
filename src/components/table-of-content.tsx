@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from "@remixicon/react";
 import { cn } from "@lib/utils";
-import type { TocItem } from "@/types";
+import type { TocItem } from "@/types/blog";
 
 export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
   const [expand, setExpand] = useState<boolean>(true);

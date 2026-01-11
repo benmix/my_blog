@@ -1,6 +1,6 @@
 import { toDate } from "date-fns";
 import { blogSource } from "@lib/content-source";
-import type { BlogPage } from "@/types";
+import type { BlogPage } from "@/types/blog";
 
 export async function getPosts() {
   const pages = (await blogSource.getPages()) as BlogPage[];
