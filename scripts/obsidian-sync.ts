@@ -418,7 +418,6 @@ async function transformMarkdown(
   },
 ) {
   let result = markdown;
-  const slugger = new GithubSlugger();
 
   const resolveImagePath = async (rawPath: string) => {
     const trimmed = rawPath.trim();
@@ -517,7 +516,9 @@ async function transformMarkdown(
       options.outputRelPath,
     );
     if (resolvedTarget) {
-      const heading = headingPart ? `#${slugger.slug(headingPart)}` : "";
+      const heading = headingPart
+        ? `#${new GithubSlugger().slug(headingPart)}`
+        : "";
       const url = `/posts/${resolvedTarget}${heading}`;
       result = result.replace(match[0], `[${alias || pathPart}](${url})`);
       continue;
