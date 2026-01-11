@@ -17,7 +17,7 @@
     "format:write": "oxfmt --config ./.oxfmtrc.json .",
     "lint:css": "stylelint \"src/**/*.{css,scss}\"",
     "lint:css:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
-    "notion-to-md": "dotenvx run -- npx tsx scripts/md-blogs-gen.ts",
+    "obsidian-sync": "dotenvx run -- npx tsx scripts/obsidian-sync.ts",
     "prepare": "husky"
   },
   "dependencies": {
@@ -25,7 +25,6 @@
     "@content-collections/mdx": "^0.2.2",
     "@content-collections/next": "^0.2.10",
     "@fumadocs/content-collections": "^1.2.5",
-    "@notionhq/client": "^5.4.0",
     "@radix-ui/react-slot": "^1.2.4",
     "@remixicon/react": "^4.7.0",
     "@tailwindcss/postcss": "^4.1.17",
@@ -41,7 +40,6 @@
     "next": "^16.0.7",
     "next-themes": "^0.4.6",
     "next-view-transitions": "^0.3.5",
-    "notion-to-md": "^3.1.9",
     "postcss": "^8.5.6",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",

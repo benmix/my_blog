@@ -30,9 +30,10 @@ const posts = defineCollection({
   directory: "src/content",
   include: "**/*.md",
   schema: z.object({
-    title: z.string().optional(),
-    title_en: z.string().optional(),
-    date: z.union([z.date(), z.string()]).optional(),
+    chinese_name: z.string().optional(),
+    english_name: z.string().optional(),
+    public_date: z.union([z.date(), z.string()]).optional(),
+    duration: z.union([z.date(), z.string()]).optional(),
     tags: z.array(z.string()).optional(),
     reading_time: z.object({ text: z.string() }).optional(),
     summary: z.string().optional(),
@@ -63,9 +64,13 @@ const posts = defineCollection({
 
     const reading_time = estimateReadingTime(doc.content);
     const summary = doc.summary ?? getPlainTextSummary(doc.content);
+    const publish_date = doc.public_date;
+    const title = doc.chinese_name ?? doc.english_name;
 
     return {
       ...compiled,
+      title,
+      date: publish_date,
       reading_time,
       summary,
       mdx: compiled.body,

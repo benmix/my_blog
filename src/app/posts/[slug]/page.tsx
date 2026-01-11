@@ -37,10 +37,10 @@ export async function generateMetadata({
     metadata.summary ?? getPlainTextSummary(metadata.content ?? "");
 
   return {
-    title: metadata.title,
+    title: metadata.chinese_name ?? metadata.english_name,
     description: summary,
     openGraph: {
-      title: metadata.title,
+      title: metadata.chinese_name ?? metadata.english_name,
       description: summary,
       url: "/posts/" + slug,
       images: [

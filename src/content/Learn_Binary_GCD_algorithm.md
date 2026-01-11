@@ -1,9 +1,13 @@
 ---
-title_en: Learn Binary GCD algorithm
-title: Learn Binary GCD algorithm
-date: 2023-03-28
+chinese_name: Learn Binary GCD algorithm
+english_name: "Learn Binary GCD algorithm"
+tags:
+  - learning
+  - blog
+duration: 2023-03-28
+public_date: 2023-03-28
+base: "_posts.database.base"
 ---
-
 今天在工作群里看同事闲聊，有个同事吐槽为啥项目里面也要自己实现 Greatest Common Divisor 算法来求解最大公约数。我开始也奇怪，GCD 不应该是标准库标配的吗。瞄了一眼代码….
 
 等等，为啥代码还有位运算操作？代码咋变长了？GCD 不是就几行代码吗？这咋和我见过的辗转相除法不太一样。
@@ -36,9 +40,9 @@ fn gcd_euclid(a: u32, b: u32) -> u32 {
 
 - 交换 `a` 和 `b` 确保 `a` > `b`
 - 进入循环
-  - 如果 `b = 0` 则 `gcd(a, b) = a`， 即 `gcd(a, 0) = a`, 此时我们可以结束循环。
-  - 交换 `a` 和 `b`， `temp = a`， `a = b`， `b = temp`
-  - 计算 `b % a = r` ，`b = r`
+    - 如果 `b = 0` 则 `gcd(a, b) = a`，  即 `gcd(a, 0) = a`, 此时我们可以结束循环。
+    - 交换 `a` 和 `b`， `temp = a`， `a = b`， `b = temp`
+    - 计算 ` b % a = r` ，`b = r` 
 
 ### Binary GCD Algorithm
 
@@ -47,16 +51,14 @@ fn gcd_euclid(a: u32, b: u32) -> u32 {
 前置知识：
 
 - `gcd(0, b) = b`，`gcd(a, 0) = a`
-- `gcd(`_`2a`_`,` *`2b`*`) = 2 * gcd(a, b)`
-- `gcd(`_`2a`_`, b) = gcd(a, b)` ， `b % 2 != 0` ，即 `2` 不是公约数
-
-  `gcd(a,` *`2b`*`) = gcd(a, b)`， `a % 2 != 0`
-
+- `gcd(``*2a*``, ``*2b*``) = 2 * gcd(a, b)`
+- `gcd(``*2a*``, b) = gcd(a, b)` ， `b % 2 != 0` ，即 `2` 不是公约数 
+`gcd(a, ``*2b*``) = gcd(a, b)`， `a % 2 != 0`
 - `gcd(a, b) = gcd(|a − b|, min(a, b))`， `b % 2 != 0` && `a % 2 != 0`
 
 ```rust
 fn gcd_binary(mut u: u32, mut v: u32) -> u32 {
-
+    
 		// Base cases: gcd(n, 0) = gcd(0, n) = n
 		if u == 0 {
         return v;
@@ -64,18 +66,18 @@ fn gcd_binary(mut u: u32, mut v: u32) -> u32 {
     if v == 0 {
         return u;
     }
-
+		
 		// gcd(2^i * u, 2^j * v) = 2^k * gcd(u, v) with u, v odd and k = min(i, j)
     // 2^k is the greatest power of two that divides both u and v
-
+    
 		// shift = min(u.trailing_zeros(), v.trailing_zeros())
 		let shift = (u | v).trailing_zeros();
-
+   
 		// u -> odd or v -> odd
 		// gcd(2^i * u, 2^j * v) = 2^k * gcd(u, v) with u, v odd and k = min(i, j)
 		u >>= shift;
     v >>= shift;
-
+   
 		// u -> odd
 	  // maybe u is odd, no changed
 	  // maybe v is odd, gcd(2^i * u, v) = gcd(u, v) (v is odd)
@@ -97,17 +99,17 @@ fn gcd_binary(mut u: u32, mut v: u32) -> u32 {
             break;
         }
     }
-
+		
 		// gcd(2^i * u, 2^j * v) = 2^k * gcd(u, v) with u, v odd and k = min(i, j)
     u << shift
 }
 ```
 
-**Time Complexity：**[**O(n^2)**](<https://en.wikipedia.org/wiki/Binary_GCD_algorithm?oldid=1146995971#:~:text=%20the%20asymptotic%20complexity%20of%20this%20algorithm%20is%20O(n2)>)
+**Time Complexity：**[**O(n^2)**](https://en.wikipedia.org/wiki/Binary_GCD_algorithm?oldid=1146995971#:~:text=%20the%20asymptotic%20complexity%20of%20this%20algorithm%20is%20O(n2))
 
-### Reference
+### Reference 
 
 - [euclidean_algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm)
 - [binary_gcd_algorithm](https://en.wikipedia.org/wiki/Binary_GCD_algorithm)
-- [code_of_binary_gcd_algorithm](https://github.com/frewsxcv/rust-gcd/blob/df6ba81825b2cb4f1e328f2283fb0fda8f8bda27/src/lib.rs#LL32) [https://github.com/frewsxcv/rust-gcd](https://github.com/frewsxcv/rust-gcd)
-- [code_of_binary_gcd_algorithm](https://github.com/uutils/coreutils/blob/71228f98e10da77e35a8c5efd6b3ac1c08c7672c/src/uu/factor/src/numeric/gcd.rs#L14) [https://github.com/uutils/coreutils](https://github.com/uutils/coreutils)
+- [code_of_binary_gcd_algorithm](https://github.com/frewsxcv/rust-gcd/blob/df6ba81825b2cb4f1e328f2283fb0fda8f8bda27/src/lib.rs#LL32)   https://github.com/frewsxcv/rust-gcd 
+- [code_of_binary_gcd_algorithm](https://github.com/uutils/coreutils/blob/71228f98e10da77e35a8c5efd6b3ac1c08c7672c/src/uu/factor/src/numeric/gcd.rs#L14)   https://github.com/uutils/coreutils
