@@ -1,9 +1,9 @@
 import type { FC, ReactNode } from "react";
 import { format, toDate } from "date-fns";
-import type { BlogFrontmatter } from "@/types/blog";
 import { GoBackHome } from "@components/go-back";
+import { Post } from "content-collections";
 
-export const Meta: FC<{ metadata: BlogFrontmatter } & { children?: ReactNode }> = ({
+export const Meta: FC<{ metadata: Post } & { children?: ReactNode }> = ({
   metadata: { date, reading_time },
 }) => {
   const readingTimeText = reading_time?.text;

@@ -1,7 +1,7 @@
 import { Link } from "next-view-transitions";
 import type { FC } from "react";
 import { format, toDate } from "date-fns";
-import type { BlogPage } from "@/types";
+import type { BlogPage } from "@/types/blog";
 
 type PostCardProps = {
   post: BlogPage;
