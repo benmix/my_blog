@@ -65,9 +65,11 @@ const posts = defineCollection({
     const reading_time = estimateReadingTime(doc.content);
     const summary = doc.summary ?? getPlainTextSummary(doc.content);
     const publish_date = doc.public_date;
+    const title = doc.chinese_name ?? doc.english_name;
 
     return {
       ...compiled,
+      title,
       date: publish_date,
       reading_time,
       summary,
