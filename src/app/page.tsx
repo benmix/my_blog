@@ -19,7 +19,11 @@ export default async function IndexPage() {
         <div>
           {articles.map((post) => {
             const key =
-              post.url ?? post.slugs?.join("/") ?? post.data.title ?? "post";
+              post.url ??
+              post.slugs?.join("/") ??
+              post.data.chinese_name ??
+              post.data.english_name ??
+              "post";
             return <PostLink key={key} post={post} />;
           })}
         </div>

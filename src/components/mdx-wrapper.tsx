@@ -11,7 +11,7 @@ type WrapperProps = {
 };
 
 export const Wrapper = ({ children, toc, metadata }: WrapperProps) => {
-  const heading = metadata.title ?? metadata.title_en ?? "";
+  const heading = metadata.chinese_name ?? metadata.english_name ?? "";
   return (
     <>
       <h1 className={"not-prose mb-8 text-3xl"}>{heading}</h1>

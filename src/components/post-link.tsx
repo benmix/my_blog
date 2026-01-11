@@ -19,9 +19,9 @@ const getTitleStyle = (title: string) =>
     : undefined;
 
 export const PostLink: FC<PostCardProps> = ({ post }) => {
-  const { date, title, title_en } = post.data;
+  const { date, chinese_name, english_name } = post.data;
   const slug = post.slugs?.[post.slugs.length - 1];
-  const displayTitle = title ?? title_en ?? slug ?? "";
+  const displayTitle = chinese_name ?? english_name ?? slug ?? "";
   const titleStyle =
     typeof displayTitle === "string" ? getTitleStyle(displayTitle) : undefined;
   const formattedDate = date ? format(toDate(date), "MMM dd, y") : null;

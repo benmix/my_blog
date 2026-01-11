@@ -22,10 +22,11 @@ export async function GET() {
     ...posts
       .map((post) => {
         const slug = post.slugs?.[post.slugs.length - 1];
-        const title = (post.data.title ?? post.data.title_en ?? "").replace(
-          /&/g,
-          "&amp;",
-        );
+        const title = (
+          post.data.chinese_name ??
+          post.data.english_name ??
+          ""
+        ).replace(/&/g, "&amp;");
         const href = `${CONFIG_SITE.siteUrl}${post.url ?? (slug ? `/posts/${slug}` : "")}`;
         const formattedDate = post.data.date
           ? format(toDate(post.data.date), "MMM d, y")
