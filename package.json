@@ -13,9 +13,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
-    "format": "oxfmt --check .",
-    "format:write": "oxfmt .",
-    "format:tw": "prettier --write \"src/**/*.{js,jsx,ts,tsx,md,mdx}\"",
+    "format": "oxfmt --config ./.oxfmtrc.json --check .",
+    "format:write": "oxfmt --config ./.oxfmtrc.json .",
     "lint:css": "stylelint \"src/**/*.{css,scss}\"",
     "lint:css:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
     "notion-to-md": "dotenvx run -- npx tsx scripts/md-blogs-gen.ts",
@@ -69,8 +68,6 @@
     "oxfmt": "^0.8.0",
     "oxlint": "^0.9.10",
     "pagefind": "^1.4.0",
-    "prettier": "^3.7.4",
-    "prettier-plugin-tailwindcss": "^0.7.2",
     "stylelint": "^16.26.1",
     "stylelint-config-standard": "^37.0.0",
     "stylelint-config-tailwindcss": "^1.0.0",
@@ -81,11 +78,7 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "oxlint --fix",
-      "oxfmt",
-      "prettier --write"
-    ],
-    "*.{json,md,yml,yaml}": [
-      "prettier --write"
+      "oxfmt"
     ],
     "*.{css,scss}": [
       "stylelint --fix"

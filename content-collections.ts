@@ -1,13 +1,14 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import remarkMath from "remark-math";
+import { transformMDX } from "@fumadocs/content-collections/configuration";
+import { getPlainTextSummary } from "@lib/utils";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
-import { z } from "zod";
-import { transformMDX } from "@fumadocs/content-collections/configuration";
+import remarkMath from "remark-math";
 import type { ThemeRegistrationAny } from "shiki";
+import { z } from "zod";
 
-import flexokiDark from "./src/styles/flexoki-dark.json";
-import flexokiLight from "./src/styles/flexoki-light.json";
+import flexokiDark from "@styles/flexoki-dark.json";
+import flexokiLight from "@styles/flexoki-light.json";
 
 const lightTheme = flexokiLight as ThemeRegistrationAny;
 const darkTheme = flexokiDark as ThemeRegistrationAny;
@@ -34,6 +35,7 @@ const posts = defineCollection({
     date: z.union([z.date(), z.string()]).optional(),
     tags: z.array(z.string()).optional(),
     reading_time: z.object({ text: z.string() }).optional(),
+    summary: z.string().optional(),
     content: z.string(),
   }),
   transform: async (doc, context) => {
@@ -60,10 +62,12 @@ const posts = defineCollection({
     });
 
     const reading_time = estimateReadingTime(doc.content);
+    const summary = doc.summary ?? getPlainTextSummary(doc.content);
 
     return {
       ...compiled,
       reading_time,
+      summary,
       mdx: compiled.body,
       url: `/posts/${doc._meta.path}`,
     };

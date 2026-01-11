@@ -23,10 +23,11 @@ export async function GET() {
   sitemap.push(
     ...(posts.map((post) => {
       const slug = post.slugs?.[post.slugs.length - 1];
-      const url = `${CONFIG_SITE.siteUrl}${post.url ?? (slug ? `/posts/${slug}` : "")}`.replace(
-        /&/g,
-        "&amp;"
-      );
+      const url =
+        `${CONFIG_SITE.siteUrl}${post.url ?? (slug ? `/posts/${slug}` : "")}`.replace(
+          /&/g,
+          "&amp;",
+        );
       return {
         url,
         lastModified: post.data.date
@@ -35,7 +36,7 @@ export async function GET() {
         changeFrequency: "monthly" as const,
         priority: 0.8,
       } satisfies MetadataRoute.Sitemap[number];
-    }) as MetadataRoute.Sitemap)
+    }) as MetadataRoute.Sitemap),
   );
 
   xmls.push(
@@ -48,7 +49,7 @@ export async function GET() {
         `      <priority>${site.priority}</priority>`,
         `    </url>`,
       ])
-      .flat()
+      .flat(),
   );
 
   xmls.push(...["</urlset>"]);

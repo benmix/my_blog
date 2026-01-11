@@ -1,9 +1,9 @@
 "use client";
 
-import type { ComponentProps, FC, MouseEvent } from "react";
-import { useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
 import { RiCheckLine, RiFileCopyLine } from "@remixicon/react";
+import type { ComponentProps, FC, MouseEvent } from "react";
+import { useEffect, useState } from "react";
 
 export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
   const [isCopied, setCopied] = useState(false);
@@ -34,7 +34,13 @@ export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
   const IconToUse = isCopied ? RiCheckLine : RiFileCopyLine;
 
   return (
-    <Button onClick={handleClick} title="Copy code" variant="secondary" size="sm" {...props}>
+    <Button
+      onClick={handleClick}
+      title="Copy code"
+      variant="secondary"
+      size="sm"
+      {...props}
+    >
       <IconToUse size="1em" />
     </Button>
   );

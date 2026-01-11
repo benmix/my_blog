@@ -1,7 +1,12 @@
-import { Client, LogLevel, isFullDatabase } from "@notionhq/client";
 import { NOTION_BLOG_DATABASE_ID, NOTION_TOKEN } from "./env";
+import {
+  filterPages,
+  getPropertyDate,
+  getPropertyText,
+  getPropertyTitle,
+} from "./notion-utils";
+import { Client, LogLevel, isFullDatabase } from "@notionhq/client";
 import { QueryDataSourceResponse } from "@notionhq/client/build/src/api-endpoints";
-import { filterPages, getPropertyDate, getPropertyText, getPropertyTitle } from "./notion-utils";
 
 // Initializing a client
 const notion = new Client({
@@ -30,7 +35,7 @@ const getDataSourceId = async (databaseId: string) => {
 const queryDataSourceLoop = async (
   data_source_id: string,
   pages: QueryDataSourceResponse["results"],
-  start_cursor?: string
+  start_cursor?: string,
 ) => {
   const result = await notion.dataSources.query({
     data_source_id,

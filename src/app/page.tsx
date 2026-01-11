@@ -1,7 +1,7 @@
+import { Image } from "@components/image";
 // import { Link } from "@components/link";
 import { PostLink } from "@components/post-link";
 import { getPosts } from "@lib/get-post";
-import { Image } from "@components/image";
 
 export default async function IndexPage() {
   const articles = await getPosts();
@@ -18,7 +18,8 @@ export default async function IndexPage() {
         <h2 className="text-muted-foreground max-md:text-sm"> 文章 </h2>
         <div>
           {articles.map((post) => {
-            const key = post.url ?? post.slugs?.join("/") ?? post.data.title ?? "post";
+            const key =
+              post.url ?? post.slugs?.join("/") ?? post.data.title ?? "post";
             return <PostLink key={key} post={post} />;
           })}
         </div>

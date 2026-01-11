@@ -1,6 +1,6 @@
-import type { ComponentProps, FC, ReactNode } from "react";
 import { CopyToClipboard } from "./copy-to-clipboard";
 import { cn } from "@lib/utils";
+import type { ComponentProps, FC, ReactNode } from "react";
 
 export const classes = {
   border: cn("border border-border", "contrast-more:border-foreground"),
@@ -47,7 +47,7 @@ export const Pre: FC<PreProps> = ({
         <div
           className={cn(
             "flex items-center gap-2 rounded-t-lg border-b-0 bg-muted/70 px-4 py-2 text-xs text-muted-foreground",
-            classes.border
+            classes.border,
           )}
         >
           {iconNode}
@@ -58,7 +58,7 @@ export const Pre: FC<PreProps> = ({
         className={cn(
           "not-prose relative overflow-x-auto bg-(--shiki-light-bg) p-4 text-[.9em] subpixel-antialiased ring-1 ring-border ring-inset contrast-more:ring-foreground contrast-more:contrast-150 dark:bg-(--shiki-dark-bg)",
           filename ? "rounded-b-lg" : "rounded-lg",
-          className
+          className,
         )}
         {...props}
       >

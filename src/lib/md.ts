@@ -1,9 +1,9 @@
-import { NotionToMarkdown } from "notion-to-md";
-import { notionClient } from "./notion-client";
-import { MdBlock } from "notion-to-md/build/types";
-import { ImageBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { saveFile } from "./download";
+import { notionClient } from "./notion-client";
+import { ImageBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { randomUUID } from "node:crypto";
+import { NotionToMarkdown } from "notion-to-md";
+import { MdBlock } from "notion-to-md/build/types";
 
 const notionToMDService = new NotionToMarkdown({
   notionClient,
@@ -22,7 +22,8 @@ notionToMDService.setCustomTransformer("image", async (block) => {
     url = image.external.url;
   }
 
-  const name = image.caption[0]?.plain_text.replace(/[\s/()[\]!]+/g, "_") || "unknown";
+  const name =
+    image.caption[0]?.plain_text.replace(/[\s/()[\]!]+/g, "_") || "unknown";
 
   const resourceURL = await saveFile(url, name + "__" + randomUUID());
 
