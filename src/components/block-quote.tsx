@@ -1,31 +1,32 @@
 import type { FC, ReactNode } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@lib/utils";
 
-type CalloutType = "caution" | "important" | "note" | "tip" | "warning";
+const blockquoteVariants = cva(
+  "my-4 rounded-md border border-l-4 px-4 py-2 text-sm leading-relaxed text-muted-foreground shadow-sm",
+  {
+    variants: {
+      type: {
+        note: "border-border bg-muted/50",
+        tip: "border-primary/30 bg-primary/10",
+        warning: "border-secondary/40 bg-secondary/60",
+        important: "border-accent/40 bg-accent/40",
+        caution: "border-destructive/40 bg-destructive/10 text-destructive-foreground",
+      },
+    },
+    defaultVariants: {
+      type: "note",
+    },
+  }
+);
 
-const TYPE_TO_CLASS: Record<CalloutType, string> = {
-  note: "border-border bg-muted/50 text-foreground",
-  tip: "border-primary/30 bg-primary/10 text-foreground",
-  warning: "border-secondary/40 bg-secondary/60 text-foreground",
-  important: "border-accent/40 bg-accent/40 text-foreground",
-  caution: "border-destructive/40 bg-destructive/10 text-destructive-foreground",
-};
-
-type BlockquoteProps = {
-  type?: CalloutType;
+type BlockquoteProps = VariantProps<typeof blockquoteVariants> & {
   children?: ReactNode;
 };
 
-export const Blockquote: FC<BlockquoteProps> = ({ type = "note", children, ...props }) => {
+export const Blockquote: FC<BlockquoteProps> = ({ type, children, ...props }) => {
   return (
-    <blockquote
-      data-type={type}
-      className={cn(
-        "my-4 rounded-md border border-l-4 px-4 py-2 text-sm leading-relaxed shadow-sm",
-        TYPE_TO_CLASS[type]
-      )}
-      {...props}
-    >
+    <blockquote data-type={type} className={cn(blockquoteVariants({ type }))} {...props}>
       {children}
     </blockquote>
   );
