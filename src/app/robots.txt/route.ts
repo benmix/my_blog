@@ -1,6 +1,6 @@
 import { CONFIG_SITE } from "@lib/constant";
-import { resolveRobots } from "@lib/robots-resolve";
 import type { MetadataRoute } from "next";
+import { resolveRobots } from "@lib/robots-resolve";
 
 export const dynamic = "force-static";
 

@@ -1,35 +1,34 @@
 "use client";
-
-import type { TocItem } from "@/types/blog";
+import { FC, useEffect, useState } from "react";
+import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from "@remixicon/react";
 import { Button } from "@components/ui/button";
 import { cn } from "@lib/utils";
-import {
-  RiArrowLeftDoubleLine,
-  RiArrowRightDoubleLine,
-} from "@remixicon/react";
-import { FC, useEffect, useState } from "react";
+import Link from "next/link";
+import type { TocItem } from "@/types/blog";
 
 export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
   const [expand, setExpand] = useState<boolean>(true);
   const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!toc?.length) return;
+    if (!toc?.length) {
+      return;
+    }
 
     const headingElements = toc
       .map(({ id }) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
 
-    if (!headingElements.length) return;
+    if (!headingElements.length) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
         const visibleEntries = entries
           .filter((entry) => entry.isIntersecting)
           .sort(
-            (a, b) =>
-              a.target.getBoundingClientRect().top -
-              b.target.getBoundingClientRect().top,
+            (a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top,
           );
 
         if (visibleEntries.length) {
@@ -39,10 +38,7 @@ export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
 
         const aboveFold = headingElements
           .filter((heading) => heading.getBoundingClientRect().top <= 120)
-          .sort(
-            (a, b) =>
-              b.getBoundingClientRect().top - a.getBoundingClientRect().top,
-          );
+          .sort((a, b) => b.getBoundingClientRect().top - a.getBoundingClientRect().top);
 
         if (aboveFold.length) {
           setActiveId(aboveFold[0].id);
@@ -59,11 +55,7 @@ export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
     return () => observer.disconnect();
   }, [toc]);
 
-  const IconToUse = expand ? (
-    <RiArrowLeftDoubleLine />
-  ) : (
-    <RiArrowRightDoubleLine />
-  );
+  const IconToUse = expand ? <RiArrowLeftDoubleLine /> : <RiArrowRightDoubleLine />;
 
   return toc?.length ? (
     <div className="fixed -right-2 z-50 h-full pb-60 max-lg:hidden">
@@ -77,7 +69,7 @@ export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
           <ul>
             {toc.map((heading) => (
               <li key={heading.id}>
-                <a
+                <Link
                   href={`#${heading.id}`}
                   className={cn(
                     "text-muted-foreground no-underline! hover:text-foreground hover:no-underline!",
@@ -86,7 +78,7 @@ export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
                   aria-current={activeId === heading.id ? "true" : undefined}
                 >
                   {heading.title}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

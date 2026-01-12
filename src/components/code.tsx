@@ -1,11 +1,8 @@
-import { cn } from "@lib/utils";
 import type { ComponentProps, FC } from "react";
 
-export const Code: FC<ComponentProps<"code">> = ({
-  children,
-  className,
-  ...props
-}) => {
+import { cn } from "@lib/utils";
+
+export const Code: FC<ComponentProps<"code">> = ({ children, className, ...props }) => {
   return (
     <code
       className={cn(

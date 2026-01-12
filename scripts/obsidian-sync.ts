@@ -1,24 +1,9 @@
-import GithubSlugger from "github-slugger";
+import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import {
-  mkdir,
-  readdir,
-  readFile,
-  rm,
-  stat,
-  writeFile,
-} from "node:fs/promises";
+import GithubSlugger from "github-slugger";
 import path from "node:path";
 
-const IMAGE_EXTENSIONS = new Set([
-  ".avif",
-  ".gif",
-  ".jpeg",
-  ".jpg",
-  ".png",
-  ".svg",
-  ".webp",
-]);
+const IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 
 const DEFAULT_CONTENT_IMAGES_DIR = path.join("public", "content_images");
 const DEFAULT_CONTENT_IMAGES_URL = "/content_images/";
@@ -94,17 +79,25 @@ function extractEnglishName(markdown: string) {
   const frontmatterLines: string[] = [];
   while (index < lines.length) {
     const line = lines[index];
-    if (line.trim() === "---") break;
+    if (line.trim() === "---") {
+      break;
+    }
     frontmatterLines.push(line);
     index += 1;
   }
-  if (!frontmatterLines.length) return "";
+  if (!frontmatterLines.length) {
+    return "";
+  }
   for (const line of frontmatterLines) {
     const match = line.match(/^\s*english_name\s*:\s*(.+?)\s*$/i);
-    if (!match) continue;
+    if (!match) {
+      continue;
+    }
     const raw = match[1] ?? "";
     const trimmed = raw.trim();
-    if (!trimmed || trimmed === "|" || trimmed === ">") return "";
+    if (!trimmed || trimmed === "|" || trimmed === ">") {
+      return "";
+    }
     return trimmed.replace(/^['"]|['"]$/g, "");
   }
   return "";
@@ -125,11 +118,15 @@ function trimFrontmatterValues(markdown: string) {
   const frontmatterLines: string[] = [];
   while (index < lines.length) {
     const line = lines[index];
-    if (line.trim() === "---") break;
+    if (line.trim() === "---") {
+      break;
+    }
     frontmatterLines.push(line);
     index += 1;
   }
-  if (!frontmatterLines.length) return markdown;
+  if (!frontmatterLines.length) {
+    return markdown;
+  }
 
   const trimmedLines = frontmatterLines.map((line) => {
     const keyMatch = line.match(/^(\s*[^:]+:)(.*)$/);
@@ -143,9 +140,7 @@ function trimFrontmatterValues(markdown: string) {
         ["\u201C", "\u201D"],
         ["\u2018", "\u2019"],
       ];
-      const pair = quotePairs.find(
-        ([open, close]) => raw.startsWith(open) && raw.endsWith(close),
-      );
+      const pair = quotePairs.find(([open, close]) => raw.startsWith(open) && raw.endsWith(close));
       if (pair) {
         const [open, close] = pair;
         const inner = raw.slice(open.length, raw.length - close.length).trim();
@@ -174,11 +169,7 @@ function trimFrontmatterValues(markdown: string) {
   return newLines.join("\n");
 }
 
-function buildOutputMap(
-  contentRoot: string,
-  files: string[],
-  contents: Map<string, string>,
-) {
+function buildOutputMap(contentRoot: string, files: string[], contents: Map<string, string>) {
   const outputMap = new Map<string, string>();
   const outputConflicts = new Map<string, string>();
 
@@ -199,13 +190,9 @@ function buildOutputMap(
     if (englishName) {
       const sanitizedEnglish = sanitizeSegment(englishName);
       if (!sanitizedEnglish) {
-        throw new Error(
-          `Invalid EnglishName after sanitization: ${englishName} (${filePath})`,
-        );
+        throw new Error(`Invalid EnglishName after sanitization: ${englishName} (${filePath})`);
       }
-      outputRelNoExt = normalizePosix(
-        path.join(sanitizedDir, sanitizedEnglish),
-      );
+      outputRelNoExt = normalizePosix(path.join(sanitizedDir, sanitizedEnglish));
     } else {
       outputRelNoExt = normalizePosix(path.join(sanitizedDir, sanitizedBase));
     }
@@ -213,9 +200,7 @@ function buildOutputMap(
     const key = outputRelNoExt.toLowerCase();
     const existing = outputConflicts.get(key);
     if (existing && existing !== filePath) {
-      throw new Error(
-        `Duplicate output path after normalization: ${outputRelNoExt} (${filePath})`,
-      );
+      throw new Error(`Duplicate output path after normalization: ${outputRelNoExt} (${filePath})`);
     }
     outputConflicts.set(key, filePath);
     outputMap.set(filePath, outputRelNoExt);
@@ -224,11 +209,7 @@ function buildOutputMap(
   return outputMap;
 }
 
-function buildNoteIndex(
-  contentRoot: string,
-  files: string[],
-  outputMap: Map<string, string>,
-) {
+function buildNoteIndex(contentRoot: string, files: string[], outputMap: Map<string, string>) {
   const byBaseName = new Map<string, string>();
   const byRelPath = new Map<string, string>();
   const byRelPathSanitized = new Map<string, string>();
@@ -258,9 +239,7 @@ function buildNoteIndex(
   }
 
   if (conflicts.length > 0) {
-    throw new Error(
-      `Duplicate note names after normalization: ${conflicts.join(", ")}`,
-    );
+    throw new Error(`Duplicate note names after normalization: ${conflicts.join(", ")}`);
   }
 
   return { byBaseName, byRelPath, byRelPathSanitized, byFilePath };
@@ -288,7 +267,9 @@ async function collectImageFiles(root: string, files: Set<string>) {
       await collectImageFiles(fullPath, files);
       continue;
     }
-    if (!entry.isFile()) continue;
+    if (!entry.isFile()) {
+      continue;
+    }
     const ext = path.extname(entry.name).toLowerCase();
     if (IMAGE_EXTENSIONS.has(ext)) {
       files.add(fullPath);
@@ -371,35 +352,39 @@ async function copyImage(
   return url;
 }
 
-function resolveWikiTarget(
-  target: string,
-  noteIndex: NoteIndex,
-  currentRelPath: string,
-) {
+function resolveWikiTarget(target: string, noteIndex: NoteIndex, currentRelPath: string) {
   const normalized = normalizePosix(target.replace(/\.md$/i, ""));
-  if (!normalized) return undefined;
+  if (!normalized) {
+    return;
+  }
 
   const direct = noteIndex.byRelPath.get(normalized);
-  if (direct) return direct;
+  if (direct) {
+    return direct;
+  }
 
   const parts = normalized.split("/");
   if (parts.length > 1) {
     const sanitized = parts.map((part) => sanitizeSegment(part)).join("/");
     const sanitizedMatch = noteIndex.byRelPathSanitized.get(sanitized);
-    if (sanitizedMatch) return sanitizedMatch;
+    if (sanitizedMatch) {
+      return sanitizedMatch;
+    }
   }
 
   const base = parts[parts.length - 1].toLowerCase();
   const baseMatch = noteIndex.byBaseName.get(base);
-  if (baseMatch) return baseMatch;
+  if (baseMatch) {
+    return baseMatch;
+  }
 
-  const relative = normalizePosix(
-    path.join(path.dirname(currentRelPath), normalized),
-  );
+  const relative = normalizePosix(path.join(path.dirname(currentRelPath), normalized));
   const relativeMatch = noteIndex.byRelPath.get(relative);
-  if (relativeMatch) return relativeMatch;
+  if (relativeMatch) {
+    return relativeMatch;
+  }
 
-  return undefined;
+  return;
 }
 
 async function transformMarkdown(
@@ -421,8 +406,12 @@ async function transformMarkdown(
 
   const resolveImagePath = async (rawPath: string) => {
     const trimmed = rawPath.trim();
-    if (!trimmed) return undefined;
-    if (/^https?:\/\//i.test(trimmed)) return undefined;
+    if (!trimmed) {
+      return;
+    }
+    if (/^https?:\/\//i.test(trimmed)) {
+      return;
+    }
 
     const normalized = trimmed.replace(/^file:\/\//i, "");
     const hasSeparator = /[\\/]/.test(normalized);
@@ -450,16 +439,24 @@ async function transformMarkdown(
     }
 
     try {
-      if (!absolute) return undefined;
-      if (!isSubPath(options.attachmentRoot, absolute)) return undefined;
+      if (!absolute) {
+        return;
+      }
+      if (!isSubPath(options.attachmentRoot, absolute)) {
+        return;
+      }
       const info = await stat(absolute);
-      if (!info.isFile()) return undefined;
+      if (!info.isFile()) {
+        return;
+      }
     } catch {
-      return undefined;
+      return;
     }
 
     const ext = path.extname(absolute).toLowerCase();
-    if (!IMAGE_EXTENSIONS.has(ext)) return undefined;
+    if (!IMAGE_EXTENSIONS.has(ext)) {
+      return;
+    }
 
     return copyImage(
       absolute,
@@ -490,11 +487,7 @@ async function transformMarkdown(
       continue;
     }
 
-    const resolvedTarget = resolveWikiTarget(
-      target,
-      noteIndex,
-      options.outputRelPath,
-    );
+    const resolvedTarget = resolveWikiTarget(target, noteIndex, options.outputRelPath);
     if (resolvedTarget) {
       const url = `/posts/${resolvedTarget}`;
       result = result.replace(match[0], `[${alt || target}](${url})`);
@@ -510,15 +503,9 @@ async function transformMarkdown(
     const alias = (aliasRaw ?? "").trim();
 
     const [pathPart, headingPart] = target.split("#");
-    const resolvedTarget = resolveWikiTarget(
-      pathPart,
-      noteIndex,
-      options.outputRelPath,
-    );
+    const resolvedTarget = resolveWikiTarget(pathPart, noteIndex, options.outputRelPath);
     if (resolvedTarget) {
-      const heading = headingPart
-        ? `#${new GithubSlugger().slug(headingPart)}`
-        : "";
+      const heading = headingPart ? `#${new GithubSlugger().slug(headingPart)}` : "";
       const url = `/posts/${resolvedTarget}${heading}`;
       result = result.replace(match[0], `[${alias || pathPart}](${url})`);
       continue;
@@ -544,12 +531,9 @@ async function transformMarkdown(
 async function main() {
   const vaultRoot = requireEnv("OBSIDIAN_VAULT_PATH");
   const contentDir = requireEnv("OBSIDIAN_CONTENT_DIR");
-  const outputRoot =
-    process.env.OBSIDIAN_OUTPUT_DIR || path.join("src", "content");
-  const contentImagesDir =
-    process.env.OBSIDIAN_CONTENT_IMAGES_DIR || DEFAULT_CONTENT_IMAGES_DIR;
-  const contentImagesUrl =
-    process.env.OBSIDIAN_CONTENT_IMAGES_URL || DEFAULT_CONTENT_IMAGES_URL;
+  const outputRoot = process.env.OBSIDIAN_OUTPUT_DIR || path.join("src", "content");
+  const contentImagesDir = process.env.OBSIDIAN_CONTENT_IMAGES_DIR || DEFAULT_CONTENT_IMAGES_DIR;
+  const contentImagesUrl = process.env.OBSIDIAN_CONTENT_IMAGES_URL || DEFAULT_CONTENT_IMAGES_URL;
   const args = new Set(process.argv.slice(2));
   const shouldClean = args.has("--no-clean") ? false : true;
 
@@ -565,14 +549,10 @@ async function main() {
 
   if (shouldClean) {
     if (!isSubPath(repoRoot, outputRootResolved)) {
-      throw new Error(
-        `Refusing to clean output dir outside repo: ${outputRootResolved}`,
-      );
+      throw new Error(`Refusing to clean output dir outside repo: ${outputRootResolved}`);
     }
     if (!isSubPath(repoRoot, contentImagesDirResolved)) {
-      throw new Error(
-        `Refusing to clean images dir outside repo: ${contentImagesDirResolved}`,
-      );
+      throw new Error(`Refusing to clean images dir outside repo: ${contentImagesDirResolved}`);
     }
 
     await rm(outputRootResolved, { recursive: true, force: true });

@@ -1,14 +1,13 @@
-import { FC, ComponentProps } from "react";
+import { ComponentProps, FC } from "react";
+import Link from "next/link";
 
-const createHeading = (
-  Tag: `h${2 | 3 | 4 | 5 | 6}`,
-): FC<ComponentProps<typeof Tag>> =>
+const createHeading = (Tag: `h${2 | 3 | 4 | 5 | 6}`): FC<ComponentProps<typeof Tag>> =>
   function HeadingLink({ children, id, className, ...props }) {
     return (
       <Tag id={id} className={className} {...props}>
         {children}
         {id && (
-          <a
+          <Link
             href={`#${id}`}
             className="not-prose subheading-anchor"
             aria-label="Permalink for this section"

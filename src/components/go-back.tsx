@@ -1,10 +1,9 @@
 "use client";
-
+import { RiArrowLeftLine, RiHome2Line } from "@remixicon/react";
 import { Button } from "@components/ui/button";
 import { cn } from "@lib/utils";
-import { RiArrowLeftLine, RiHome2Line } from "@remixicon/react";
-import { useTransitionRouter } from "next-view-transitions";
 import type { FC } from "react";
+import { useTransitionRouter } from "next-view-transitions";
 
 export const GoBack: FC<{ className?: string }> = ({ className }) => {
   const router = useTransitionRouter();

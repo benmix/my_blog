@@ -1,8 +1,8 @@
-import type { TocItem } from "@/types/blog";
 import { Meta } from "@components/meta";
-import { TocSider } from "@components/table-of-content";
 import type { Post } from "content-collections";
 import type { ReactNode } from "react";
+import type { TocItem } from "@/types/blog";
+import { TocSider } from "@components/table-of-content";
 
 type WrapperProps = {
   children?: ReactNode;
