@@ -1,7 +1,7 @@
+import type { FC, ReactNode } from "react";
+import { format, toDate } from "date-fns";
 import { GoBackHome } from "@components/go-back";
 import { Post } from "content-collections";
-import { format, toDate } from "date-fns";
-import type { FC, ReactNode } from "react";
 
 export const Meta: FC<{ metadata: Post } & { children?: ReactNode }> = ({
   metadata: { date, reading_time },
@@ -16,9 +16,7 @@ export const Meta: FC<{ metadata: Post } & { children?: ReactNode }> = ({
       </div>
       <div className="flex flex-wrap items-center gap-1 text-muted-foreground">
         {normalizedDate ? format(normalizedDate, "MMM d, y") : null}
-        {normalizedDate && readingTimeText ? (
-          <span className="px-1">•</span>
-        ) : null}
+        {normalizedDate && readingTimeText ? <span className="px-1">•</span> : null}
         {readingTimeText}
       </div>
     </div>

@@ -1,14 +1,13 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { transformMDX } from "@fumadocs/content-collections/configuration";
+import flexokiDark from "@styles/flexoki-dark.json";
+import flexokiLight from "@styles/flexoki-light.json";
 import { getPlainTextSummary } from "@lib/utils";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import remarkMath from "remark-math";
 import type { ThemeRegistrationAny } from "shiki";
+import { transformMDX } from "@fumadocs/content-collections/configuration";
 import { z } from "zod";
-
-import flexokiDark from "@styles/flexoki-dark.json";
-import flexokiLight from "@styles/flexoki-light.json";
 
 const lightTheme = flexokiLight as ThemeRegistrationAny;
 const darkTheme = flexokiDark as ThemeRegistrationAny;
@@ -16,7 +15,9 @@ const CHARS_PER_MINUTE = 400;
 
 function estimateReadingTime(text: string) {
   const normalized = text.replace(/\s+/g, " ").trim();
-  if (!normalized) return undefined;
+  if (!normalized) {
+    return;
+  }
 
   const words = normalized.replace(/\s/g, "").length;
 

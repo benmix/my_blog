@@ -23,11 +23,10 @@ export async function GET() {
   sitemap.push(
     ...(posts.map((post) => {
       const slug = post.slugs?.[post.slugs.length - 1];
-      const url =
-        `${CONFIG_SITE.siteUrl}${post.url ?? (slug ? `/posts/${slug}` : "")}`.replace(
-          /&/g,
-          "&amp;",
-        );
+      const url = `${CONFIG_SITE.siteUrl}${post.url ?? (slug ? `/posts/${slug}` : "")}`.replace(
+        /&/g,
+        "&amp;",
+      );
       return {
         url,
         lastModified: post.data.date
@@ -52,7 +51,7 @@ export async function GET() {
       .flat(),
   );
 
-  xmls.push(...["</urlset>"]);
+  xmls.push("</urlset>");
 
   const xml = xmls.join("\n");
 

@@ -1,10 +1,10 @@
-import { MDXComponents } from "@components/mdx-components";
-import { Wrapper } from "@components/mdx-wrapper";
-import { MDXContent } from "@content-collections/mdx/react";
-import { blogSource } from "@lib/content-source";
-import { getPosts } from "@lib/get-post";
-import { getPlainTextSummary } from "@lib/utils";
 import type { Metadata, NextPage } from "next";
+import { blogSource } from "@lib/content-source";
+import { getPlainTextSummary } from "@lib/utils";
+import { getPosts } from "@lib/get-post";
+import { MDXComponents } from "@components/mdx-components";
+import { MDXContent } from "@content-collections/mdx/react";
+import { Wrapper } from "@components/mdx-wrapper";
 
 export async function generateStaticParams() {
   const articles = await getPosts();
@@ -22,9 +22,7 @@ type PageProps = {
   params: PageParams | Promise<PageParams>;
 };
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await Promise.resolve(params);
   const page = await blogSource.getPage([slug]);
 
@@ -33,8 +31,7 @@ export async function generateMetadata({
   }
 
   const { data: metadata } = page;
-  const summary =
-    metadata.summary ?? getPlainTextSummary(metadata.content ?? "");
+  const summary = metadata.summary ?? getPlainTextSummary(metadata.content ?? "");
 
   return {
     title: metadata.chinese_name ?? metadata.english_name,
@@ -67,12 +64,7 @@ const Page: NextPage<PageProps> = async function (props) {
 
   return (
     <Wrapper toc={page.toc} metadata={metadata}>
-      <MDXContent
-        components={MDXComponents}
-        code={page.data.mdx}
-        {...props}
-        params={params}
-      />
+      <MDXContent components={MDXComponents} code={page.data.mdx} {...props} params={params} />
     </Wrapper>
   );
 };

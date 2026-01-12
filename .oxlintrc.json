@@ -1,4 +1,13 @@
 {
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "eslint",
+    "import",
+    "typescript",
+    "unicorn",
+    "nextjs",
+    "react-perf"
+  ],
   "rules": {
     "sort-imports": [
       "error",
@@ -8,6 +17,8 @@
         "ignoreMemberSort": false,
         "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
       }
-    ]
+    ],
+    "curly": ["error", "all"],
+    "unicorn/no-useless-undefined": "error"
   }
 }

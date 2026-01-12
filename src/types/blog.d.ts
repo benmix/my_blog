@@ -1,5 +1,5 @@
-import type { Post } from "content-collections";
 import { Page } from "fumadocs-core/source";
+import type { Post } from "content-collections";
 
 export type TocItem = {
   id: string;

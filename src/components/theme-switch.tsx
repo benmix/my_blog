@@ -1,10 +1,9 @@
 "use client";
-
-import { Button } from "@components/ui/button";
 import { RiMoonLine, RiSunLine } from "@remixicon/react";
-import { useTheme } from "next-themes";
-import type React from "react";
 import { useEffect, useState } from "react";
+import { Button } from "@components/ui/button";
+import type React from "react";
+import { useTheme } from "next-themes";
 
 export function ThemeSwitch() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -17,12 +16,8 @@ export function ThemeSwitch() {
 
   const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
     const nextTheme = isDark ? "light" : "dark";
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const startViewTransition = (document as any).startViewTransition?.bind(
-      document,
-    );
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const startViewTransition = (document as any).startViewTransition?.bind(document);
 
     if (!startViewTransition || prefersReducedMotion) {
       setTheme(nextTheme);

@@ -1,7 +1,7 @@
+import { getSlugs, loader } from "fumadocs-core/source";
+import { allPosts } from "content-collections";
 import type { BlogPage } from "@/types/blog";
 import { createMDXSource } from "@fumadocs/content-collections";
-import { allPosts } from "content-collections";
-import { getSlugs, loader } from "fumadocs-core/source";
 
 function normalizeToc(toc?: { title: string; url: string; depth: number }[]) {
   if (!toc) {

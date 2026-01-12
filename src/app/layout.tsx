@@ -1,12 +1,12 @@
-import { Layout, Content, Footer } from "@components/layout";
-import { Link } from "@components/link";
 import "@/styles/global.css";
-import { ThemeSwitch } from "@components/theme-switch";
-import { CONFIG_SITE } from "@lib/constant";
-import { RiCopyrightLine } from "@remixicon/react";
-import { getYear } from "date-fns";
-import type { Metadata } from "next";
+import { Content, Footer, Layout } from "@components/layout";
 import { FC, PropsWithChildren } from "react";
+import { CONFIG_SITE } from "@lib/constant";
+import { getYear } from "date-fns";
+import { Link } from "@components/link";
+import type { Metadata } from "next";
+import { RiCopyrightLine } from "@remixicon/react";
+import { ThemeSwitch } from "@components/theme-switch";
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONFIG_SITE.siteUrl),
@@ -49,13 +49,12 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
               {CONFIG_SITE.footerLinks.map((link, index) => {
                 const Icon = link.icon;
 
-                if (!Icon) return null;
+                if (!Icon) {
+                  return null;
+                }
 
                 return (
-                  <span
-                    key={link.id}
-                    className="inline-flex items-center gap-1"
-                  >
+                  <span key={link.id} className="inline-flex items-center gap-1">
                     {index > 0 ? <span>·</span> : null}
                     <Link
                       href={link.href}

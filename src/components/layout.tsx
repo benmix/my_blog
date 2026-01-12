@@ -1,6 +1,7 @@
+import type { ComponentProps, FC, ReactNode } from "react";
+
 import { ThemeProvider } from "next-themes";
 import { ViewTransitions } from "next-view-transitions";
-import type { ComponentProps, FC, ReactNode } from "react";
 
 export const Footer: FC<{
   children?: ReactNode;
@@ -15,7 +16,7 @@ export const Footer: FC<{
 export const Content: FC<{
   children?: ReactNode;
 }> = ({ children }) => {
-  return <div className="grow-1">{children}</div>;
+  return <div className="grow">{children}</div>;
 };
 
 export const Layout: FC<{

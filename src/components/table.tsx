@@ -1,5 +1,6 @@
-import { cn } from "@lib/utils";
 import type { ComponentProps, FC } from "react";
+
+import { cn } from "@lib/utils";
 
 const Table_: FC<ComponentProps<"table">> = (props) => (
   <table {...props} className={cn("block overflow-x-auto", props.className)} />
@@ -8,10 +9,7 @@ const Th: FC<ComponentProps<"th">> = (props) => {
   return (
     <th
       {...props}
-      className={cn(
-        "m-0 border border-border px-4 py-2 font-semibold",
-        props.className,
-      )}
+      className={cn("m-0 border border-border px-4 py-2 font-semibold", props.className)}
     />
   );
 };
@@ -19,21 +17,12 @@ const Tr: FC<ComponentProps<"tr">> = (props) => {
   return (
     <tr
       {...props}
-      className={cn(
-        "m-0 border-t border-border p-0",
-        "even:bg-muted/40",
-        props.className,
-      )}
+      className={cn("m-0 border-t border-border p-0", "even:bg-muted/40", props.className)}
     />
   );
 };
 const Td: FC<ComponentProps<"td">> = (props) => {
-  return (
-    <td
-      {...props}
-      className={cn("m-0 border border-border px-4 py-2", props.className)}
-    />
-  );
+  return <td {...props} className={cn("m-0 border border-border px-4 py-2", props.className)} />;
 };
 
 export const Table = Object.assign(Table_, {

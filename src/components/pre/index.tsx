@@ -1,6 +1,8 @@
-import { CopyToClipboard } from "./copy-to-clipboard";
-import { cn } from "@lib/utils";
 import type { ComponentProps, FC, ReactNode } from "react";
+
+import { cn } from "@lib/utils";
+
+import { CopyToClipboard } from "./copy-to-clipboard";
 
 export const classes = {
   border: cn("border border-border", "contrast-more:border-foreground"),
