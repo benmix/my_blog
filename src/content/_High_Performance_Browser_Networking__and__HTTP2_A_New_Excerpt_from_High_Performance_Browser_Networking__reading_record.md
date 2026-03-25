@@ -79,8 +79,9 @@ $$
 Time = {RTT \times \left[ \log_{2} \left( \frac{N}{inital\quad cwnd} \right) \right]}
 $$
 $$
-N = \frac{双方可接收窗口的最小值的字节数(单位Byte)}{单个TCPSegment的字节数（单位Byte)(1460Bytes)}
+N = \frac{\min(rwnd, cwnd)}{1460}
 $$
+其中，`rwnd` 和 `cwnd` 都以 Byte 为单位，分别表示接收方当前还能接收的数据量和发送方当前判断网络还能承载的数据量，实际在链路上可发送的数据量取两者中的较小值；`1460` 表示单个 TCP segment 的字节数（Byte）。
 减少延迟的方法：
             - 减少 `RTT`，拉近双方距离，使用边缘节点或者 CDN。
             - 增大 `inital cwnd` 到 10 segments ( RFC—6928 )。
