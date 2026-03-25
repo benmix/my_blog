@@ -10,8 +10,8 @@ import { ThemeSwitch } from "@components/theme-switch";
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONFIG_SITE.siteUrl),
-  title: "benmix's blog",
-  description: "share thoughts and life about me",
+  title: CONFIG_SITE.title,
+  description: CONFIG_SITE.description,
   icons: "/icon.svg",
   alternates: {
     types: {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: CONFIG_SITE.title,
-    description: "share thoughts and life about me",
+    description: CONFIG_SITE.ogDescription,
     url: "/",
     images: [
       {
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={CONFIG_SITE.lang} suppressHydrationWarning>
       <head>
         <link rel="sitemap" href="/sitemap.xml" />
       </head>

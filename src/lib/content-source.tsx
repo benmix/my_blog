@@ -2,6 +2,7 @@ import { getSlugs, loader } from "fumadocs-core/source";
 import { allPosts } from "content-collections";
 import type { BlogPage } from "@/types/blog";
 import { createMDXSource } from "@fumadocs/content-collections";
+import { getPageSlugSegments } from "@lib/post-path";
 
 function normalizeToc(toc?: { title: string; url: string; depth: number }[]) {
   if (!toc) {
@@ -27,9 +28,11 @@ const blogLoader = loader(source, {
 
 const pages: BlogPage[] = blogLoader.getPages().map((page) => {
   const toc = normalizeToc(page.data.toc);
+  const slugs = getPageSlugSegments(page);
 
   return {
     ...page,
+    ...(slugs ? { slugs } : {}),
     toc,
   };
 });
@@ -41,7 +44,8 @@ export const blogSource = {
 
   async getPage(slugs: string[]) {
     return pages.find((page) => {
-      return page.slugs.join("/") === slugs.join("/");
+      const pageSlugs = getPageSlugSegments(page);
+      return pageSlugs?.join("/") === slugs.join("/");
     });
   },
 };

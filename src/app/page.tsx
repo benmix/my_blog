@@ -11,13 +11,12 @@ export default async function IndexPage() {
         livePhotoSrc="/home-background.mp4"
         livePhotoType="video/mp4"
         livePhotoAutoPlay
-        livePhotoLoop
         livePhotoMuted
         livePhotoControls={false}
         dir="ltr"
         alt="月亮湾，文昌，海南"
         aria-description="月亮湾，文昌，海南"
-        className="not-prose my-7 h-[280] w-full rounded-sm object-cover object-center max-md:h-[200]"
+        wrapperClassName="not-prose my-7 h-[280] w-full rounded-sm max-md:h-[200]"
       />
       <div className="mt-16 max-md:mt-12">
         <h2 className="text-muted-foreground max-md:text-sm"> 文章 </h2>

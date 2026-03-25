@@ -1,14 +1,10 @@
-import {
-  RiBlueskyLine,
-  RiGithubLine,
-  RiRssLine,
-  RiTwitterXLine,
-} from "@remixicon/react";
+import { RiBlueskyLine, RiGithubLine, RiRssLine, RiTwitterXLine } from "@remixicon/react";
 
 export const CONFIG_SITE = {
   title: "BenMix's Blog",
   siteUrl: "https://blog.benmix.com",
   description: "Latest blog posts",
+  ogDescription: "share thoughts and life about me",
   lang: "zh-cn",
   footerLinks: [
     {

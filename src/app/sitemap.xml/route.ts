@@ -1,4 +1,5 @@
 import { CONFIG_SITE } from "@/lib/constant";
+import { getPageHref } from "@lib/post-path";
 import { getPosts } from "@lib/get-post";
 import { MetadataRoute } from "next";
 
@@ -22,11 +23,7 @@ export async function GET() {
 
   sitemap.push(
     ...(posts.map((post) => {
-      const slug = post.slugs?.[post.slugs.length - 1];
-      const url = `${CONFIG_SITE.siteUrl}${post.url ?? (slug ? `/posts/${slug}` : "")}`.replace(
-        /&/g,
-        "&amp;",
-      );
+      const url = `${CONFIG_SITE.siteUrl}${getPageHref(post) ?? ""}`.replace(/&/g, "&amp;");
       return {
         url,
         lastModified: post.data.date

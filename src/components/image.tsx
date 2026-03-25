@@ -1,109 +1,108 @@
 "use client";
-import { forwardRef, useCallback, useRef, useState } from "react";
-import type { ImageProps } from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { ComponentProps } from "react";
 import NextImage from "next/image";
 
 type LivePhotoProps = {
   livePhotoSrc?: string;
   livePhotoType?: string;
   livePhotoAutoPlay?: boolean;
-  livePhotoLoop?: boolean;
   livePhotoMuted?: boolean;
   livePhotoControls?: boolean;
 };
 
-type ImageWithLivePhotoProps = ImageProps & LivePhotoProps;
+type ImageWithLivePhotoProps = Omit<ComponentProps<typeof NextImage>, "fill" | "className"> &
+  LivePhotoProps & {
+    wrapperClassName?: string;
+    imageClassName?: string;
+  };
 
-const getPosterSrc = (src: ImageProps["src"]) => {
-  if (typeof src === "string") {
-    return src;
-  }
-  if ("default" in src) {
-    return src?.default.src;
-  } else {
-    return src?.src;
-  }
-};
+export function Image(props: ImageWithLivePhotoProps) {
+  const {
+    livePhotoSrc,
+    livePhotoType = "video/quicktime",
+    livePhotoAutoPlay = false,
+    livePhotoMuted = true,
+    livePhotoControls = false,
+    wrapperClassName,
+    imageClassName,
+    sizes = "100vw",
+    src,
+    alt,
+    ...rest
+  } = props;
 
-export const Image = forwardRef<HTMLImageElement | HTMLVideoElement, ImageWithLivePhotoProps>(
-  (props, ref) => {
-    const {
-      livePhotoSrc,
-      livePhotoType = "video/quicktime",
-      livePhotoMuted = true,
-      className,
-      ...rest
-    } = props;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const shouldShowVideo = isPlaying;
 
-    const ImageComponent = typeof rest.src === "object" ? NextImage : "img";
-    const [isPlaying, setIsPlaying] = useState(false);
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    const handleMouseEnter = useCallback(() => {
-      const video = videoRef.current;
-      if (!video) {
-        return;
-      }
-      setIsPlaying(true);
-      void video.play();
-    }, []);
-
-    const resetVideo = useCallback(() => {
-      const video = videoRef.current;
-      if (!video) {
-        return;
-      }
-      video.pause();
-      video.currentTime = 0;
-      setIsPlaying(false);
-    }, []);
-
-    if (livePhotoSrc) {
-      const poster = getPosterSrc(rest.src);
-
-      const wrapperClassName = [className, "relative overflow-hidden"].filter(Boolean).join(" ");
-      return (
-        <div className={wrapperClassName} onMouseEnter={handleMouseEnter} onMouseLeave={resetVideo}>
-          <ImageComponent
-            src={poster}
-            alt={rest.alt ?? ""}
-            className="block h-full w-full object-cover object-center"
-          />
-          <video
-            className={[
-              "absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-200",
-              isPlaying ? "opacity-100" : "opacity-0",
-            ].join(" ")}
-            loop={false}
-            muted={livePhotoMuted}
-            controls={false}
-            playsInline
-            aria-label={rest.alt}
-            ref={(node) => {
-              videoRef.current = node;
-              if (typeof ref === "function") {
-                ref(node);
-                return;
-              }
-              if (ref) {
-                (ref as React.RefObject<HTMLVideoElement | null>).current = node;
-              }
-            }}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            onEnded={resetVideo}
-          >
-            <source src={livePhotoSrc} type={livePhotoType} />
-          </video>
-        </div>
-      );
+  useEffect(() => {
+    if (!livePhotoAutoPlay) {
+      return;
     }
 
-    return (
-      // @ts-expect-error -- fixme
-      <ImageComponent {...rest} className={className} ref={ref} />
-    );
-  },
-);
+    const video = videoRef.current;
+    if (!video) {
+      return;
+    }
 
-Image.displayName = "Image";
+    setIsPlaying(true);
+    void video.play().catch(() => {
+      setIsPlaying(false);
+    });
+  }, [livePhotoAutoPlay]);
+
+  const handleMouseEnter = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) {
+      return;
+    }
+
+    setIsPlaying(true);
+    void video.play();
+  }, []);
+
+  const resetVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) {
+      return;
+    }
+
+    video.pause();
+    video.currentTime = 0;
+    setIsPlaying(false);
+  }, []);
+
+  const wrapperClasses = [wrapperClassName, "relative overflow-hidden"].filter(Boolean).join(" ");
+  const imageClasses = [imageClassName, "object-cover object-center"].filter(Boolean).join(" ");
+
+  return (
+    <div
+      className={wrapperClasses}
+      onMouseEnter={livePhotoSrc ? handleMouseEnter : undefined}
+      onMouseLeave={livePhotoSrc ? resetVideo : undefined}
+    >
+      <NextImage src={src} alt={alt} fill sizes={sizes} className={imageClasses} {...rest} />
+      {livePhotoSrc ? (
+        <video
+          className={[
+            "absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-200",
+            shouldShowVideo ? "opacity-100" : "opacity-0",
+          ].join(" ")}
+          autoPlay={livePhotoAutoPlay}
+          loop={false}
+          muted={livePhotoMuted}
+          controls={livePhotoControls}
+          playsInline
+          aria-label={alt}
+          ref={videoRef}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          onEnded={resetVideo}
+        >
+          <source src={livePhotoSrc} type={livePhotoType} />
+        </video>
+      ) : null}
+    </div>
+  );
+}

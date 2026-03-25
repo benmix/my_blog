@@ -39,7 +39,7 @@ export const Pre: FC<PreProps> = ({
     );
 
   return (
-    <div className="group relative not-first:mt-6">
+    <div className="group relative not-first:mt-6" data-code-block="">
       {shouldShowCopy ? (
         <div className="absolute top-3 right-3 z-10 opacity-0 transition group-hover:opacity-100">
           {copyButton}

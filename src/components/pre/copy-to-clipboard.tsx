@@ -21,12 +21,16 @@ export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
   }, [isCopied]);
 
   const handleClick = async (event: MouseEvent) => {
-    setCopied(true);
-    const container = event.currentTarget.parentNode!.parentNode!;
+    const container = event.currentTarget.closest("[data-code-block]");
+    if (!container) {
+      return;
+    }
+
     const content = container.querySelector("pre code")?.textContent || "";
     try {
       // container should be not inside a try/catch statement, otherwise react-compiler give an error
       await navigator.clipboard.writeText(content);
+      setCopied(true);
     } catch {
       console.error("Failed to copy!");
     }

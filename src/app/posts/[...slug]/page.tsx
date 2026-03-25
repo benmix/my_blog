@@ -1,22 +1,23 @@
 import type { Metadata, NextPage } from "next";
 import { blogSource } from "@lib/content-source";
+import { getPageHref } from "@lib/post-path";
 import { getPlainTextSummary } from "@lib/utils";
 import { getPosts } from "@lib/get-post";
 import { MDXComponents } from "@components/mdx-components";
 import { MDXContent } from "@content-collections/mdx/react";
+import { notFound } from "next/navigation";
 import { Wrapper } from "@components/mdx-wrapper";
 
 export async function generateStaticParams() {
   const articles = await getPosts();
   return articles
     .map((article) => {
-      const slug = article.slugs?.[article.slugs.length - 1];
-      return slug ? { slug } : null;
+      return article.slugs?.length ? { slug: article.slugs } : null;
     })
-    .filter((item): item is { slug: string } => Boolean(item));
+    .filter((item): item is { slug: string[] } => Boolean(item));
 }
 
-type PageParams = { slug: string };
+type PageParams = { slug: string[] };
 
 type PageProps = {
   params: PageParams | Promise<PageParams>;
@@ -24,7 +25,7 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await Promise.resolve(params);
-  const page = await blogSource.getPage([slug]);
+  const page = await blogSource.getPage(slug);
 
   if (!page) {
     return {};
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: metadata.chinese_name ?? metadata.english_name,
       description: summary,
-      url: "/posts/" + slug,
+      url: getPageHref(page) ?? `/posts/${slug.join("/")}`,
       images: [
         {
           url: "/og_image_logo.webp",
@@ -54,10 +55,10 @@ const Page: NextPage<PageProps> = async function (props) {
 
   const { slug } = await Promise.resolve(params);
 
-  const page = await blogSource.getPage([slug]);
+  const page = await blogSource.getPage(slug);
 
   if (!page) {
-    return null;
+    notFound();
   }
 
   const { data: metadata } = page;
