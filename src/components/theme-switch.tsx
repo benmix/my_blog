@@ -6,7 +6,7 @@ import type React from "react";
 import { useTheme } from "next-themes";
 
 export function ThemeSwitch() {
-  const { setTheme, resolvedTheme } = useTheme();
+  const { resolvedTheme, setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const isDark = resolvedTheme === "dark";
 
@@ -46,10 +46,14 @@ export function ThemeSwitch() {
   };
 
   const IconToUse = mounted && isDark ? RiMoonLine : RiSunLine;
+  const ariaLabel =
+    theme === "system"
+      ? `Theme follows system, currently ${isDark ? "dark" : "light"}`
+      : `Switch to ${isDark ? "light" : "dark"} mode`;
 
   return (
     <Button
-      aria-label="Toggle Dark Mode"
+      aria-label={ariaLabel}
       onClick={toggleTheme}
       variant="ghost"
       size="icon"

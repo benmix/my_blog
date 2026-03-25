@@ -24,7 +24,7 @@ export const Layout: FC<{
   nextThemes?: Omit<ComponentProps<typeof ThemeProvider>, "children">;
 }> = ({ children, nextThemes }) => {
   return (
-    <ThemeProvider attribute="class" {...nextThemes}>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem {...nextThemes}>
       <main
         className="relative container mx-auto prose prose-sm flex flex-col max-md:prose-sm max-md:px-4 xl:max-w-[85ch] prose-a:no-underline hover:prose-a:underline"
         dir="ltr"
