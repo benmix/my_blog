@@ -2,11 +2,8 @@ import "@/styles/global.css";
 import { Content, Footer, Layout } from "@components/layout";
 import { FC, PropsWithChildren } from "react";
 import { CONFIG_SITE } from "@lib/constant";
-import { getYear } from "date-fns";
-import { Link } from "@components/link";
 import type { Metadata } from "next";
-import { RiCopyrightLine } from "@remixicon/react";
-import { ThemeSwitch } from "@components/theme-switch";
+import { SiteFooter } from "@components/site-footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONFIG_SITE.siteUrl),
@@ -45,33 +42,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <Layout>
           <Content>{children}</Content>
           <Footer>
-            <div className="flex gap-1 font-light text-muted-foreground">
-              {CONFIG_SITE.footerLinks.map((link, index) => {
-                const Icon = link.icon;
-
-                if (!Icon) {
-                  return null;
-                }
-
-                return (
-                  <span key={link.id} className="inline-flex items-center gap-1">
-                    {index > 0 ? <span>·</span> : null}
-                    <Link
-                      href={link.href}
-                      target={link.external ? "_blank" : undefined}
-                      className="inline-flex gap-1 text-muted-foreground hover:text-foreground"
-                    >
-                      <Icon size="16" />
-                    </Link>
-                  </span>
-                );
-              })}
-              <span>·</span>
-              <RiCopyrightLine size="16" />
-              <span>{getYear(new Date())}</span>
-              <span>BenMix</span>
-            </div>
-            <ThemeSwitch />
+            <SiteFooter />
           </Footer>
         </Layout>
       </body>
