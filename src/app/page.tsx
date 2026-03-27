@@ -1,7 +1,7 @@
 import { getPosts } from "@lib/get-post";
-import { HomeGazette } from "@components/home-gazette";
+import { Home } from "@/components/home";
 
 export default async function IndexPage() {
   const articles = await getPosts();
-  return <HomeGazette articles={articles} />;
+  return <Home articles={articles} />;
 }

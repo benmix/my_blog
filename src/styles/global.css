@@ -12,21 +12,20 @@
 @import "katex/dist/katex.min.css";
 @import "./react-medium-image-zoom.css";
 @import "./scrollbar.css";
-@import "./subheading-anchor.css";
 @import "./toc.css";
 @import "./theme-transition.css";
 
 html {
-  scroll-behavior: smooth;
-  overscroll-behavior: none;
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
 }
 
 body {
-  @apply min-h-screen bg-background text-foreground;
+    @apply min-h-screen bg-background text-foreground;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+    html {
+        scroll-behavior: auto;
+    }
 }

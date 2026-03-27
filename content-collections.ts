@@ -4,6 +4,7 @@ import flexokiLight from "@styles/flexoki-light.json";
 import { getPlainTextSummary } from "@lib/utils";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import type { ThemeRegistrationAny } from "shiki";
 import { transformMDX } from "@fumadocs/content-collections/configuration";
@@ -42,7 +43,7 @@ const posts = defineCollection({
   }),
   transform: async (doc, context) => {
     const compiled = await transformMDX(doc, context, {
-      remarkPlugins: (plugins) => [remarkMath, ...plugins],
+      remarkPlugins: (plugins) => [remarkGfm, remarkMath, ...plugins],
       rehypePlugins: (plugins) => [rehypeSlug, rehypeKatex, ...plugins],
       rehypeCodeOptions: {
         themes: {

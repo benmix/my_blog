@@ -8,7 +8,8 @@ duration: 2022-06-01
 public_date: 2022-09-01
 base: "_posts.database.base"
 ---
-# **Examples**
+
+### **Examples**
 
 Given the string `foobarbarfoo`:
 
@@ -27,9 +28,9 @@ You can also combine them:
 
 ```
 
-# **Definitions**
+### **Definitions**
 
-## Look ahead positive `(?=)`
+#### Look ahead positive `(?=)`
 
 Find expression A where expression B follows:
 
@@ -38,7 +39,7 @@ A(?=B)
 
 ```
 
-## Look ahead negative `(?!)`
+#### Look ahead negative `(?!)`
 
 Find expression A where expression B does not follow:
 
@@ -47,7 +48,7 @@ A(?!B)
 
 ```
 
-## Look behind positive `(?<=)`
+#### Look behind positive `(?<=)`
 
 Find expression A where expression B precedes:
 
@@ -56,7 +57,7 @@ Find expression A where expression B precedes:
 
 ```
 
-## Look behind negative `(?<!)`
+#### Look behind negative `(?<!)`
 
 Find expression A where expression B does not precede:
 
@@ -65,7 +66,7 @@ Find expression A where expression B does not precede:
 
 ```
 
-## Atomic groups `(?>)`
+#### Atomic groups `(?>)`
 
 An atomic group exits a group and throws away alternative patterns after the *first* matched pattern inside the group (backtracking is disabled).
 
@@ -78,7 +79,7 @@ A non-atomic group will allow backtracking; if subsequent matching ahead fails, 
     2. match its 2nd alternative `foot`, then succeed as `s` immediately follows in `foots`, and stop.
     3. then grouped as `foot` and `s`
 
-## Non-capturing groups `(?:)`
+#### Non-capturing groups `(?:)`
 
 capturing and no single groups。
 
@@ -90,11 +91,11 @@ example: `foobarbarfoo`
 
 `foo(bar)` applied to `foobarbarfoo` will match `foobar` then grouped as `foo` and `bar`
 
-# **Some resources**
+### **Some resources**
 
 - [http://www.regular-expressions.info/lookaround.html](http://www.regular-expressions.info/lookaround.html)
 - [http://www.rexegg.com/regex-lookarounds.html](http://www.rexegg.com/regex-lookarounds.html)
 
-# **Online testers**
+### **Online testers**
 
 - [https://regex101.com](https://regex101.com/)

@@ -88,6 +88,9 @@ When changing behavior in these areas, inspect the related files first.
 
 - Preserve the existing project style unless there is a concrete reason to
   improve it.
+- Do not use `import *` syntax. Prefer named imports or explicit type imports.
+- Do not use barrel files or aggregate re-exports such as `index.ts` export
+  hubs. Import from the concrete component/module file directly.
 - Prefer server-first and static-friendly solutions when they fit the current
   architecture.
 - Keep content pipeline changes compatible with existing markdown files unless a

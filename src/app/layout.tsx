@@ -1,9 +1,8 @@
 import "@/styles/global.css";
-import { Content, Footer, Layout } from "@components/layout";
+import { Content, Layout } from "@components/layout";
 import { FC, PropsWithChildren } from "react";
 import { CONFIG_SITE } from "@lib/constant";
 import type { Metadata } from "next";
-import { SiteFooter } from "@components/site-footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONFIG_SITE.siteUrl),
@@ -41,9 +40,6 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
       <body>
         <Layout>
           <Content>{children}</Content>
-          <Footer>
-            <SiteFooter />
-          </Footer>
         </Layout>
       </body>
     </html>

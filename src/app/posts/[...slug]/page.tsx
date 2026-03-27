@@ -1,5 +1,6 @@
 import type { Metadata, NextPage } from "next";
 import { blogSource } from "@lib/content-source";
+import { CONFIG_SITE } from "@lib/constant";
 import { getPageHref } from "@lib/post-path";
 import { getPlainTextSummary } from "@lib/utils";
 import { getPosts } from "@lib/get-post";
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const summary = metadata.summary ?? getPlainTextSummary(metadata.content ?? "");
 
   return {
-    title: metadata.chinese_name ?? metadata.english_name,
+    title: `${metadata.chinese_name ?? metadata.english_name} - ${CONFIG_SITE.title}`,
     description: summary,
     openGraph: {
       title: metadata.chinese_name ?? metadata.english_name,
@@ -64,7 +65,7 @@ const Page: NextPage<PageProps> = async function (props) {
   const { data: metadata } = page;
 
   return (
-    <Wrapper toc={page.toc} metadata={metadata}>
+    <Wrapper metadata={metadata}>
       <MDXContent components={MDXComponents} code={page.data.mdx} {...props} params={params} />
     </Wrapper>
   );

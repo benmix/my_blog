@@ -3,12 +3,6 @@ import { cn } from "@lib/utils";
 import { ThemeProvider } from "next-themes";
 import { ViewTransitions } from "next-view-transitions";
 
-export const Footer: FC<{
-  children?: ReactNode;
-}> = ({ children }) => {
-  return <footer className="relative mt-auto w-full">{children}</footer>;
-};
-
 export const Content: FC<{
   children?: ReactNode;
   className?: string;

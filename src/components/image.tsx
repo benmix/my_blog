@@ -1,6 +1,6 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { ComponentProps } from "react";
+import { type ComponentProps, useCallback, useEffect, useRef, useState } from "react";
+import { cn } from "@lib/utils";
 import NextImage from "next/image";
 
 type LivePhotoProps = {
@@ -73,8 +73,8 @@ export function Image(props: ImageWithLivePhotoProps) {
     setIsPlaying(false);
   }, []);
 
-  const wrapperClasses = [wrapperClassName, "relative overflow-hidden"].filter(Boolean).join(" ");
-  const imageClasses = [imageClassName, "object-cover object-center"].filter(Boolean).join(" ");
+  const wrapperClasses = cn("relative overflow-hidden", wrapperClassName);
+  const imageClasses = cn("object-cover object-center", imageClassName);
 
   return (
     <div
@@ -85,10 +85,10 @@ export function Image(props: ImageWithLivePhotoProps) {
       <NextImage src={src} alt={alt} fill sizes={sizes} className={imageClasses} {...rest} />
       {livePhotoSrc ? (
         <video
-          className={[
+          className={cn(
             "absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-200",
             shouldShowVideo ? "opacity-100" : "opacity-0",
-          ].join(" ")}
+          )}
           autoPlay={livePhotoAutoPlay}
           loop={false}
           muted={livePhotoMuted}
