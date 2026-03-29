@@ -1,7 +1,7 @@
-import { getPosts } from "@lib/get-post";
-import { Home } from "@/components/home";
+import { redirect } from "next/navigation";
 
-export default async function IndexPage() {
-  const articles = await getPosts();
-  return <Home articles={articles} />;
+import { DEFAULT_LOCALE } from "@lib/i18n";
+
+export default function IndexPage() {
+  redirect(`/${DEFAULT_LOCALE}`);
 }

@@ -1,7 +1,8 @@
-import { getSlugs, loader } from "fumadocs-core/source";
-import { allPosts } from "content-collections";
-import type { BlogPage } from "@/types/blog";
 import { createMDXSource } from "@fumadocs/content-collections";
+import { allPosts } from "content-collections";
+import { getSlugs, loader } from "fumadocs-core/source";
+
+import type { BlogPage } from "@/types/blog";
 import { getPageSlugSegments } from "@lib/post-path";
 
 function normalizeToc(toc?: { title: string; url: string; depth: number }[]) {
@@ -10,11 +11,11 @@ function normalizeToc(toc?: { title: string; url: string; depth: number }[]) {
   }
 
   return toc
-    .filter((item) => item.depth <= 3)
+    .filter((item) => item.depth >= 3 && item.depth <= 4)
     .map((item) => {
       const hash = item.url.split("#").pop() ?? "";
       const id = decodeURIComponent(hash);
-      return { id, title: item.title };
+      return { depth: item.depth, id, title: item.title };
     })
     .filter((item) => item.id && item.title);
 }

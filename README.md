@@ -52,7 +52,6 @@ pnpm start
 pnpm typecheck
 pnpm lint
 pnpm lint:fix
-pnpm lint:fix:sort-imports
 pnpm format
 pnpm format:write
 pnpm lint:css
@@ -68,9 +67,8 @@ pnpm obsidian-sync
 - `pnpm typecheck`: 执行 TypeScript 类型检查。
 - `pnpm lint`: 执行 JavaScript / TypeScript lint。
 - `pnpm lint:fix`: 自动修复部分 lint 问题。
-- `pnpm lint:fix:sort-imports`: 修复 import 排序。
 - `pnpm format`: 检查代码格式。
-- `pnpm format:write`: 写入格式化结果。
+- `pnpm format:write`: 写入格式化结果，并使用 `oxfmt` 处理 import 排序。
 - `pnpm lint:css`: 检查样式文件。
 - `pnpm lint:css:fix`: 自动修复部分样式问题。
 - `pnpm obsidian-sync`: 从 Obsidian vault 同步内容到博客目录。

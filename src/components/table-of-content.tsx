@@ -1,25 +1,41 @@
 "use client";
-import { FC, useEffect, useState } from "react";
-import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from "@remixicon/react";
-import { Button } from "@components/ui/button";
-import { cn } from "@lib/utils";
-import Link from "next/link";
-import type { TocItem } from "@/types/blog";
 
-export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
-  const [expand, setExpand] = useState<boolean>(true);
-  const [activeId, setActiveId] = useState<string | null>(null);
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+import { cn } from "@lib/utils";
+
+type TableOfContentsProps = {
+  className?: string;
+  label?: string;
+  mode?: "desktop" | "mobile";
+  toc?: import("@/types/blog").TocItem[];
+};
+
+function getIndentClass(depth: number) {
+  return depth >= 4 ? "pl-4" : undefined;
+}
+
+export function TableOfContents({
+  className,
+  label = "In This Article",
+  mode = "desktop",
+  toc,
+}: TableOfContentsProps) {
+  const [activeId, setActiveId] = useState<string | null>(toc?.[0]?.id ?? null);
 
   useEffect(() => {
     if (!toc?.length) {
+      setActiveId(null);
       return;
     }
 
     const headingElements = toc
       .map(({ id }) => document.getElementById(id))
-      .filter((el): el is HTMLElement => Boolean(el));
+      .filter((element): element is HTMLElement => Boolean(element));
 
     if (!headingElements.length) {
+      setActiveId(toc[0]?.id ?? null);
       return;
     }
 
@@ -31,21 +47,19 @@ export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
             (a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top,
           );
 
-        if (visibleEntries.length) {
+        if (visibleEntries.length > 0) {
           setActiveId(visibleEntries[0].target.id);
           return;
         }
 
-        const aboveFold = headingElements
-          .filter((heading) => heading.getBoundingClientRect().top <= 120)
-          .sort((a, b) => b.getBoundingClientRect().top - a.getBoundingClientRect().top);
+        const nearestPastHeading = headingElements
+          .filter((heading) => heading.getBoundingClientRect().top <= 140)
+          .sort((a, b) => b.getBoundingClientRect().top - a.getBoundingClientRect().top)[0];
 
-        if (aboveFold.length) {
-          setActiveId(aboveFold[0].id);
-        }
+        setActiveId(nearestPastHeading?.id ?? toc[0]?.id ?? null);
       },
       {
-        rootMargin: "0px 0px -65% 0px",
+        rootMargin: "0px 0px -70% 0px",
         threshold: [0, 1],
       },
     );
@@ -55,45 +69,58 @@ export const TocSider: FC<{ toc?: TocItem[] }> = ({ toc }) => {
     return () => observer.disconnect();
   }, [toc]);
 
-  const IconToUse = expand ? <RiArrowLeftDoubleLine /> : <RiArrowRightDoubleLine />;
+  if (!toc?.length) {
+    return null;
+  }
 
-  return toc?.length ? (
-    <div className="fixed -right-2 z-50 h-full pb-60 max-lg:hidden">
-      <div
-        data-state={expand ? "open" : "closed"}
-        className={cn(
-          "toc-panel scroll-hidden h-fit max-h-full overflow-auto rounded-l-md border-none bg-background p-4 backdrop-blur",
-        )}
-      >
-        <div className={cn("w-[18vw] pr-2")}>
-          <ul>
-            {toc.map((heading) => (
-              <li key={heading.id}>
-                <Link
-                  href={`#${heading.id}`}
-                  className={cn(
-                    "text-muted-foreground no-underline! hover:text-foreground hover:no-underline!",
-                    activeId === heading.id && "font-medium text-foreground",
-                  )}
-                  aria-current={activeId === heading.id ? "true" : undefined}
-                >
-                  {heading.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <Button
-        data-state={expand ? "open" : "closed"}
-        className="absolute top-2 right-2 rounded-l-md rounded-r-none data-[state=closed]:shadow-md"
-        variant="ghost"
-        onClick={() => {
-          setExpand((prev) => !prev);
-        }}
-      >
-        {IconToUse}
-      </Button>
-    </div>
-  ) : null;
-};
+  const nav = (
+    <nav aria-label="Table of contents">
+      <ol className="space-y-1.5">
+        {toc.map((item) => {
+          const isActive = activeId === item.id;
+
+          return (
+            <li key={item.id}>
+              <Link
+                href={`#${item.id}`}
+                aria-current={isActive ? "location" : undefined}
+                className={cn(
+                  "block border-l border-transparent py-1 pr-2 font-sans text-[0.98rem] leading-[1.6] [text-wrap:pretty] text-muted-foreground transition-[border-color,color,padding] hover:text-foreground focus-visible:text-foreground focus-visible:outline-none",
+                  getIndentClass(item.depth),
+                  isActive && "border-border pl-3 text-foreground",
+                )}
+              >
+                {item.title}
+              </Link>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+
+  if (mode === "mobile") {
+    return (
+      <section className={cn("mb-10 border-y border-border/80 py-5 lg:hidden", className)}>
+        <p className="mb-4 font-mono text-[0.8rem] font-medium tracking-[0.15em] text-muted-foreground uppercase">
+          {label}
+        </p>
+        {nav}
+      </section>
+    );
+  }
+
+  return (
+    <aside
+      className={cn(
+        "hidden self-start lg:sticky lg:top-24 lg:block lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:border-l lg:border-border/80 lg:pl-5",
+        className,
+      )}
+    >
+      <p className="mb-4 font-mono text-[0.8rem] font-medium tracking-[0.15em] text-muted-foreground uppercase">
+        {label}
+      </p>
+      {nav}
+    </aside>
+  );
+}

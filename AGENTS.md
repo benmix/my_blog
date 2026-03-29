@@ -88,7 +88,10 @@ When changing behavior in these areas, inspect the related files first.
 
 - Preserve the existing project style unless there is a concrete reason to
   improve it.
-- Do not use `import *` syntax. Prefer named imports or explicit type imports.
+- Do not use `import *` or `import * as` syntax. Prefer named imports or
+  explicit type imports.
+- Do not use `export *` or `export * as` re-exports. Export concrete symbols
+  directly from the declaring file.
 - Do not use barrel files or aggregate re-exports such as `index.ts` export
   hubs. Import from the concrete component/module file directly.
 - Prefer server-first and static-friendly solutions when they fit the current
@@ -124,7 +127,6 @@ the change.
   - `pnpm lint`
 - CSS or theme changes:
   - `pnpm lint:css`
-  - manual browser check when behavior is visual or media-query dependent
 - Formatting-sensitive changes:
   - `pnpm format`
 - Obsidian sync changes:
@@ -144,7 +146,6 @@ pnpm start
 pnpm typecheck
 pnpm lint
 pnpm lint:fix
-pnpm lint:fix:sort-imports
 pnpm format
 pnpm format:write
 pnpm lint:css

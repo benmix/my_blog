@@ -1,66 +1,97 @@
-import { format, toDate } from "date-fns";
+import { format } from "date-fns";
+import { toDate } from "date-fns";
+
+import { LocaleSwitch } from "@/components/locale-switch";
+import { TableOfContents } from "@/components/table-of-content";
 import { Link } from "@components/link";
-import type { Post } from "content-collections";
-import type { ReactNode } from "react";
 import { SiteFooter } from "@components/site-footer";
+import { formatReadingTime } from "@lib/i18n";
+import { getDateLocale } from "@lib/i18n";
+import { getLocalizedTitle } from "@lib/i18n";
+import { getSiteDictionary } from "@lib/i18n";
+import { cn } from "@lib/utils";
+type Post = import("content-collections").Post;
+type ReactNode = import("react").ReactNode;
 
 type WrapperProps = {
   children?: ReactNode;
+  currentPath: string;
+  locale: import("@lib/i18n").SiteLocale;
   metadata: Post;
+  toc?: import("@/types/blog").TocItem[];
+  variant?: "embedded" | "page";
 };
 
-function formatReadingTime(readingTimeText?: string) {
-  if (!readingTimeText) {
-    return null;
-  }
-
-  const match = readingTimeText.match(/^(\d+)\s+min/i);
-  if (!match) {
-    return readingTimeText;
-  }
-
-  const minutes = Number(match[1]);
-  if (!Number.isFinite(minutes)) {
-    return readingTimeText;
-  }
-
-  return `Est. Read: ${minutes} ${minutes === 1 ? "Minute" : "Minutes"}`;
-}
-
-export const Wrapper = ({ children, metadata }: WrapperProps) => {
-  const heading = metadata.chinese_name ?? metadata.english_name ?? "";
+export const Wrapper = ({
+  children,
+  currentPath,
+  locale,
+  metadata,
+  toc,
+  variant = "page",
+}: WrapperProps) => {
+  const dictionary = getSiteDictionary(locale);
+  const heading = getLocalizedTitle(metadata, locale);
   const normalizedDate = metadata.date ? toDate(metadata.date) : null;
-  const readingTime = formatReadingTime(metadata.reading_time?.text);
+  const readingTime = formatReadingTime(metadata.reading_time?.text, locale);
+  const isEmbedded = variant === "embedded";
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-[900px] flex-col px-6 py-8 sm:px-12 md:py-12">
-      <nav className="mb-8 flex items-center gap-2 font-mono text-xs tracking-[0.24em] text-muted-foreground uppercase">
-        <Link href="/" className="transition-colors hover:text-foreground">
-          Home
-        </Link>
-        <span>/</span>
-        <span className="text-foreground">Articles</span>
-      </nav>
+    <main
+      className={cn(
+        "mx-auto flex w-full flex-col bg-background text-foreground",
+        isEmbedded
+          ? "max-w-full py-0"
+          : "min-h-screen max-w-[82rem] overflow-visible px-6 py-8 sm:px-8 md:py-12 lg:px-10",
+      )}
+    >
+      {isEmbedded ? null : (
+        <nav className="mb-10 flex items-center gap-2 font-mono text-[0.82rem] tracking-[0.18em] text-muted-foreground uppercase">
+          <Link href={`/${locale}`} className="transition-colors hover:text-foreground">
+            {dictionary.home}
+          </Link>
+          <span>/</span>
+          <span className="text-foreground">{dictionary.articles}</span>
+          <span className="ml-auto">
+            <LocaleSwitch currentPath={currentPath} locale={locale} />
+          </span>
+        </nav>
+      )}
 
-      <header className="mb-12">
-        <div className="mb-8 border-t-[3px] border-b border-border border-t-foreground py-6 text-center">
-          <h1 className="px-4 font-serif text-3xl leading-tight font-bold tracking-tight text-foreground md:text-5xl">
-            {heading}
-          </h1>
-          <div className="mt-6 flex items-center justify-between gap-4 font-mono text-xs text-muted-foreground">
-            <span>{normalizedDate ? format(normalizedDate, "EEEE, MMMM d, yyyy") : null}</span>
+      <header
+        className={cn(
+          "border-t-2 border-b border-border border-t-foreground",
+          isEmbedded ? "mb-10 py-6 md:py-8" : "mb-12 py-8 md:py-10",
+        )}
+      >
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,68ch)_minmax(14rem,18rem)] lg:items-start lg:gap-14">
+          <div className="min-w-0">
+            <h1 className="max-w-[12ch] font-serif text-[2.45rem] leading-[0.95] font-bold tracking-[-0.038em] text-balance text-foreground md:text-[3.8rem]">
+              {heading}
+            </h1>
+          </div>
+          <div className="flex shrink-0 flex-col gap-2 border-l border-border pl-5 font-mono text-[0.8rem] tracking-[0.15em] text-muted-foreground uppercase">
+            <span>
+              {normalizedDate
+                ? format(normalizedDate, "PPPP", {
+                    locale: getDateLocale(locale),
+                  })
+                : null}
+            </span>
             <span>{readingTime}</span>
           </div>
         </div>
       </header>
 
-      <article
-        className="text-foreground [&>p:first-of-type:first-letter]:float-left [&>p:first-of-type:first-letter]:pt-1 [&>p:first-of-type:first-letter]:pr-2 [&>p:first-of-type:first-letter]:pl-[3px] [&>p:first-of-type:first-letter]:font-serif [&>p:first-of-type:first-letter]:text-[4.5rem] [&>p:first-of-type:first-letter]:leading-[0.85] [&>p:first-of-type:first-letter]:font-bold [&>p:first-of-type:first-letter]:text-foreground"
-      >
-        {children}
-      </article>
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,68ch)_minmax(14rem,18rem)] lg:items-start lg:gap-14">
+        <div className="min-w-0">
+          <TableOfContents label={dictionary.inThisArticle} mode="mobile" toc={toc} />
+          <article className="text-foreground antialiased [&_pre]:max-w-[76ch]">{children}</article>
+        </div>
+        <TableOfContents label={dictionary.inThisArticle} mode="desktop" toc={toc} />
+      </div>
 
-      <SiteFooter />
+      {isEmbedded ? null : <SiteFooter currentPath={currentPath} locale={locale} />}
     </main>
   );
 };

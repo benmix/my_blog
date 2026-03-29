@@ -1,29 +1,34 @@
-import { escapeXml, formatRssDate } from "@lib/feed";
 import { CONFIG_SITE } from "@/lib/constant";
+import { escapeXml } from "@lib/feed";
+import { formatRssDate } from "@lib/feed";
+import { getPosts } from "@lib/get-post";
+import { DEFAULT_LOCALE } from "@lib/i18n";
+import { getLocalizedTitle } from "@lib/i18n";
+import { getSiteDictionary } from "@lib/i18n";
 import { getPageHref } from "@lib/post-path";
 import { getPlainTextSummary } from "@lib/utils";
-import { getPosts } from "@lib/get-post";
 
 export const dynamic = "force-static";
 
 export async function GET() {
   const posts = await getPosts();
+  const dictionary = getSiteDictionary(DEFAULT_LOCALE);
 
   const xmls = [
     '<?xml version="1.0" encoding="utf-8"?>',
     '<rss version="2.0">',
     `  <channel>`,
-    `    <title> ${CONFIG_SITE.title} </title>`,
+    `    <title> ${dictionary.siteTitle} </title>`,
     `    <link> ${CONFIG_SITE.siteUrl} </link>`,
-    `    <description> ${CONFIG_SITE.description} </description>`,
-    `    <language> ${CONFIG_SITE.lang} </language>`,
+    `    <description> ${dictionary.siteDescription} </description>`,
+    `    <language> ${dictionary.htmlLang} </language>`,
   ];
 
   xmls.push(
     ...posts
       .map((post) => {
-        const title = escapeXml(post.data.chinese_name ?? post.data.english_name ?? "");
-        const href = `${CONFIG_SITE.siteUrl}${getPageHref(post) ?? ""}`;
+        const title = escapeXml(getLocalizedTitle(post.data, DEFAULT_LOCALE));
+        const href = `${CONFIG_SITE.siteUrl}${getPageHref(post, DEFAULT_LOCALE) ?? ""}`;
         const formattedDate = post.data.date ? formatRssDate(post.data.date) : "";
         const summary = getPlainTextSummary(post.data.summary ?? post.data.content ?? "");
 

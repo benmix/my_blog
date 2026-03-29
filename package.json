@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "ben-mix-s-blog",
+  "license": "MIT",
   "author": "BenMix",
   "type": "module",
-  "license": "MIT",
   "scripts": {
     "build": "next build",
     "dev": "next --turbopack",
@@ -14,7 +14,6 @@
     "typecheck": "tsc --noEmit",
     "lint": "oxlint --config ./.oxlintrc.json .",
     "lint:fix": "oxlint --config ./.oxlintrc.json --fix --fix-suggestions .",
-    "lint:fix:sort-imports": "node scripts/oxlint-fix-sort-imports.mjs",
     "format": "oxfmt --config ./.oxfmtrc.json --check .",
     "format:write": "oxfmt --config ./.oxfmtrc.json .",
     "lint:css": "stylelint \"src/**/*.{css,scss}\"",

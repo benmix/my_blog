@@ -1,140 +1,160 @@
-import { getPageHref, getPageSlugSegments } from "@lib/post-path";
-import type { BlogPage } from "@/types/blog";
 import { format } from "date-fns";
-import { getTitleStyle } from "@lib/title-style";
+
 import { Image } from "@components/image";
-import Link from "next/link";
+import { Link } from "@components/link";
 import { SiteFooter } from "@components/site-footer";
+import { getDateLocale } from "@lib/i18n";
+import { getLocalizedTitle } from "@lib/i18n";
+import { getPageHref } from "@lib/post-path";
+import { getPageSlugSegments } from "@lib/post-path";
+import { getTitleStyle } from "@lib/title-style";
 
 type HomeProps = {
-  articles: BlogPage[];
+  articles: import("@/types/blog").BlogPage[];
+  locale: import("@lib/i18n").SiteLocale;
 };
 
 const MAX_HOME_ARTICLES = 10;
 const FALLBACK_TITLE = "Untitled";
-const HERO_CAPTION =
-  "Figure 1. The serene ocean view that inspires deep thinking and creative writing.";
 const monoClass = "[font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace]";
 const serifClass = "[font-family:Georgia,Cambria,'Times_New_Roman',Times,serif]";
 
-function getArticleSlug(article: BlogPage) {
+function getArticleSlug(article: import("@/types/blog").BlogPage) {
   const slugs = getPageSlugSegments(article);
   return slugs ? slugs[slugs.length - 1] : undefined;
 }
 
-function getDisplayTitle(article: BlogPage) {
+function getDisplayTitle(
+  article: import("@/types/blog").BlogPage,
+  locale: import("@lib/i18n").SiteLocale,
+) {
   const slug = getArticleSlug(article);
-  return article.data.chinese_name ?? article.data.english_name ?? slug ?? FALLBACK_TITLE;
+  return getLocalizedTitle(article.data, locale) || slug || FALLBACK_TITLE;
 }
 
-function getArticleKey(article: BlogPage) {
-  return getPageHref(article) ?? getDisplayTitle(article);
+function getArticleKey(
+  article: import("@/types/blog").BlogPage,
+  locale: import("@lib/i18n").SiteLocale,
+) {
+  return getPageHref(article, locale) ?? getDisplayTitle(article, locale);
 }
 
-function formatIssueDate() {
-  return format(new Date(), "EEEE, MMMM d, yyyy");
+function formatIssueDate(locale: import("@lib/i18n").SiteLocale) {
+  return format(new Date(), "PPPP", { locale: getDateLocale(locale) });
 }
 
-function formatArticleDate(article: BlogPage) {
+function formatArticleDate(
+  article: import("@/types/blog").BlogPage,
+  locale: import("@lib/i18n").SiteLocale,
+) {
   if (!article.data.date) {
     return "";
   }
 
-  return format(new Date(article.data.date), "MMM dd, yyyy");
+  return format(new Date(article.data.date), locale === "zh" ? "yyyy.MM.dd" : "MMM dd, yyyy", {
+    locale: getDateLocale(locale),
+  });
 }
 
-function HomeArticle({ article }: { article: BlogPage }) {
-  const href = getPageHref(article) ?? "#";
-  const title = getDisplayTitle(article);
+function HomeArticle({
+  article,
+  locale,
+}: {
+  article: import("@/types/blog").BlogPage;
+  locale: import("@lib/i18n").SiteLocale;
+}) {
+  const href = getPageHref(article, locale) ?? "#";
+  const title = getDisplayTitle(article, locale);
   const summary = article.data.summary ?? "";
-  const formattedDate = formatArticleDate(article);
+  const formattedDate = formatArticleDate(article, locale);
   const titleStyle = getTitleStyle(title);
 
   return (
-    <li className="border-b border-border pb-6 last:border-0">
-      <Link
-        href={href}
-        className="group grid grid-cols-1 items-baseline gap-2 md:grid-cols-[1fr_auto] md:gap-8"
-      >
-        <h3
-          className={`${serifClass} min-w-0 text-base leading-relaxed text-foreground transition-colors duration-200 group-hover:text-muted-foreground md:max-w-[34rem]`}
+    <li className="border-t border-border/80 py-6 first:border-t-0 first:pt-0 last:pb-0">
+      <article className="grid gap-3 md:grid-cols-[8.5rem_minmax(0,1fr)] md:gap-8">
+        <div
+          className={`${monoClass} pt-1 text-[0.8rem] tracking-[0.16em] text-muted-foreground uppercase`}
         >
-          <span className="relative inline-block max-w-full pb-1 align-bottom after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-bottom-right after:scale-x-0 after:bg-current after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.86,0,0.07,1)] group-hover:after:origin-bottom-left group-hover:after:scale-x-100">
-            <span style={titleStyle} className="block truncate">
-              {title}
-            </span>
-          </span>
-        </h3>
-        <div className="flex items-center gap-3">
-          <span className="hidden h-px w-8 bg-border md:block" />
-          <time className={`${monoClass} text-xs whitespace-nowrap text-muted-foreground`}>
+          <time
+            dateTime={article.data.date ? new Date(article.data.date).toISOString() : undefined}
+          >
             {formattedDate}
           </time>
         </div>
-      </Link>
-      {summary ? (
-        <p className="mt-2 [display:-webkit-box] overflow-hidden text-sm text-muted-foreground [-webkit-box-orient:vertical] [-webkit-line-clamp:2]">
-          {summary}
-        </p>
-      ) : null}
+        <div className="min-w-0">
+          <Link href={href} className="group block">
+            <h2
+              className={`${serifClass} max-w-[26ch] text-[1.35rem] leading-[1.15] text-foreground transition-colors duration-200 group-hover:text-muted-foreground md:text-[1.65rem]`}
+            >
+              <span style={titleStyle} className="block [text-wrap:balance]">
+                {title}
+              </span>
+            </h2>
+            {summary ? (
+              <p className="mt-2 max-w-[58ch] font-sans text-[0.95rem] leading-[1.72] [text-wrap:pretty] text-muted-foreground/88">
+                {summary}
+              </p>
+            ) : null}
+          </Link>
+        </div>
+      </article>
     </li>
   );
 }
 
-export function Home({ articles }: HomeProps) {
+export function Home({ articles, locale }: HomeProps) {
   const featuredArticles = articles.slice(0, MAX_HOME_ARTICLES);
-  const issueDate = formatIssueDate();
+  const issueDate = formatIssueDate(locale);
 
   return (
     <div className="not-prose w-full bg-background text-foreground">
-      <div className="mx-auto flex w-full max-w-225 flex-col px-6 py-8 sm:px-12 md:py-12">
-        <header className="mb-8">
-          <div className="mb-8 border-t-[3px] border-b border-foreground border-b-border py-6">
+      <div className="mx-auto flex w-full max-w-[82rem] flex-col px-6 py-8 sm:px-8 md:py-12 lg:px-10">
+        <header className="mb-12 border-t-2 border-t-foreground py-8 md:py-10">
+          <div className="w-full max-w-[calc(8.5rem+2rem+58ch)]">
             <div
-              className={`${monoClass} flex items-center justify-between text-xs text-muted-foreground`}
+              className={`${monoClass} mb-4 text-[0.8rem] tracking-[0.18em] text-muted-foreground uppercase`}
             >
               <span>{issueDate}</span>
             </div>
+            <figure>
+              <div className="relative aspect-[12/7] overflow-hidden border border-border/70 bg-muted/30 md:aspect-[15/8]">
+                <div className="relative h-full w-full">
+                  <Image
+                    src="/home-background.webp"
+                    livePhotoSrc="/home-background.mp4"
+                    livePhotoType="video/mp4"
+                    livePhotoAutoPlay
+                    livePhotoMuted
+                    livePhotoControls={false}
+                    alt="Ocean View"
+                    sizes="(max-width: 768px) 100vw, calc(8.5rem + 2rem + 58ch)"
+                    wrapperClassName="absolute inset-0 group"
+                    imageClassName="grayscale transition-[filter,transform] duration-700 ease-out group-hover:scale-[1.01] group-hover:grayscale-0"
+                    priority
+                  />
+                </div>
+              </div>
+            </figure>
           </div>
-
-          <div className="relative aspect-[21/9] overflow-hidden border-2 border-border bg-muted p-1 shadow-[0_16px_32px_-24px_rgba(0,0,0,0.08)] dark:shadow-[0_16px_32px_-24px_rgba(0,0,0,0.32)]">
-            <Image
-              src="/home-background.webp"
-              livePhotoSrc="/home-background.mp4"
-              livePhotoType="video/mp4"
-              livePhotoAutoPlay
-              livePhotoMuted
-              livePhotoControls={false}
-              alt="Ocean View"
-              sizes="(max-width: 900px) 100vw, 900px"
-              wrapperClassName="group absolute inset-0"
-              imageClassName="grayscale transition-[filter,transform] duration-700 ease-out group-hover:scale-[1.01] group-hover:grayscale-0"
-              priority
-            />
-          </div>
-          <p className={`${monoClass} mt-3 mb-10 text-center text-xs text-muted-foreground italic`}>
-            {HERO_CAPTION}
-          </p>
         </header>
 
         <section className="pb-10">
-          <div className="mb-8 flex items-center gap-4 border-b-2 border-current pb-4">
-            <h2
-              className={`${serifClass} text-lg font-bold tracking-[0.16em] text-foreground uppercase`}
-            >
-              Latest Articles
-            </h2>
-            <div className="h-px flex-1 bg-border" />
+          <div className="pt-6 md:pt-8">
+            <div className="min-w-0">
+              <ul className="flex flex-col">
+                {featuredArticles.map((article) => (
+                  <HomeArticle
+                    key={getArticleKey(article, locale)}
+                    article={article}
+                    locale={locale}
+                  />
+                ))}
+              </ul>
+            </div>
           </div>
-
-          <ul className="flex flex-col space-y-8 md:space-y-10">
-            {featuredArticles.map((article) => (
-              <HomeArticle key={getArticleKey(article)} article={article} />
-            ))}
-          </ul>
         </section>
 
-        <SiteFooter />
+        <SiteFooter currentPath={`/${locale}`} locale={locale} />
       </div>
     </div>
   );

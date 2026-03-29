@@ -12,7 +12,6 @@
 @import "katex/dist/katex.min.css";
 @import "./react-medium-image-zoom.css";
 @import "./scrollbar.css";
-@import "./toc.css";
 @import "./theme-transition.css";
 
 html {

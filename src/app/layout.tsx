@@ -1,8 +1,16 @@
 import "@/styles/global.css";
-import { Content, Layout } from "@components/layout";
-import { FC, PropsWithChildren } from "react";
+import { Content } from "@components/layout";
+import { Layout } from "@components/layout";
 import { CONFIG_SITE } from "@lib/constant";
-import type { Metadata } from "next";
+import { getSiteDictionary } from "@lib/i18n";
+import { getSiteLocale } from "@lib/i18n";
+type Metadata = import("next").Metadata;
+type PropsWithChildren = import("react").PropsWithChildren;
+type RootLayoutProps = PropsWithChildren & {
+  params?: Promise<{
+    locale?: string;
+  }>;
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONFIG_SITE.siteUrl),
@@ -31,9 +39,13 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout: FC<PropsWithChildren> = ({ children }) => {
+export default async function RootLayout({ children, params }: RootLayoutProps) {
+  const resolvedParams = params ? await params : undefined;
+  const locale = getSiteLocale(resolvedParams?.locale);
+  const dictionary = getSiteDictionary(locale);
+
   return (
-    <html lang={CONFIG_SITE.lang} suppressHydrationWarning>
+    <html lang={dictionary.htmlLang} suppressHydrationWarning>
       <head>
         <link rel="sitemap" href="/sitemap.xml" />
       </head>
@@ -44,6 +56,4 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}

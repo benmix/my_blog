@@ -1,16 +1,20 @@
 "use client";
-import type { ComponentProps, FC, MouseEvent } from "react";
 import { RiCheckLine, RiFileCopyLine } from "@remixicon/react";
 import { useEffect, useState } from "react";
-import { Button } from "@components/ui/button";
 
-export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
+import { cn } from "@lib/utils";
+
+export const CopyToClipboard: import("react").FC<import("react").ComponentProps<"button">> = ({
+  className,
+  ...props
+}) => {
   const [isCopied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!isCopied) {
       return;
     }
+
     const timerId = setTimeout(() => {
       setCopied(false);
     }, 2000);
@@ -20,7 +24,7 @@ export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
     };
   }, [isCopied]);
 
-  const handleClick = async (event: MouseEvent) => {
+  const handleClick = async (event: import("react").MouseEvent) => {
     const container = event.currentTarget.closest("[data-code-block]");
     if (!container) {
       return;
@@ -28,7 +32,6 @@ export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
 
     const content = container.querySelector("pre code")?.textContent || "";
     try {
-      // container should be not inside a try/catch statement, otherwise react-compiler give an error
       await navigator.clipboard.writeText(content);
       setCopied(true);
     } catch {
@@ -39,8 +42,19 @@ export const CopyToClipboard: FC<ComponentProps<"button">> = (props) => {
   const IconToUse = isCopied ? RiCheckLine : RiFileCopyLine;
 
   return (
-    <Button onClick={handleClick} title="Copy code" variant="secondary" size="sm" {...props}>
-      <IconToUse size="1em" />
-    </Button>
+    <button
+      aria-label={isCopied ? "Copied" : "Copy code"}
+      className={cn(
+        "inline-flex h-7 shrink-0 items-center justify-center gap-1.5 rounded-sm border border-border/40 bg-transparent px-2.5 font-mono text-[10px] font-medium tracking-[0.08em] text-muted-foreground uppercase transition-colors outline-none hover:border-border hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40",
+        className,
+      )}
+      onClick={handleClick}
+      title="Copy code"
+      type="button"
+      {...props}
+    >
+      <span>{isCopied ? "Copied" : "Copy"}</span>
+      <IconToUse aria-hidden="true" size="1em" />
+    </button>
   );
 };
