@@ -95,7 +95,7 @@ const Page: NextPage<PageProps> = async function (props) {
       metadata={metadata}
       toc={toc}
     >
-      <MDXContent components={MDXComponents} code={page.data.mdx} {...props} params={params} />
+      <MDXContent components={MDXComponents} code={page.data.mdx} />
     </Wrapper>
   );
 };

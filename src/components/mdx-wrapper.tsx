@@ -2,11 +2,10 @@ import { format } from "date-fns";
 import { getYear } from "date-fns";
 import { toDate } from "date-fns";
 
-import { LocaleSwitch } from "@/components/locale-switch";
+import { SiteControls } from "@/components/site-controls";
+import { SiteLinks } from "@/components/site-links";
 import { TableOfContents } from "@/components/table-of-content";
 import { Link } from "@components/link";
-import { ThemeSwitch } from "@components/theme-switch";
-import { CONFIG_SITE } from "@lib/constant";
 import { formatReadingTime } from "@lib/i18n";
 import { getDateLocale } from "@lib/i18n";
 import { getLocalizedTitle } from "@lib/i18n";
@@ -138,34 +137,11 @@ export const Wrapper = ({
 
             <SidebarSection>
               <SidebarLabel>Links</SidebarLabel>
-              <div className="flex flex-col gap-3">
-                {CONFIG_SITE.footerLinks.map((link) => {
-                  const Icon = link.icon;
-
-                  if (!Icon) {
-                    return null;
-                  }
-
-                  return (
-                    <Link
-                      key={link.id}
-                      href={link.href}
-                      target={link.external ? "_blank" : undefined}
-                      className="group flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      <Icon size="16" />
-                      <span className="font-mono text-[0.78rem]">{link.id}</span>
-                    </Link>
-                  );
-                })}
-              </div>
+              <SiteLinks />
             </SidebarSection>
 
             <SidebarSection withBorder={false}>
-              <div className="flex items-center gap-4">
-                <LocaleSwitch currentPath={currentPath} locale={locale} />
-                <ThemeSwitch className="rounded-full px-0 text-muted-foreground transition-colors hover:bg-transparent hover:text-foreground" />
-              </div>
+              <SiteControls currentPath={currentPath} locale={locale} />
               <p className="mt-5 font-mono text-[0.68rem] tracking-[0.08em] text-muted-foreground">
                 © {currentYear} BenMix
               </p>
@@ -219,34 +195,11 @@ export const Wrapper = ({
               <div className="space-y-6">
                 <div>
                   <SidebarLabel>Links</SidebarLabel>
-                  <div className="flex flex-col gap-3">
-                    {CONFIG_SITE.footerLinks.map((link) => {
-                      const Icon = link.icon;
-
-                      if (!Icon) {
-                        return null;
-                      }
-
-                      return (
-                        <Link
-                          key={link.id}
-                          href={link.href}
-                          target={link.external ? "_blank" : undefined}
-                          className="group flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                        >
-                          <Icon size="16" />
-                          <span className="font-mono text-[0.78rem]">{link.id}</span>
-                        </Link>
-                      );
-                    })}
-                  </div>
+                  <SiteLinks />
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-4">
-                    <LocaleSwitch currentPath={currentPath} locale={locale} />
-                    <ThemeSwitch className="rounded-full px-0 text-muted-foreground transition-colors hover:bg-transparent hover:text-foreground" />
-                  </div>
+                  <SiteControls currentPath={currentPath} locale={locale} />
                   <p className="mt-5 font-mono text-[0.68rem] tracking-[0.08em] text-muted-foreground">
                     © {currentYear} BenMix
                   </p>
