@@ -1,7 +1,8 @@
-import { Page } from "fumadocs-core/source";
 import type { Post } from "content-collections";
+import { Page } from "fumadocs-core/source";
 
 export type TocItem = {
+  depth: number;
   id: string;
   title: string;
 };

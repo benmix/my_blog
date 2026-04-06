@@ -1,12 +1,16 @@
 import "@/styles/global.css";
-import { Content, Footer, Layout } from "@components/layout";
-import { FC, PropsWithChildren } from "react";
+import { Content } from "@components/layout";
+import { Layout } from "@components/layout";
 import { CONFIG_SITE } from "@lib/constant";
-import { getYear } from "date-fns";
-import { Link } from "@components/link";
-import type { Metadata } from "next";
-import { RiCopyrightLine } from "@remixicon/react";
-import { ThemeSwitch } from "@components/theme-switch";
+import { getSiteDictionary } from "@lib/i18n";
+import { getSiteLocale } from "@lib/i18n";
+type Metadata = import("next").Metadata;
+type PropsWithChildren = import("react").PropsWithChildren;
+type RootLayoutProps = PropsWithChildren & {
+  params?: Promise<{
+    locale?: string;
+  }>;
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONFIG_SITE.siteUrl),
@@ -35,48 +39,21 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout: FC<PropsWithChildren> = ({ children }) => {
+export default async function RootLayout({ children, params }: RootLayoutProps) {
+  const resolvedParams = params ? await params : undefined;
+  const locale = getSiteLocale(resolvedParams?.locale);
+  const dictionary = getSiteDictionary(locale);
+
   return (
-    <html lang={CONFIG_SITE.lang} suppressHydrationWarning>
+    <html lang={dictionary.htmlLang} suppressHydrationWarning>
       <head>
         <link rel="sitemap" href="/sitemap.xml" />
       </head>
       <body>
         <Layout>
           <Content>{children}</Content>
-          <Footer>
-            <div className="flex gap-1 font-light text-muted-foreground">
-              {CONFIG_SITE.footerLinks.map((link, index) => {
-                const Icon = link.icon;
-
-                if (!Icon) {
-                  return null;
-                }
-
-                return (
-                  <span key={link.id} className="inline-flex items-center gap-1">
-                    {index > 0 ? <span>·</span> : null}
-                    <Link
-                      href={link.href}
-                      target={link.external ? "_blank" : undefined}
-                      className="inline-flex gap-1 text-muted-foreground hover:text-foreground"
-                    >
-                      <Icon size="16" />
-                    </Link>
-                  </span>
-                );
-              })}
-              <span>·</span>
-              <RiCopyrightLine size="16" />
-              <span>{getYear(new Date())}</span>
-              <span>BenMix</span>
-            </div>
-            <ThemeSwitch />
-          </Footer>
         </Layout>
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}

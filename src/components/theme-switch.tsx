@@ -2,10 +2,11 @@
 import { RiMoonLine, RiSunLine } from "@remixicon/react";
 import { useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
+import { cn } from "@lib/utils";
 import type React from "react";
 import { useTheme } from "next-themes";
 
-export function ThemeSwitch() {
+export function ThemeSwitch({ className }: { className?: string }) {
   const { resolvedTheme, setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const isDark = resolvedTheme === "dark";
@@ -57,7 +58,10 @@ export function ThemeSwitch() {
       onClick={toggleTheme}
       variant="ghost"
       size="icon"
-      className="cursor-pointer text-muted-foreground hover:bg-transparent hover:text-foreground dark:hover:bg-transparent"
+      className={cn(
+        "cursor-pointer text-muted-foreground hover:bg-transparent hover:text-foreground dark:hover:bg-transparent",
+        className,
+      )}
     >
       <IconToUse size="16" />
     </Button>

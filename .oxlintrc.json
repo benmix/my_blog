@@ -1,23 +1,9 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "eslint",
-    "import",
-    "typescript",
-    "unicorn",
-    "nextjs",
-    "react-perf"
-  ],
+  "plugins": ["eslint", "import", "typescript", "unicorn", "nextjs", "react-perf"],
   "rules": {
-    "sort-imports": [
-      "error",
-      {
-        "ignoreCase": true,
-        "ignoreDeclarationSort": false,
-        "ignoreMemberSort": false,
-        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-      }
-    ],
+    "import/no-namespace": "error",
+    "no-barrel-file": "error",
     "curly": ["error", "all"],
     "unicorn/no-useless-undefined": "error"
   }

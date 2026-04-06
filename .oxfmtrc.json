@@ -1,4 +1,18 @@
 {
+  "sortImports": {
+    "groups": [
+      "builtin",
+      "external",
+      ["internal", "subpath"],
+      ["parent", "sibling", "index"],
+      "style",
+      "unknown"
+    ],
+    "ignoreCase": true,
+    "internalPattern": ["@/", "@components/", "@content/", "@lib/", "@styles/", "@types/"],
+    "newlinesBetween": true,
+    "sortSideEffects": false
+  },
   "experimentalTailwindcss": {
     "stylesheet": "./src/styles/global.css",
     "attributes": ["class", "className"],
