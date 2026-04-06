@@ -3,13 +3,14 @@ import { getSiteDictionary } from "@lib/i18n";
 import { getSiteLocale } from "@lib/i18n";
 
 type Props = {
-  params: Promise<{
-    locale: string;
+  params?: Promise<{
+    locale?: string;
   }>;
 };
 
 export default async function LocalizedNotFound({ params }: Props) {
-  const { locale: localeParam } = await params;
+  const resolvedParams = params ? await params : undefined;
+  const localeParam = resolvedParams?.locale;
   const locale = getSiteLocale(localeParam);
   const dictionary = getSiteDictionary(locale);
 
