@@ -1,41 +1,37 @@
-import assert from "node:assert/strict";
-import test from "node:test";
+import { expect, test } from "vitest";
 
-import { getPageHref, getPageSlugSegments } from "./post-path";
+import { getPageHref, getPageSlugSegments } from "@lib/post-path";
 
 test("getPageSlugSegments preserves nested slugs", () => {
-  assert.deepEqual(
+  expect(
     getPageSlugSegments({
       slugs: ["notes", "nested-post"],
       source: "notes/nested-post.md",
     }),
-    ["notes", "nested-post"],
-  );
+  ).toEqual(["notes", "nested-post"]);
 });
 
 test("getPageSlugSegments falls back to source path when slugs are missing", () => {
-  assert.deepEqual(
+  expect(
     getPageSlugSegments({
       slugs: [],
       source: "notes/nested-post.md",
     }),
-    ["notes", "nested-post"],
-  );
+  ).toEqual(["notes", "nested-post"]);
 });
 
 test("getPageHref builds nested post urls", () => {
-  assert.equal(
+  expect(
     getPageHref({
       slugs: ["notes", "nested-post"],
       source: "notes/nested-post.md",
       url: undefined,
     }),
-    "/posts/notes/nested-post",
-  );
+  ).toBe("/posts/notes/nested-post");
 });
 
 test("getPageHref prefixes locale when provided", () => {
-  assert.equal(
+  expect(
     getPageHref(
       {
         slugs: ["notes", "nested-post"],
@@ -44,6 +40,5 @@ test("getPageHref prefixes locale when provided", () => {
       },
       "en",
     ),
-    "/en/posts/notes/nested-post",
-  );
+  ).toBe("/en/posts/notes/nested-post");
 });

@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "references": [{ "path": "./tsconfig.app.json" }],
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.cache/typescript/vitest.tsbuildinfo",
+    "lib": ["ES2020"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "incremental": true,
+    "types": ["node", "vitest/globals"]
+  },
+  "include": ["test/**/*.ts", "vitest.config.ts"]
+}

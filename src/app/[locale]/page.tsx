@@ -1,8 +1,10 @@
+import { format } from "date-fns";
 import { notFound } from "next/navigation";
 
 import { Home } from "@/components/home";
 import { CONFIG_SITE } from "@lib/constant";
 import { getPosts } from "@lib/get-post";
+import { getDateLocale } from "@lib/i18n";
 import { getSiteDictionary } from "@lib/i18n";
 import { getSiteLocale } from "@lib/i18n";
 import { isSiteLocale } from "@lib/i18n";
@@ -55,5 +57,7 @@ export default async function LocaleIndexPage({ params }: PageProps) {
   }
 
   const articles = await getPosts();
-  return <Home articles={articles} locale={locale} />;
+  const issueDate = format(new Date(), "PPPP", { locale: getDateLocale(locale) });
+
+  return <Home articles={articles} issueDate={issueDate} locale={locale} />;
 }

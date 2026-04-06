@@ -14,6 +14,12 @@
 @import "./scrollbar.css";
 @import "./theme-transition.css";
 
+@theme {
+    --font-sans: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    --font-serif: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    --font-mono: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
 html {
     scroll-behavior: smooth;
     overscroll-behavior: none;
@@ -21,10 +27,93 @@ html {
 
 body {
     @apply min-h-screen bg-background text-foreground;
+    font-family: var(--font-sans);
+}
+
+@layer components {
+    .home-photo-showcase {
+        content-visibility: auto;
+        contain-intrinsic-size: 720px;
+    }
+
+    .home-photo-stage {
+        min-height: 24rem;
+    }
+
+    .home-photo-card {
+        isolation: isolate;
+    }
+
+    .home-photo-original {
+        opacity: 0;
+        transition: opacity 280ms ease, transform 480ms ease;
+    }
+
+    .home-photo-newsprint {
+        opacity: 1;
+        background: rgb(236 230 216 / 0.86);
+        mix-blend-mode: multiply;
+        transition: opacity 280ms ease, transform 480ms ease;
+    }
+
+    .home-photo-card:hover .home-photo-original {
+        opacity: 1;
+        transform: scale(1.03);
+    }
+
+    .home-photo-card:hover .home-photo-newsprint {
+        opacity: 0;
+        transform: scale(1.03);
+    }
+
+    .home-photo-trigger {
+        transition:
+            color 220ms ease,
+            background-color 220ms ease,
+            border-color 220ms ease;
+    }
+
+    .home-photo-trigger:hover,
+    .home-photo-trigger:focus-visible,
+    .home-photo-trigger.is-active {
+        color: var(--foreground);
+    }
+
+    .home-photo-trigger:hover .home-photo-card .home-photo-original,
+    .home-photo-trigger:focus-visible .home-photo-card .home-photo-original,
+    .home-photo-trigger.is-active .home-photo-card .home-photo-original {
+        opacity: 1;
+        transform: scale(1.03);
+    }
+
+    .home-photo-trigger:hover .home-photo-card .home-photo-newsprint,
+    .home-photo-trigger:focus-visible .home-photo-card .home-photo-newsprint,
+    .home-photo-trigger.is-active .home-photo-card .home-photo-newsprint {
+        opacity: 0;
+        transform: scale(1.03);
+    }
+}
+
+@media (hover: none) {
+    .home-photo-original {
+        opacity: 1;
+        transform: none;
+    }
+
+    .home-photo-newsprint {
+        opacity: 0;
+        transform: none;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
+    }
+
+    .home-photo-original,
+    .home-photo-newsprint,
+    .home-photo-trigger {
+        transition: none;
     }
 }

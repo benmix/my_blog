@@ -10,8 +10,9 @@
     "build": "next build",
     "dev": "next --turbopack",
     "start": "next start",
-    "test": "node --import tsx --test src/**/*.test.ts",
-    "typecheck": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
+    "typecheck": "tsc -b tsconfig.json",
     "lint": "oxlint --config ./.oxlintrc.json .",
     "lint:fix": "oxlint --config ./.oxlintrc.json --fix --fix-suggestions .",
     "format": "oxfmt --config ./.oxfmtrc.json --check .",
@@ -19,6 +20,7 @@
     "lint:css": "stylelint \"src/**/*.{css,scss}\"",
     "lint:css:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
     "obsidian-sync": "dotenvx run -- npx tsx scripts/obsidian-sync.ts",
+    "photos:prepare": "tsx scripts/prepare-photos.ts",
     "prepare": "husky"
   },
   "dependencies": {
@@ -26,6 +28,7 @@
     "@content-collections/mdx": "^0.2.2",
     "@content-collections/next": "^0.2.11",
     "@fumadocs/content-collections": "^1.2.7",
+    "@paper-design/shaders-react": "0.0.72",
     "@radix-ui/react-slot": "^1.2.4",
     "@remixicon/react": "^4.9.0",
     "@tailwindcss/postcss": "^4.2.2",
@@ -47,6 +50,7 @@
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
+    "sharp": "^0.34.5",
     "shiki": "^4.0.2",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.2",
@@ -68,7 +72,8 @@
     "stylelint-config-tailwindcss": "^1.0.1",
     "stylelint-order": "^8.1.1",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

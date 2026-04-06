@@ -1,14 +1,15 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import flexokiDark from "@styles/flexoki-dark.json";
-import flexokiLight from "@styles/flexoki-light.json";
-import { getPlainTextSummary } from "@lib/utils";
+import { transformMDX } from "@fumadocs/content-collections/configuration";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import type { ThemeRegistrationAny } from "shiki";
-import { transformMDX } from "@fumadocs/content-collections/configuration";
 import { z } from "zod";
+
+import { getPlainTextSummary } from "@lib/utils";
+import flexokiDark from "@styles/flexoki-dark.json";
+import flexokiLight from "@styles/flexoki-light.json";
 
 const lightTheme = flexokiLight as ThemeRegistrationAny;
 const darkTheme = flexokiDark as ThemeRegistrationAny;
@@ -65,7 +66,7 @@ const posts = defineCollection({
     });
 
     const reading_time = estimateReadingTime(doc.content);
-    const summary = doc.summary ?? getPlainTextSummary(doc.content);
+    const summary = getPlainTextSummary(doc.summary ?? doc.content);
     const publish_date = doc.public_date;
     const title = doc.chinese_name ?? doc.english_name;
 
