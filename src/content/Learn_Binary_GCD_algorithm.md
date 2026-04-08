@@ -1,4 +1,5 @@
 ---
+slug: learn-binary-gcd-algorithm
 chinese_name: Learn Binary GCD algorithm
 english_name: "Learn Binary GCD algorithm"
 tags:

@@ -9,8 +9,8 @@ import { SiteControls } from "@components/site-controls";
 import { SiteLinks } from "@components/site-links";
 import { getDateLocale } from "@lib/i18n";
 import { getLocalizedTitle } from "@lib/i18n";
+import { getLeafSlug } from "@lib/post-path";
 import { getPageHref } from "@lib/post-path";
-import { getPageSlugSegments } from "@lib/post-path";
 import { getTitleStyle } from "@lib/title-style";
 import { cn } from "@lib/utils";
 
@@ -79,8 +79,7 @@ const HOME_PHOTOS = [
 ] as const satisfies readonly HomePhoto[];
 
 function getArticleSlug(article: BlogPage) {
-  const slugs = getPageSlugSegments(article);
-  return slugs ? slugs[slugs.length - 1] : undefined;
+  return getLeafSlug(article);
 }
 
 function getDisplayTitle(article: BlogPage, locale: SiteLocale) {

@@ -1,20 +1,14 @@
+import { toDate } from "date-fns";
+
 import type { BlogPage } from "@/types/blog";
 import { blogSource } from "@lib/content-source";
-import { getPageSlugSegments } from "@lib/post-path";
-import { toDate } from "date-fns";
+import { getLeafSlug } from "@lib/post-path";
 
 export async function getPosts() {
   const pages = (await blogSource.getPages()) as BlogPage[];
   return pages
     .sort((a, b) => toDate(b.data.date ?? 0).getTime() - toDate(a.data.date ?? 0).getTime())
-    .map((page) => {
-      const slugs = getPageSlugSegments(page);
-      if (!page.slugs?.length && slugs?.length) {
-        return { ...page, slugs };
-      }
-      return page;
-    })
-    .filter((post) => (post.slugs?.[post.slugs.length - 1] || "") !== "index");
+    .filter((post) => getLeafSlug(post) !== "index");
 }
 
 export async function getTags() {

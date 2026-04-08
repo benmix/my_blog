@@ -305,11 +305,11 @@ function RegressionPreview() {
     <div className="space-y-8">
       <Aside className="my-0 ml-0 max-w-[44ch]" tone="inline">
         Rendering sample: <span className="text-foreground">{regressionPost.title}</span> from{" "}
-        <code>{`/posts/${regressionPost._meta.path}`}</code>. This block runs through the same
-        wrapper and MDX component map used by the live article page.
+        <code>{regressionPost.url}</code>. This block runs through the same wrapper and MDX
+        component map used by the live article page.
       </Aside>
       <Wrapper
-        currentPath={`/zh/posts/${regressionPost._meta.path}`}
+        currentPath={`/zh${regressionPost.url}`}
         locale="zh"
         metadata={regressionPost}
         variant="embedded"

@@ -1,4 +1,5 @@
 ---
+slug: solid-inject-ioc-di
 chinese_name: 分享 SOLID 和 Inject 和 IOC(DI)
 english_name: Share SOLID And Inject And IOC(DI)
 tags:

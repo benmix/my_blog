@@ -14,6 +14,7 @@ import flexokiLight from "@styles/flexoki-light.json";
 const lightTheme = flexokiLight as ThemeRegistrationAny;
 const darkTheme = flexokiDark as ThemeRegistrationAny;
 const CHARS_PER_MINUTE = 400;
+const PATH_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/;
 
 function estimateReadingTime(text: string) {
   const normalized = text.replace(/\s+/g, " ").trim();
@@ -33,6 +34,9 @@ const posts = defineCollection({
   directory: "src/content",
   include: "**/*.md",
   schema: z.object({
+    slug: z
+      .string()
+      .regex(PATH_SLUG_PATTERN, "slug must be lowercase kebab-case segments separated by /"),
     chinese_name: z.string().optional(),
     english_name: z.string().optional(),
     public_date: z.union([z.date(), z.string()]).optional(),
@@ -73,11 +77,12 @@ const posts = defineCollection({
     return {
       ...compiled,
       title,
+      slug: doc.slug,
       date: publish_date,
       reading_time,
       summary,
       mdx: compiled.body,
-      url: `/posts/${doc._meta.path}`,
+      url: `/posts/${doc.slug}`,
     };
   },
 });

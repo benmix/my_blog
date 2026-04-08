@@ -1,6 +1,7 @@
 ---
+slug: simplified-guide-developing-applications-large-models-reading-record
 chinese_name: 《大模型应用开发极简入门》阅读记录
-english_name: “A Simplified Guide to Developing Applications with Large Models” Reading Record
+english_name: '"A Simplified Guide to Developing Applications with Large Models" Reading Record'
 tags:
   - notes
   - learning

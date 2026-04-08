@@ -1,4 +1,5 @@
 ---
+slug: truncated-division-and-euclidean-division
 chinese_name: "Truncated division 和 Euclidean division"
 english_name: Truncated division And Euclidean division
 tags:

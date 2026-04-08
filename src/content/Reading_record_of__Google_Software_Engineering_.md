@@ -1,6 +1,7 @@
 ---
+slug: google-software-engineering-reading-record
 chinese_name: "《Google 软件工程》阅读记录"
-english_name: Reading record of “Google Software Engineering”
+english_name: 'Reading record of "Google Software Engineering"'
 tags:
   - blog
   - learning

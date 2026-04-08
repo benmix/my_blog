@@ -5,22 +5,56 @@ type PageLike = Pick<BlogPage, "slugs" | "source"> & {
   url?: BlogPage["url"];
 };
 
-function normalizeSourcePath(source: string) {
-  return source.replace(/\.(md|mdx)$/i, "");
+type SlugPageLike = Pick<PageLike, "slugs" | "source">;
+
+export function splitSlugPath(slugPath: string) {
+  return slugPath.split("/").filter(Boolean);
 }
 
-export function getPageSlugSegments(page: Pick<PageLike, "slugs" | "source">) {
+export function getPageSlugSegments(page: SlugPageLike) {
   const slugs = page.slugs?.filter(Boolean);
   if (slugs?.length) {
     return slugs;
   }
+}
 
-  if (!page.source) {
-    return;
+export function getCanonicalSlugPath(page: SlugPageLike) {
+  const slugs = getPageSlugSegments(page);
+  return slugs?.join("/");
+}
+
+export function getLeafSlug(page: SlugPageLike) {
+  const slugs = getPageSlugSegments(page);
+  return slugs?.[slugs.length - 1];
+}
+
+export function getSlugKey(slugs: string[]) {
+  return slugs.filter(Boolean).join("/");
+}
+
+export function buildPageSlugIndex<T extends SlugPageLike>(pages: T[]) {
+  const index = new Map<string, T>();
+
+  for (const page of pages) {
+    const pageSlugs = getPageSlugSegments(page);
+    if (!pageSlugs?.length) {
+      continue;
+    }
+
+    const key = getSlugKey(pageSlugs);
+    const existingPage = index.get(key);
+    if (existingPage) {
+      const existingSource = existingPage.source || "<unknown>";
+      const nextSource = page.source || "<unknown>";
+      throw new Error(
+        `Duplicate post slug "${key}" found for "${existingSource}" and "${nextSource}"`,
+      );
+    }
+
+    index.set(key, page);
   }
 
-  const parts = normalizeSourcePath(page.source).split("/").filter(Boolean);
-  return parts.length ? parts : undefined;
+  return index;
 }
 
 export function getPageHref(page: PageLike, locale?: SiteLocale) {

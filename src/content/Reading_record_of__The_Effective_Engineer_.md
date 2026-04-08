@@ -1,5 +1,6 @@
 ---
-english_name: Reading record of "The Effective Engineer”
+slug: the-effective-engineer-reading-record
+english_name: 'Reading record of "The Effective Engineer"'
 chinese_name: 《卓有成效的工程师》阅读记录
 tags:
   - learning

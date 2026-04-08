@@ -1,4 +1,5 @@
 ---
+slug: no-rules-rules-netflix-culture-of-reinvention-reading-record
 chinese_name: 读书笔记《网飞不拘一格工作法》
 english_name: "《No Rules Rules: Netflix and the Culture of Reinvention》Reading Record"
 tags:

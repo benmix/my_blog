@@ -8,23 +8,27 @@ import { blogSource } from "@lib/content-source";
 import { getPosts } from "@lib/get-post";
 import { getLocalizedTitle } from "@lib/i18n";
 import { getSiteDictionary } from "@lib/i18n";
-import { getSiteLocale } from "@lib/i18n";
 import { isSiteLocale } from "@lib/i18n";
-import { getPageHref } from "@lib/post-path";
+import { resolvePostMetadataContext, resolvePostRoute } from "@lib/post-route";
 import { getPlainTextSummary } from "@lib/utils";
 type Metadata = import("next").Metadata;
 type NextPage<T = object> = import("next").NextPage<T>;
 
-export async function generateStaticParams() {
+export const dynamicParams = false;
+
+export async function generateStaticParams({ params }: { params: { locale: string } }) {
+  const { locale } = params;
+  if (!isSiteLocale(locale)) {
+    return [];
+  }
+
   const articles = await getPosts();
 
-  return ["zh", "en"].flatMap((locale) =>
-    articles
-      .map((article) => {
-        return article.slugs?.length ? { locale, slug: article.slugs } : null;
-      })
-      .filter((item): item is { locale: string; slug: string[] } => Boolean(item)),
-  );
+  return articles
+    .map((article) => {
+      return article.slugs?.length ? { slug: article.slugs } : null;
+    })
+    .filter((item): item is { slug: string[] } => Boolean(item));
 }
 
 type PageParams = { locale: string; slug: string[] };
@@ -35,17 +39,22 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale: localeParam, slug } = await Promise.resolve(params);
-  const locale = getSiteLocale(localeParam);
   const page = await blogSource.getPage(slug);
 
   if (!page) {
     return {};
   }
 
+  const metadataContext = resolvePostMetadataContext(localeParam, page);
+  if (!metadataContext) {
+    return {};
+  }
+
+  const { href, hrefEn, hrefZh, locale } = metadataContext;
+
   const { data: metadata } = page;
   const title = getLocalizedTitle(metadata, locale);
   const summary = metadata.summary ?? getPlainTextSummary(metadata.content ?? "");
-  const href = getPageHref(page, locale) ?? `/${locale}/posts/${slug.join("/")}`;
 
   return {
     title: `${title} - ${getSiteDictionary(locale).siteTitle}`,
@@ -53,8 +62,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: {
       canonical: href,
       languages: {
-        en: getPageHref(page, "en") ?? `/en/posts/${slug.join("/")}`,
-        zh: getPageHref(page, "zh") ?? `/zh/posts/${slug.join("/")}`,
+        ...(hrefEn ? { en: hrefEn } : {}),
+        ...(hrefZh ? { zh: hrefZh } : {}),
       },
     },
     openGraph: {
@@ -74,11 +83,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const Page: NextPage<PageProps> = async function (props) {
   const { params } = props;
 
-  const { locale, slug } = await Promise.resolve(params);
-
-  if (!isSiteLocale(locale)) {
-    notFound();
-  }
+  const { locale: localeParam, slug } = await Promise.resolve(params);
 
   const page = await blogSource.getPage(slug);
 
@@ -86,15 +91,15 @@ const Page: NextPage<PageProps> = async function (props) {
     notFound();
   }
 
+  const route = resolvePostRoute(localeParam, page);
+  if (route.kind === "invalid-locale") {
+    notFound();
+  }
+
   const { data: metadata, toc } = page;
 
   return (
-    <Wrapper
-      currentPath={getPageHref(page, locale) ?? `/${locale}/posts/${slug.join("/")}`}
-      locale={locale}
-      metadata={metadata}
-      toc={toc}
-    >
+    <Wrapper currentPath={route.canonicalPath} locale={route.locale} metadata={metadata} toc={toc}>
       <MDXContent components={MDXComponents} code={page.data.mdx} />
     </Wrapper>
   );

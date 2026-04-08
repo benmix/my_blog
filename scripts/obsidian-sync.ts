@@ -1,12 +1,14 @@
-import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import GithubSlugger from "github-slugger";
+import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
+
+import GithubSlugger from "github-slugger";
 
 const IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 
 const DEFAULT_CONTENT_IMAGES_DIR = path.join("public", "content_images");
 const DEFAULT_CONTENT_IMAGES_URL = "/content_images/";
+const PATH_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/;
 
 function requireEnv(name: string) {
   const value = process.env[name];
@@ -65,7 +67,7 @@ type NoteIndex = {
   byFilePath: Map<string, string>;
 };
 
-function extractEnglishName(markdown: string) {
+function getFrontmatterLines(markdown: string) {
   const normalized = markdown.replace(/^\uFEFF/, "");
   const lines = normalized.split(/\r?\n/);
   let index = 0;
@@ -73,7 +75,7 @@ function extractEnglishName(markdown: string) {
     index += 1;
   }
   if (index >= lines.length || lines[index].trim() !== "---") {
-    return "";
+    return [];
   }
   index += 1;
   const frontmatterLines: string[] = [];
@@ -85,11 +87,17 @@ function extractEnglishName(markdown: string) {
     frontmatterLines.push(line);
     index += 1;
   }
+  return frontmatterLines;
+}
+
+function extractFrontmatterValue(markdown: string, field: string) {
+  const frontmatterLines = getFrontmatterLines(markdown);
   if (!frontmatterLines.length) {
     return "";
   }
+
   for (const line of frontmatterLines) {
-    const match = line.match(/^\s*english_name\s*:\s*(.+?)\s*$/i);
+    const match = line.match(new RegExp(`^\\s*${field}\\s*:\\s*(.+?)\\s*$`, "i"));
     if (!match) {
       continue;
     }
@@ -101,6 +109,96 @@ function extractEnglishName(markdown: string) {
     return trimmed.replace(/^['"]|['"]$/g, "");
   }
   return "";
+}
+
+function extractEnglishName(markdown: string) {
+  return extractFrontmatterValue(markdown, "english_name");
+}
+
+function extractSlug(markdown: string) {
+  return extractFrontmatterValue(markdown, "slug");
+}
+
+function slugifySegment(value: string) {
+  return value
+    .normalize("NFKD")
+    .toLowerCase()
+    .replace(/[/\\]/g, "-")
+    .replace(/['"\u201C\u201D\u2018\u2019]/g, "")
+    .replace(/[^a-z0-9\s_-]/g, " ")
+    .replace(/[_\s]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function buildDerivedSlugPath(rel: string, markdown: string) {
+  const dir = path.dirname(rel);
+  const base = path.basename(rel, ".md");
+  const englishName = extractEnglishName(markdown);
+  const sourceBase = englishName || base;
+  const dirSegments = dir
+    .split(path.sep)
+    .filter((segment) => segment && segment !== ".")
+    .map((segment) => slugifySegment(segment))
+    .filter(Boolean);
+  const baseSlug = slugifySegment(sourceBase);
+  const segments = [...dirSegments, baseSlug].filter(Boolean);
+  const slugPath = segments.join("/");
+
+  if (!slugPath || !PATH_SLUG_PATTERN.test(slugPath)) {
+    throw new Error(`Failed to derive a valid slug for: ${rel}`);
+  }
+
+  return slugPath;
+}
+
+function upsertFrontmatterField(markdown: string, field: string, value: string) {
+  const normalized = markdown.replace(/^\uFEFF/, "");
+  const lines = normalized.split(/\r?\n/);
+  let index = 0;
+  while (index < lines.length && lines[index].trim() === "") {
+    index += 1;
+  }
+
+  if (index >= lines.length || lines[index].trim() !== "---") {
+    return `---\n${field}: ${value}\n---\n\n${normalized}`;
+  }
+
+  const start = index;
+  index += 1;
+  const frontmatterLines: string[] = [];
+  while (index < lines.length) {
+    const line = lines[index];
+    if (line.trim() === "---") {
+      break;
+    }
+    frontmatterLines.push(line);
+    index += 1;
+  }
+
+  if (index >= lines.length) {
+    return normalized;
+  }
+
+  let found = false;
+  const updatedFrontmatter = frontmatterLines.map((line) => {
+    if (new RegExp(`^\\s*${field}\\s*:`).test(line)) {
+      found = true;
+      return `${field}: ${value}`;
+    }
+    return line;
+  });
+
+  if (!found) {
+    updatedFrontmatter.unshift(`${field}: ${value}`);
+  }
+
+  return [
+    ...lines.slice(0, start + 1),
+    ...updatedFrontmatter,
+    lines[index],
+    ...lines.slice(index + 1),
+  ].join("\n");
 }
 
 function trimFrontmatterValues(markdown: string) {
@@ -190,7 +288,7 @@ function buildOutputMap(contentRoot: string, files: string[], contents: Map<stri
     if (englishName) {
       const sanitizedEnglish = sanitizeSegment(englishName);
       if (!sanitizedEnglish) {
-        throw new Error(`Invalid EnglishName after sanitization: ${englishName} (${filePath})`);
+        throw new Error(`Invalid english_name after sanitization: ${englishName} (${filePath})`);
       }
       outputRelNoExt = normalizePosix(path.join(sanitizedDir, sanitizedEnglish));
     } else {
@@ -209,7 +307,39 @@ function buildOutputMap(contentRoot: string, files: string[], contents: Map<stri
   return outputMap;
 }
 
-function buildNoteIndex(contentRoot: string, files: string[], outputMap: Map<string, string>) {
+function buildSlugMap(contentRoot: string, files: string[], contents: Map<string, string>) {
+  const slugMap = new Map<string, string>();
+  const slugConflicts = new Map<string, string>();
+
+  for (const filePath of files) {
+    const rel = path.relative(contentRoot, filePath);
+    const relPosix = normalizePosix(rel);
+    const raw = contents.get(filePath) ?? "";
+    const explicitSlug = extractSlug(raw);
+    const slugPath = explicitSlug || buildDerivedSlugPath(relPosix, raw);
+
+    if (!PATH_SLUG_PATTERN.test(slugPath)) {
+      throw new Error(`Invalid slug "${slugPath}" in ${filePath}`);
+    }
+
+    const existing = slugConflicts.get(slugPath);
+    if (existing && existing !== filePath) {
+      throw new Error(`Duplicate slug path: ${slugPath} (${filePath})`);
+    }
+
+    slugConflicts.set(slugPath, filePath);
+    slugMap.set(filePath, slugPath);
+  }
+
+  return slugMap;
+}
+
+function buildNoteIndex(
+  contentRoot: string,
+  files: string[],
+  outputMap: Map<string, string>,
+  slugMap: Map<string, string>,
+) {
   const byBaseName = new Map<string, string>();
   const byRelPath = new Map<string, string>();
   const byRelPathSanitized = new Map<string, string>();
@@ -222,20 +352,21 @@ function buildNoteIndex(contentRoot: string, files: string[], outputMap: Map<str
     const relNoExt = relPosix.replace(/\.md$/i, "");
     const base = path.basename(rel, ".md");
     const outputRelNoExt = outputMap.get(filePath);
-    if (!outputRelNoExt) {
+    const slugPath = slugMap.get(filePath);
+    if (!outputRelNoExt || !slugPath) {
       throw new Error(`Missing output mapping for: ${filePath}`);
     }
 
     const baseKey = base.toLowerCase();
-    if (byBaseName.has(baseKey) && byBaseName.get(baseKey) !== outputRelNoExt) {
+    if (byBaseName.has(baseKey) && byBaseName.get(baseKey) !== slugPath) {
       conflicts.push(base);
     } else {
-      byBaseName.set(baseKey, outputRelNoExt);
+      byBaseName.set(baseKey, slugPath);
     }
 
-    byRelPath.set(relNoExt, outputRelNoExt);
-    byRelPathSanitized.set(outputRelNoExt, outputRelNoExt);
-    byFilePath.set(filePath, outputRelNoExt);
+    byRelPath.set(relNoExt, slugPath);
+    byRelPathSanitized.set(outputRelNoExt, slugPath);
+    byFilePath.set(filePath, slugPath);
   }
 
   if (conflicts.length > 0) {
@@ -572,20 +703,23 @@ async function main() {
     contents.set(filePath, trimFrontmatterValues(raw));
   }
   const outputMap = buildOutputMap(contentRoot, files, contents);
-  const noteIndex = buildNoteIndex(contentRoot, files, outputMap);
+  const slugMap = buildSlugMap(contentRoot, files, contents);
+  const noteIndex = buildNoteIndex(contentRoot, files, outputMap, slugMap);
   const imageCache: ImageCache = new Map();
   for (const filePath of files) {
     const raw = contents.get(filePath) ?? "";
     const outputRelNoExt = outputMap.get(filePath) ?? "";
+    const slugPath = slugMap.get(filePath) ?? "";
 
-    if (!outputRelNoExt) {
+    if (!outputRelNoExt || !slugPath) {
       throw new Error(`Failed to resolve output path: ${filePath}`);
     }
 
     const outputRel = `${outputRelNoExt}.md`;
     const outputPath = path.join(outputRootResolved, outputRel);
+    const markdownWithSlug = upsertFrontmatterField(raw, "slug", slugPath);
 
-    const transformed = await transformMarkdown(raw, noteIndex, {
+    const transformed = await transformMarkdown(markdownWithSlug, noteIndex, {
       contentRoot,
       filePath,
       outputRelPath: outputRelNoExt,
