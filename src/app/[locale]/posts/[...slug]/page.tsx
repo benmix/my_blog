@@ -8,21 +8,27 @@ import { blogSource } from "@lib/content-source";
 import { getPosts } from "@lib/get-post";
 import { getLocalizedTitle } from "@lib/i18n";
 import { getSiteDictionary } from "@lib/i18n";
+import { isSiteLocale } from "@lib/i18n";
 import { resolvePostMetadataContext, resolvePostRoute } from "@lib/post-route";
 import { getPlainTextSummary } from "@lib/utils";
 type Metadata = import("next").Metadata;
 type NextPage<T = object> = import("next").NextPage<T>;
 
-export async function generateStaticParams() {
+export const dynamicParams = false;
+
+export async function generateStaticParams({ params }: { params: { locale: string } }) {
+  const { locale } = params;
+  if (!isSiteLocale(locale)) {
+    return [];
+  }
+
   const articles = await getPosts();
 
-  return ["zh", "en"].flatMap((locale) =>
-    articles
-      .map((article) => {
-        return article.slugs?.length ? { locale, slug: article.slugs } : null;
-      })
-      .filter((item): item is { locale: string; slug: string[] } => Boolean(item)),
-  );
+  return articles
+    .map((article) => {
+      return article.slugs?.length ? { slug: article.slugs } : null;
+    })
+    .filter((item): item is { slug: string[] } => Boolean(item));
 }
 
 type PageParams = { locale: string; slug: string[] };

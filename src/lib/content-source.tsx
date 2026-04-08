@@ -3,24 +3,9 @@ import { allPosts } from "content-collections";
 import { loader } from "fumadocs-core/source";
 
 import type { BlogPage } from "@/types/blog";
+import { toBlogPage } from "@lib/blog-page";
 import { buildPageSlugIndex } from "@lib/post-path";
 import { getSlugKey } from "@lib/post-path";
-import { splitSlugPath } from "@lib/post-path";
-
-function normalizeToc(toc?: { title: string; url: string; depth: number }[]) {
-  if (!toc) {
-    return;
-  }
-
-  return toc
-    .filter((item) => item.depth >= 3 && item.depth <= 4)
-    .map((item) => {
-      const hash = item.url.split("#").pop() ?? "";
-      const id = decodeURIComponent(hash);
-      return { depth: item.depth, id, title: item.title };
-    })
-    .filter((item) => item.id && item.title);
-}
 
 const source = createMDXSource(allPosts, []);
 
@@ -28,16 +13,7 @@ const blogLoader = loader(source, {
   baseUrl: "/posts",
 });
 
-const pages: BlogPage[] = blogLoader.getPages().map((page) => {
-  const toc = normalizeToc(page.data.toc);
-  const slugs = splitSlugPath(page.data.slug);
-
-  return {
-    ...page,
-    slugs,
-    toc,
-  };
-});
+const pages: BlogPage[] = blogLoader.getPages().map(toBlogPage);
 
 const pageIndex = buildPageSlugIndex(pages);
 
