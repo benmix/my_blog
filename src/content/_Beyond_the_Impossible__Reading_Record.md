@@ -1,6 +1,7 @@
 ---
+slug: beyond-the-impossible-reading-record
 chinese_name: 《超越不可能》 阅读记录
-english_name: “Beyond the Impossible” Reading Record
+english_name: '"Beyond the Impossible" Reading Record'
 tags:
   - blog
   - notes

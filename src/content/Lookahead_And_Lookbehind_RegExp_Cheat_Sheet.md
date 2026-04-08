@@ -1,4 +1,5 @@
 ---
+slug: lookahead-lookbehind-regexp-cheat-sheet
 chinese_name: Lookahead 和 Lookbehind RegExp Cheat Sheet
 english_name: Lookahead And Lookbehind RegExp Cheat Sheet
 tags:

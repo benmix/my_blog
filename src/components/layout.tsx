@@ -1,7 +1,8 @@
-import type { ComponentProps, FC, ReactNode } from "react";
-import { cn } from "@lib/utils";
 import { ThemeProvider } from "next-themes";
 import { ViewTransitions } from "next-view-transitions";
+import type { ComponentProps, FC, ReactNode } from "react";
+
+import { cn } from "@lib/utils";
 
 export const Content: FC<{
   children?: ReactNode;

@@ -1,9 +1,10 @@
 import { format, toDate } from "date-fns";
-import { getPageHref, getPageSlugSegments } from "@lib/post-path";
-import type { BlogPage } from "@/types/blog";
-import type { FC } from "react";
-import { getTitleStyle } from "@lib/title-style";
 import { Link } from "next-view-transitions";
+import type { FC } from "react";
+
+import type { BlogPage } from "@/types/blog";
+import { getLeafSlug, getPageHref } from "@lib/post-path";
+import { getTitleStyle } from "@lib/title-style";
 
 type PostCardProps = {
   post: BlogPage;
@@ -11,8 +12,7 @@ type PostCardProps = {
 
 export const PostLink: FC<PostCardProps> = ({ post }) => {
   const { date, chinese_name, english_name } = post.data;
-  const slugs = getPageSlugSegments(post);
-  const slug = slugs?.[slugs.length - 1];
+  const slug = getLeafSlug(post);
   const displayTitle = chinese_name ?? english_name ?? slug ?? "";
   const titleStyle = typeof displayTitle === "string" ? getTitleStyle(displayTitle) : undefined;
   const formattedDate = date ? format(toDate(date), "MMM dd, y") : null;

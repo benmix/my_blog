@@ -1,11 +1,11 @@
 import { createMDXSource } from "@fumadocs/content-collections";
 import { allPosts } from "content-collections";
-import { getSlugs, loader } from "fumadocs-core/source";
+import { loader } from "fumadocs-core/source";
 
 import type { BlogPage } from "@/types/blog";
 import { buildPageSlugIndex } from "@lib/post-path";
-import { getPageSlugSegments } from "@lib/post-path";
-import { getNormalizedSlugKey } from "@lib/post-path";
+import { getSlugKey } from "@lib/post-path";
+import { splitSlugPath } from "@lib/post-path";
 
 function normalizeToc(toc?: { title: string; url: string; depth: number }[]) {
   if (!toc) {
@@ -26,16 +26,15 @@ const source = createMDXSource(allPosts, []);
 
 const blogLoader = loader(source, {
   baseUrl: "/posts",
-  slugs: (file) => getSlugs(file.path),
 });
 
 const pages: BlogPage[] = blogLoader.getPages().map((page) => {
   const toc = normalizeToc(page.data.toc);
-  const slugs = getPageSlugSegments(page);
+  const slugs = splitSlugPath(page.data.slug);
 
   return {
     ...page,
-    ...(slugs ? { slugs } : {}),
+    slugs,
     toc,
   };
 });
@@ -48,6 +47,6 @@ export const blogSource = {
   },
 
   async getPage(slugs: string[]) {
-    return pageIndex.get(getNormalizedSlugKey(slugs));
+    return pageIndex.get(getSlugKey(slugs));
   },
 };

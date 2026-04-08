@@ -1,5 +1,5 @@
 import { MDXContent } from "@content-collections/mdx/react";
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 import { MDXComponents } from "@components/mdx-components";
 import { Wrapper } from "@components/mdx-wrapper";
@@ -85,13 +85,9 @@ const Page: NextPage<PageProps> = async function (props) {
     notFound();
   }
 
-  const route = resolvePostRoute(localeParam, slug, page);
+  const route = resolvePostRoute(localeParam, page);
   if (route.kind === "invalid-locale") {
     notFound();
-  }
-
-  if (route.kind === "redirect") {
-    permanentRedirect(route.canonicalPath);
   }
 
   const { data: metadata, toc } = page;

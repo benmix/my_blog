@@ -7,8 +7,8 @@ import {
 } from "@lib/post-route";
 
 const samplePage = {
-  url: "/posts/《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record",
-  slugs: ["《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record"],
+  url: "/posts/reading/no-rules-rules-netflix-culture-of-reinvention-reading-record",
+  slugs: ["reading", "no-rules-rules-netflix-culture-of-reinvention-reading-record"],
   source: "《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record.md",
 };
 
@@ -19,9 +19,9 @@ describe("resolvePostMetadataContext", () => {
 
   test("returns canonical localized hrefs for valid locales", () => {
     expect(resolvePostMetadataContext("zh", samplePage)).toEqual({
-      href: "/zh/posts/《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record",
-      hrefEn: "/en/posts/《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record",
-      hrefZh: "/zh/posts/《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record",
+      href: "/zh/posts/reading/no-rules-rules-netflix-culture-of-reinvention-reading-record",
+      hrefEn: "/en/posts/reading/no-rules-rules-netflix-culture-of-reinvention-reading-record",
+      hrefZh: "/zh/posts/reading/no-rules-rules-netflix-culture-of-reinvention-reading-record",
       locale: "zh",
     });
   });
@@ -29,38 +29,17 @@ describe("resolvePostMetadataContext", () => {
 
 describe("resolvePostRoute", () => {
   test("marks invalid locales as invalid", () => {
-    expect(resolvePostRoute("fr", ["test"], samplePage)).toEqual({
+    expect(resolvePostRoute("fr", samplePage)).toEqual({
       kind: "invalid-locale",
     });
   });
 
-  test("redirects encoded slugs to the canonical path", () => {
-    expect(
-      resolvePostRoute(
-        "zh",
-        ["%E3%80%8ANo_Rules_Rules__Netflix_and_the_Culture_of_Reinvention%E3%80%8BReading_Record"],
-        samplePage,
-      ),
-    ).toEqual({
-      kind: "redirect",
-      locale: "zh",
-      canonicalPath:
-        "/zh/posts/《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record",
-    });
-  });
-
   test("renders canonical slugs without redirect", () => {
-    expect(
-      resolvePostRoute(
-        "zh",
-        ["《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record"],
-        samplePage,
-      ),
-    ).toEqual({
+    expect(resolvePostRoute("zh", samplePage)).toEqual({
       kind: "render",
       locale: "zh",
       canonicalPath:
-        "/zh/posts/《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record",
+        "/zh/posts/reading/no-rules-rules-netflix-culture-of-reinvention-reading-record",
     });
   });
 });
@@ -68,7 +47,7 @@ describe("resolvePostRoute", () => {
 describe("resolveLegacyPostRedirect", () => {
   test("returns the canonical localized post path", () => {
     expect(resolveLegacyPostRedirect(samplePage, "zh")).toBe(
-      "/zh/posts/《No_Rules_Rules__Netflix_and_the_Culture_of_Reinvention》Reading_Record",
+      "/zh/posts/reading/no-rules-rules-netflix-culture-of-reinvention-reading-record",
     );
   });
 });

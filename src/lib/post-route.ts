@@ -1,15 +1,13 @@
 import type { BlogPage } from "@/types/blog";
 import { getSiteLocale, isSiteLocale, type SiteLocale } from "@lib/i18n";
-import { getPageHref, hasCanonicalSlug } from "@lib/post-path";
+import { getPageHref } from "@lib/post-path";
 
 type PostRouteResolution =
   | { kind: "invalid-locale" }
-  | { canonicalPath: string; kind: "redirect"; locale: SiteLocale }
   | { canonicalPath: string; kind: "render"; locale: SiteLocale };
 
 export function resolvePostRoute(
   localeParam: string,
-  slug: string[],
   page: Pick<BlogPage, "slugs" | "source" | "url">,
 ): PostRouteResolution {
   if (!isSiteLocale(localeParam)) {
@@ -21,10 +19,6 @@ export function resolvePostRoute(
 
   if (!canonicalPath) {
     return { kind: "invalid-locale" };
-  }
-
-  if (!hasCanonicalSlug(slug)) {
-    return { kind: "redirect", locale, canonicalPath };
   }
 
   return { kind: "render", locale, canonicalPath };

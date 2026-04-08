@@ -32,9 +32,12 @@ pnpm obsidian-sync --no-clean
 
 ## Notes
 
-- Output filenames prefer frontmatter `EnglishName` when present.
+- Synced notes always get a frontmatter `slug` field. Existing valid slugs are preserved; missing slugs are derived from the note path and `english_name`.
+- Canonical post URLs and converted wiki links use the frontmatter slug path, not the markdown output filename.
+- Output filenames prefer frontmatter `english_name` when present.
 - Whitespace in output filenames is normalized to underscores.
-- Duplicate output paths after normalization will fail the sync to avoid slug conflicts.
+- Duplicate output paths after normalization will fail the sync to avoid file conflicts.
+- Duplicate slug paths will fail the sync to avoid route conflicts.
 - Exported images are renamed to `md5` hashes and copied into `OBSIDIAN_CONTENT_IMAGES_DIR`.
 - `--no-clean` skips cleaning `OBSIDIAN_OUTPUT_DIR` and `OBSIDIAN_CONTENT_IMAGES_DIR`.
 - Non-image embeds are left as plain links when a note match exists.

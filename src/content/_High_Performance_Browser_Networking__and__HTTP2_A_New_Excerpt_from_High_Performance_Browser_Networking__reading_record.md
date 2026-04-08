@@ -1,6 +1,7 @@
 ---
+slug: high-performance-browser-networking-http2-reading-record
 chinese_name: 《Hight Performance Browser Networking》和《HTTP2 A New Excerpt from High Performance Browser Networking》阅读记录
-english_name: “High Performance Browser Networking” and “HTTP2 A New Excerpt from High Performance Browser Networking” reading record
+english_name: '"High Performance Browser Networking" and "HTTP2 A New Excerpt from High Performance Browser Networking" reading record'
 tags:
   - learning
   - blog
