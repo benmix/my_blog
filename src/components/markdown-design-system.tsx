@@ -309,7 +309,7 @@ function RegressionPreview() {
         wrapper and MDX component map used by the live article page.
       </Aside>
       <Wrapper
-        currentPath={`/zh/posts/${regressionPost._meta.path}`}
+        currentPath={`/zh${regressionPost.url}`}
         locale="zh"
         metadata={regressionPost}
         variant="embedded"

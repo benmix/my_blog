@@ -3,7 +3,9 @@ import { allPosts } from "content-collections";
 import { getSlugs, loader } from "fumadocs-core/source";
 
 import type { BlogPage } from "@/types/blog";
+import { buildPageSlugIndex } from "@lib/post-path";
 import { getPageSlugSegments } from "@lib/post-path";
+import { getNormalizedSlugKey } from "@lib/post-path";
 
 function normalizeToc(toc?: { title: string; url: string; depth: number }[]) {
   if (!toc) {
@@ -38,15 +40,14 @@ const pages: BlogPage[] = blogLoader.getPages().map((page) => {
   };
 });
 
+const pageIndex = buildPageSlugIndex(pages);
+
 export const blogSource = {
   async getPages() {
     return pages;
   },
 
   async getPage(slugs: string[]) {
-    return pages.find((page) => {
-      const pageSlugs = getPageSlugSegments(page);
-      return pageSlugs?.join("/") === slugs.join("/");
-    });
+    return pageIndex.get(getNormalizedSlugKey(slugs));
   },
 };
