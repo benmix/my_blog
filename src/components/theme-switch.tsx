@@ -1,10 +1,11 @@
 "use client";
 import { RiMoonLine, RiSunLine } from "@remixicon/react";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import type React from "react";
+
 import { Button } from "@components/ui/button";
 import { cn } from "@lib/utils";
-import type React from "react";
-import { useTheme } from "next-themes";
 
 export function ThemeSwitch({ className }: { className?: string }) {
   const { resolvedTheme, setTheme, theme } = useTheme();
@@ -59,7 +60,7 @@ export function ThemeSwitch({ className }: { className?: string }) {
       variant="ghost"
       size="icon"
       className={cn(
-        "cursor-pointer text-muted-foreground hover:bg-transparent hover:text-foreground dark:hover:bg-transparent",
+        "size-auto cursor-pointer p-0 text-muted-foreground hover:bg-transparent hover:text-foreground dark:hover:bg-transparent",
         className,
       )}
     >
