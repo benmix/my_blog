@@ -187,6 +187,22 @@ function HomeSidebar({
         </p>
       </div>
 
+      <HomeSidebarFooter className="hidden lg:block" locale={locale} socialTitle={socialTitle} />
+    </div>
+  );
+}
+
+function HomeSidebarFooter({
+  className,
+  locale,
+  socialTitle,
+}: {
+  className?: string;
+  locale: SiteLocale;
+  socialTitle: string;
+}) {
+  return (
+    <div className={cn(className)}>
       <div className="border-b border-border/80 py-5">
         <div className="font-mono text-[0.72rem] tracking-[0.08em] text-muted-foreground">
           {socialTitle}
@@ -290,6 +306,7 @@ export function Home({ articles, issueDate, locale }: HomeProps) {
             socialTitle={socialTitle}
           />
           <HomeArticleList articles={featuredArticles} locale={locale} />
+          <HomeSidebarFooter className="lg:hidden" locale={locale} socialTitle={socialTitle} />
           <HomePhotoColumn locale={locale} />
         </section>
       </div>
