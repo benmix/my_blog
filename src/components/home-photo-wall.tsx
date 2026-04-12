@@ -54,7 +54,7 @@ function usePhotoWheelNavigation(
 ) {
   const wheelAccumulatedXRef = useRef(0);
   const wheelGestureLockRef = useRef(false);
-  const wheelResetTimerRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const wheelResetTimerRef = useRef<number | null>(null);
   const touchStartXRef = useRef<number | null>(null);
   const hasMultiplePhotos = photoCount > 1;
 
@@ -143,11 +143,13 @@ function usePhotoWheelNavigation(
 function HomePhotoCard({
   activeIndex,
   group,
+  isPriorityGroup,
   locale,
   onSelect,
 }: {
   activeIndex: number;
   group: HomePhotoGroup;
+  isPriorityGroup: boolean;
   locale: SiteLocale;
   onSelect: (nextIndex: number) => void;
 }) {
@@ -176,7 +178,7 @@ function HomePhotoCard({
                   sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1279px) calc(100vw - 3.5rem), 28rem"
                   wrapperClassName="home-photo-original absolute inset-0"
                   imageClassName="object-cover object-center"
-                  priority={index === 0}
+                  priority={isPriorityGroup && index === 0}
                 />
                 <HomePhotoShader src={photo.src} />
               </div>
@@ -224,6 +226,7 @@ export function HomePhotoWall({ locale }: { locale: SiteLocale }) {
               key={group.province}
               activeIndex={activeIndices[index] ?? 0}
               group={group}
+              isPriorityGroup={index === 0}
               locale={locale}
               onSelect={(nextIndex) => {
                 setActiveIndices((current) =>

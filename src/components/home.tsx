@@ -7,22 +7,23 @@ import { Link } from "@components/link";
 import { SiteControls } from "@components/site-controls";
 import { SiteLinks } from "@components/site-links";
 import { getDateLocale } from "@lib/i18n";
-import { getLocalizedTitle } from "@lib/i18n";
-import { getLeafSlug } from "@lib/post-path";
-import { getPageHref } from "@lib/post-path";
 import { getTitleStyle } from "@lib/title-style";
 import { cn } from "@lib/utils";
 
-type BlogPage = import("@/types/blog").BlogPage;
 type SiteLocale = import("@lib/i18n").SiteLocale;
+export type HomeArticlePreview = {
+  date: string | null;
+  href: string;
+  key: string;
+  summary: string;
+  title: string;
+};
 
 type HomeProps = {
-  articles: BlogPage[];
+  articles: HomeArticlePreview[];
   issueDate: string;
   locale: SiteLocale;
 };
-
-const MAX_HOME_ARTICLES = 10;
 
 const HOME_COPY = {
   zh: {
@@ -42,56 +43,38 @@ const HOME_COPY = {
   }
 >;
 
-function getArticleSlug(article: BlogPage) {
-  return getLeafSlug(article);
-}
-
-function getDisplayTitle(article: BlogPage, locale: SiteLocale) {
-  const slug = getArticleSlug(article);
-  return getLocalizedTitle(article.data, locale) || slug || "Untitled";
-}
-
-function getArticleKey(article: BlogPage, locale: SiteLocale) {
-  return getPageHref(article, locale) ?? getDisplayTitle(article, locale);
-}
-
-function formatArticleDate(article: BlogPage, locale: SiteLocale) {
-  if (!article.data.date) {
+function formatArticleDate(date: string | null, locale: SiteLocale) {
+  if (!date) {
     return "";
   }
 
-  return format(new Date(article.data.date), locale === "zh" ? "yyyy.MM.dd" : "MMM dd, yyyy", {
+  return format(new Date(date), locale === "zh" ? "yyyy.MM.dd" : "MMM dd, yyyy", {
     locale: getDateLocale(locale),
   });
 }
 
-function HomeArticle({ article, locale }: { article: BlogPage; locale: SiteLocale }) {
-  const href = getPageHref(article, locale) ?? "#";
-  const title = getDisplayTitle(article, locale);
-  const summary = article.data.summary ?? "";
-  const formattedDate = formatArticleDate(article, locale);
-  const titleStyle = getTitleStyle(title);
+function HomeArticle({ article, locale }: { article: HomeArticlePreview; locale: SiteLocale }) {
+  const formattedDate = formatArticleDate(article.date, locale);
+  const titleStyle = getTitleStyle(article.title);
 
   return (
     <li className="border-t border-border/80 py-6 first:border-t-0 first:pt-0 last:pb-0 md:mr-[8ch]">
       <article className="grid gap-3 md:grid-cols-[8.5rem_minmax(0,1fr)] md:gap-8">
         <div className="pt-1 font-mono text-[0.8rem] tracking-[0.16em] text-muted-foreground uppercase">
-          <time
-            dateTime={article.data.date ? new Date(article.data.date).toISOString() : undefined}
-          >
+          <time dateTime={article.date ? new Date(article.date).toISOString() : undefined}>
             {formattedDate}
           </time>
         </div>
         <div className="min-w-0">
-          <Link href={href} className="group block">
+          <Link href={article.href} prefetch={false} className="group block">
             <h3 className="w-full font-serif text-[1.12rem] leading-[1.22] text-foreground transition-colors duration-200 group-hover:text-muted-foreground md:text-[1.32rem]">
               <span style={titleStyle} className="block [text-wrap:balance]">
-                {title}
+                {article.title}
               </span>
             </h3>
-            {summary ? (
+            {article.summary ? (
               <p className="mt-2 w-full font-sans text-[0.88rem] leading-[1.72] [text-wrap:pretty] text-muted-foreground/88">
-                {summary}
+                {article.summary}
               </p>
             ) : null}
           </Link>
@@ -158,13 +141,19 @@ function HomeSidebarFooter({
   );
 }
 
-function HomeArticleList({ articles, locale }: { articles: BlogPage[]; locale: SiteLocale }) {
+function HomeArticleList({
+  articles,
+  locale,
+}: {
+  articles: HomeArticlePreview[];
+  locale: SiteLocale;
+}) {
   return (
     <div className="xl:scroll-hidden min-w-0 xl:min-h-0 xl:overflow-y-auto xl:overscroll-contain xl:pr-1">
       <div className="border-b-0 pt-0 pb-5">
         <ul className="flex flex-col">
           {articles.map((article) => (
-            <HomeArticle key={getArticleKey(article, locale)} article={article} locale={locale} />
+            <HomeArticle key={article.key} article={article} locale={locale} />
           ))}
         </ul>
       </div>
@@ -173,7 +162,6 @@ function HomeArticleList({ articles, locale }: { articles: BlogPage[]; locale: S
 }
 
 export function Home({ articles, issueDate, locale }: HomeProps) {
-  const featuredArticles = articles.slice(0, MAX_HOME_ARTICLES);
   const { aboutText, socialTitle } = HOME_COPY[locale];
 
   return (
@@ -186,7 +174,7 @@ export function Home({ articles, issueDate, locale }: HomeProps) {
             locale={locale}
             socialTitle={socialTitle}
           />
-          <HomeArticleList articles={featuredArticles} locale={locale} />
+          <HomeArticleList articles={articles} locale={locale} />
           <HomeSidebarFooter className="lg:hidden" locale={locale} socialTitle={socialTitle} />
           <HomePhotoWall locale={locale} />
         </section>

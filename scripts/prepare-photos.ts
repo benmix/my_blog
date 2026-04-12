@@ -15,8 +15,10 @@ const COPYRIGHT = "Copyright 2026 BenMix. All rights reserved.";
 const DESCRIPTION = "Homepage photo asset for BenMix Blog.";
 const WATERMARK_TEXT = "© BenMix 2026";
 const WEBP_QUALITY = 72;
+const LARGE_WEBP_QUALITY = 54;
 const WEBP_EFFORT = 6;
 const MAX_OUTPUT_WIDTH = 1600;
+const LARGE_FILE_THRESHOLD_BYTES = 150 * 1024;
 const execFileAsync = promisify(execFile);
 
 type CliOptions = {
@@ -29,6 +31,10 @@ type PhotoTask = {
   sourcePath: string;
   targetPath: string;
 };
+
+function getWebpQuality(sourceSize: number) {
+  return sourceSize > LARGE_FILE_THRESHOLD_BYTES ? LARGE_WEBP_QUALITY : WEBP_QUALITY;
+}
 
 function parseArgs(argv: string[]): CliOptions {
   let directory = DEFAULT_PHOTO_DIR;
@@ -131,10 +137,6 @@ async function hasPipelineMarker(filePath: string) {
 }
 
 async function shouldProcessTask(task: PhotoTask, force: boolean) {
-  if (force) {
-    return true;
-  }
-
   const targetExists = await stat(task.targetPath)
     .then(() => true)
     .catch(() => false);
@@ -145,8 +147,16 @@ async function shouldProcessTask(task: PhotoTask, force: boolean) {
 
   const targetHasMarker = await hasPipelineMarker(task.targetPath);
 
+  if (task.kind === "optimize" && targetHasMarker && !force) {
+    return false;
+  }
+
+  if (force) {
+    return true;
+  }
+
   if (task.kind === "optimize") {
-    return !targetHasMarker;
+    return true;
   }
 
   if (!targetHasMarker) {
@@ -213,7 +223,9 @@ async function processTask(task: PhotoTask) {
   const tempDir = await mkdtemp(path.join(tmpdir(), "my-blog-photos-"));
 
   try {
+    const sourceStats = await stat(task.sourcePath);
     const sourceExtension = path.extname(task.sourcePath).toLowerCase();
+    const sourceHasMarker = await hasPipelineMarker(task.sourcePath);
     const rasterInputPath =
       sourceExtension === ".heic" || sourceExtension === ".heif"
         ? path.join(tempDir, `${path.basename(task.sourcePath, path.extname(task.sourcePath))}.png`)
@@ -246,20 +258,23 @@ async function processTask(task: PhotoTask) {
     await mkdir(path.dirname(task.targetPath), { recursive: true });
     const outputPath =
       task.sourcePath === task.targetPath ? `${task.targetPath}.tmp.webp` : task.targetPath;
+    const pipeline = preparedImage.withExifMerge(getExifMetadata()).webp({
+      effort: WEBP_EFFORT,
+      quality: getWebpQuality(sourceStats.size),
+    });
 
-    await preparedImage
-      .composite([
-        {
-          input: getWatermarkOverlay(width),
-          gravity: "northeast",
-        },
-      ])
-      .withExifMerge(getExifMetadata())
-      .webp({
-        effort: WEBP_EFFORT,
-        quality: WEBP_QUALITY,
-      })
-      .toFile(outputPath);
+    if (task.kind === "optimize" && sourceHasMarker) {
+      await pipeline.toFile(outputPath);
+    } else {
+      await pipeline
+        .composite([
+          {
+            input: getWatermarkOverlay(width),
+            gravity: "northeast",
+          },
+        ])
+        .toFile(outputPath);
+    }
 
     if (outputPath !== task.targetPath) {
       await rename(outputPath, task.targetPath);
