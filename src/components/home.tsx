@@ -1,6 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
 
 import { HomePhotoWall } from "@components/home-photo-wall";
 import { Link } from "@components/link";
@@ -21,7 +22,6 @@ export type HomeArticlePreview = {
 
 type HomeProps = {
   articles: HomeArticlePreview[];
-  issueDate: string;
   locale: SiteLocale;
 };
 
@@ -86,15 +86,19 @@ function HomeArticle({ article, locale }: { article: HomeArticlePreview; locale:
 
 function HomeSidebar({
   aboutText,
-  issueDate,
   locale,
   socialTitle,
 }: {
   aboutText: string;
-  issueDate: string;
   locale: SiteLocale;
   socialTitle: string;
 }) {
+  const [issueDate, setIssueDate] = useState("");
+
+  useEffect(() => {
+    setIssueDate(format(new Date(), "PPPP", { locale: getDateLocale(locale) }));
+  }, [locale]);
+
   return (
     <div className="xl:scroll-hidden min-w-0 xl:min-h-0 xl:overflow-y-auto xl:overscroll-contain xl:pr-1">
       <div className="border-b border-border/80 bg-background py-5 pt-0 xl:sticky xl:top-0 xl:z-10">
@@ -161,19 +165,14 @@ function HomeArticleList({
   );
 }
 
-export function Home({ articles, issueDate, locale }: HomeProps) {
+export function Home({ articles, locale }: HomeProps) {
   const { aboutText, socialTitle } = HOME_COPY[locale];
 
   return (
     <div className="not-prose w-full bg-background text-foreground xl:h-dvh xl:overflow-hidden">
       <div className="flex w-full flex-col px-4 py-6 sm:px-5 md:px-6 md:py-8 lg:px-8 xl:h-full xl:overflow-hidden xl:px-10">
         <section className="grid gap-8 pt-6 md:gap-10 md:pt-8 lg:grid-cols-[18rem_minmax(0,1fr)] xl:min-h-0 xl:flex-1 xl:grid-cols-[18rem_minmax(0,1fr)_minmax(0,1fr)] xl:grid-rows-1 xl:gap-8">
-          <HomeSidebar
-            aboutText={aboutText}
-            issueDate={issueDate}
-            locale={locale}
-            socialTitle={socialTitle}
-          />
+          <HomeSidebar aboutText={aboutText} locale={locale} socialTitle={socialTitle} />
           <HomeArticleList articles={articles} locale={locale} />
           <HomeSidebarFooter className="lg:hidden" locale={locale} socialTitle={socialTitle} />
           <HomePhotoWall locale={locale} />
