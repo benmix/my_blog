@@ -1,10 +1,8 @@
 "use client";
 
 import { format } from "date-fns";
-import { useTheme } from "next-themes";
-import dynamic from "next/dynamic";
 
-import { Image } from "@components/image";
+import { HomePhotoWall } from "@components/home-photo-wall";
 import { Link } from "@components/link";
 import { SiteControls } from "@components/site-controls";
 import { SiteLinks } from "@components/site-links";
@@ -24,17 +22,7 @@ type HomeProps = {
   locale: SiteLocale;
 };
 
-type HomePhoto = {
-  alt: Record<SiteLocale, string>;
-  meta: Record<SiteLocale, string>;
-  src: string;
-};
-
 const MAX_HOME_ARTICLES = 10;
-const HalftoneDots = dynamic(
-  () => import("@paper-design/shaders-react").then((mod) => mod.HalftoneDots),
-  { ssr: false },
-);
 
 const HOME_COPY = {
   zh: {
@@ -53,31 +41,6 @@ const HOME_COPY = {
     socialTitle: string;
   }
 >;
-
-const HOME_PHOTOS = [
-  {
-    alt: {
-      zh: "文昌，月亮湾海滩",
-      en: "Wenchang, Moon Bay Beach",
-    },
-    meta: {
-      zh: "文昌，月亮湾",
-      en: "Wenchang, Moon Bay",
-    },
-    src: "/photos/wenchang.hainan.webp",
-  },
-  {
-    alt: {
-      zh: "杨浦，黄浦江边工业岸线与港口",
-      en: "Yangpu, industrial waterfront and port along the Huangpu River",
-    },
-    meta: {
-      zh: "杨浦，黄浦江",
-      en: "Yangpu, Huangpu River",
-    },
-    src: "/photos/yangpu.shanghai.webp",
-  },
-] as const satisfies readonly HomePhoto[];
 
 function getArticleSlug(article: BlogPage) {
   return getLeafSlug(article);
@@ -100,38 +63,6 @@ function formatArticleDate(article: BlogPage, locale: SiteLocale) {
   return format(new Date(article.data.date), locale === "zh" ? "yyyy.MM.dd" : "MMM dd, yyyy", {
     locale: getDateLocale(locale),
   });
-}
-
-function HomePhotoShader({ src }: { src: string }) {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
-
-  return (
-    <div aria-hidden="true" className="home-photo-newsprint absolute inset-0">
-      <HalftoneDots
-        image={src}
-        contrast={0.52}
-        originalColors={false}
-        inverted={false}
-        grid="hex"
-        radius={0.92}
-        size={0.17}
-        scale={1.08}
-        grainSize={0.62}
-        type="gooey"
-        fit="cover"
-        grainMixer={0.28}
-        grainOverlay={0.26}
-        colorFront={isDark ? "#E8E3D7" : "#24211D"}
-        colorBack="#00000000"
-        style={{
-          width: "100%",
-          height: "100%",
-          backgroundColor: isDark ? "rgb(26 28 31 / 0.96)" : "rgb(236 230 216 / 0.96)",
-        }}
-      />
-    </div>
-  );
 }
 
 function HomeArticle({ article, locale }: { article: BlogPage; locale: SiteLocale }) {
@@ -241,64 +172,6 @@ function HomeArticleList({ articles, locale }: { articles: BlogPage[]; locale: S
   );
 }
 
-function HomePhotoItem({
-  index,
-  locale,
-  photo,
-}: {
-  index: number;
-  locale: SiteLocale;
-  photo: HomePhoto;
-}) {
-  return (
-    <article
-      key={`${photo.src}-${index}`}
-      className="border-b border-border/80 pb-8 last:border-b-0 last:pb-0"
-    >
-      <figure
-        className={cn(
-          "home-photo-card relative overflow-hidden border border-border/70 bg-muted/35",
-          "aspect-video",
-        )}
-      >
-        <Image
-          src={photo.src}
-          alt={photo.alt[locale]}
-          sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1279px) calc(100vw - 3.5rem), 28rem"
-          wrapperClassName="home-photo-original absolute inset-0"
-          imageClassName="object-cover object-center"
-          priority={index < 2}
-        />
-        <HomePhotoShader src={photo.src} />
-        <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/92 via-background/48 to-transparent px-4 py-4">
-          <p className="max-w-[34ch] text-[0.88rem] leading-[1.72] text-foreground/88">
-            {photo.meta[locale]}
-          </p>
-        </figcaption>
-      </figure>
-    </article>
-  );
-}
-
-function HomePhotoColumn({ locale }: { locale: SiteLocale }) {
-  return (
-    <div className="xl:scroll-hidden hidden min-w-0 xl:block xl:min-h-0 xl:overflow-y-auto xl:overscroll-contain xl:pr-1">
-      <div className="border-b-0 pt-0 pb-5">
-        <div className="home-photo-showcase flex flex-col gap-8">
-          {HOME_PHOTOS.map((photo, index) => (
-            <HomePhotoItem
-              key={`${photo.src}-${index}`}
-              index={index}
-              locale={locale}
-              photo={photo}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function Home({ articles, issueDate, locale }: HomeProps) {
   const featuredArticles = articles.slice(0, MAX_HOME_ARTICLES);
   const { aboutText, socialTitle } = HOME_COPY[locale];
@@ -315,7 +188,7 @@ export function Home({ articles, issueDate, locale }: HomeProps) {
           />
           <HomeArticleList articles={featuredArticles} locale={locale} />
           <HomeSidebarFooter className="lg:hidden" locale={locale} socialTitle={socialTitle} />
-          <HomePhotoColumn locale={locale} />
+          <HomePhotoWall locale={locale} />
         </section>
       </div>
     </div>

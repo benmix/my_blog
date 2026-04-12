@@ -57,6 +57,11 @@ body {
         transition: opacity 280ms ease, transform 480ms ease;
     }
 
+    .home-photo-track {
+        transition: transform 520ms ease;
+        will-change: transform;
+    }
+
     .dark .home-photo-card {
         --home-photo-overlay: rgb(10 12 16 / 0.5);
     }
@@ -118,7 +123,8 @@ body {
 
     .home-photo-original,
     .home-photo-newsprint,
-    .home-photo-trigger {
+    .home-photo-trigger,
+    .home-photo-track {
         transition: none;
     }
 }
