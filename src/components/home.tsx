@@ -66,7 +66,7 @@ function HomeArticle({ article, locale }: { article: HomeArticlePreview; locale:
           </time>
         </div>
         <div className="min-w-0">
-          <Link href={article.href} prefetch={false} className="group block">
+          <Link href={article.href} className="group block">
             <h3 className="w-full font-serif text-[1.12rem] leading-[1.22] text-foreground transition-colors duration-200 group-hover:text-muted-foreground md:text-[1.32rem]">
               <span style={titleStyle} className="block [text-wrap:balance]">
                 {article.title}
