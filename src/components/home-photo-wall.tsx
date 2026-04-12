@@ -143,13 +143,11 @@ function usePhotoWheelNavigation(
 function HomePhotoCard({
   activeIndex,
   group,
-  isPriorityGroup,
   locale,
   onSelect,
 }: {
   activeIndex: number;
   group: HomePhotoGroup;
-  isPriorityGroup: boolean;
   locale: SiteLocale;
   onSelect: (nextIndex: number) => void;
 }) {
@@ -178,7 +176,7 @@ function HomePhotoCard({
                   sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1279px) calc(100vw - 3.5rem), 28rem"
                   wrapperClassName="home-photo-original absolute inset-0"
                   imageClassName="object-cover object-center"
-                  priority={isPriorityGroup && index === 0}
+                  priority={index === 0}
                 />
                 <HomePhotoShader src={photo.src} />
               </div>
@@ -226,7 +224,6 @@ export function HomePhotoWall({ locale }: { locale: SiteLocale }) {
               key={group.province}
               activeIndex={activeIndices[index] ?? 0}
               group={group}
-              isPriorityGroup={index === 0}
               locale={locale}
               onSelect={(nextIndex) => {
                 setActiveIndices((current) =>
