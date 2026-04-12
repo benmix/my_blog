@@ -42,6 +42,7 @@ body {
 
     .home-photo-card {
         isolation: isolate;
+        --home-photo-overlay: rgb(236 230 216 / 0.86);
     }
 
     .home-photo-original {
@@ -51,9 +52,13 @@ body {
 
     .home-photo-newsprint {
         opacity: 1;
-        background: rgb(236 230 216 / 0.86);
+        background: var(--home-photo-overlay);
         mix-blend-mode: multiply;
         transition: opacity 280ms ease, transform 480ms ease;
+    }
+
+    .dark .home-photo-card {
+        --home-photo-overlay: rgb(10 12 16 / 0.5);
     }
 
     .home-photo-card:hover .home-photo-original {

@@ -45,7 +45,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
   const dictionary = getSiteDictionary(locale);
 
   return (
-    <html lang={dictionary.htmlLang} suppressHydrationWarning>
+    <html lang={dictionary.htmlLang} suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="sitemap" href="/sitemap.xml" />
       </head>

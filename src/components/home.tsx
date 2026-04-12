@@ -1,6 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
+import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
 
 import { Image } from "@components/image";
@@ -102,6 +103,9 @@ function formatArticleDate(article: BlogPage, locale: SiteLocale) {
 }
 
 function HomePhotoShader({ src }: { src: string }) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   return (
     <div aria-hidden="true" className="home-photo-newsprint absolute inset-0">
       <HalftoneDots
@@ -118,9 +122,13 @@ function HomePhotoShader({ src }: { src: string }) {
         fit="cover"
         grainMixer={0.28}
         grainOverlay={0.26}
-        colorFront="#24211d"
+        colorFront={isDark ? "#E8E3D7" : "#24211D"}
         colorBack="#00000000"
-        style={{ width: "100%", height: "100%", backgroundColor: "#ECE6D8" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: isDark ? "rgb(26 28 31 / 0.96)" : "rgb(236 230 216 / 0.96)",
+        }}
       />
     </div>
   );
