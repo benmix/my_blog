@@ -1,11 +1,9 @@
-"use client";
-
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
 
+import { HomeIssueDate } from "@components/home-issue-date";
 import { HomePhotoWall } from "@components/home-photo-wall";
 import { Link } from "@components/link";
-import { SiteControls } from "@components/site-controls";
+import { SiteControlsFooter } from "@components/site-controls-footer";
 import { SiteLinks } from "@components/site-links";
 import { getDateLocale } from "@lib/i18n";
 import { getTitleStyle } from "@lib/title-style";
@@ -67,13 +65,13 @@ function HomeArticle({ article, locale }: { article: HomeArticlePreview; locale:
         </div>
         <div className="min-w-0">
           <Link href={article.href} className="group block">
-            <h3 className="w-full font-serif text-[1.12rem] leading-[1.22] text-foreground transition-colors duration-200 group-hover:text-muted-foreground md:text-[1.32rem]">
+            <h3 className="min-h-[calc(2*1.22em)] w-full font-serif text-[1.12rem] leading-[1.22] text-foreground transition-colors duration-200 group-hover:text-muted-foreground md:min-h-[calc(2*1.22em)] md:text-[1.32rem]">
               <span style={titleStyle} className="block [text-wrap:balance]">
                 {article.title}
               </span>
             </h3>
             {article.summary ? (
-              <p className="mt-2 w-full font-sans text-[0.88rem] leading-[1.72] [text-wrap:pretty] text-muted-foreground/88">
+              <p className="mt-2 min-h-[calc(3*1.72em)] w-full font-sans text-[0.88rem] leading-[1.72] [text-wrap:pretty] text-muted-foreground/88">
                 {article.summary}
               </p>
             ) : null}
@@ -93,22 +91,14 @@ function HomeSidebar({
   locale: SiteLocale;
   socialTitle: string;
 }) {
-  const [issueDate, setIssueDate] = useState("");
-
-  useEffect(() => {
-    setIssueDate(format(new Date(), "PPPP", { locale: getDateLocale(locale) }));
-  }, [locale]);
-
   return (
     <div className="xl:scroll-hidden min-w-0 xl:min-h-0 xl:overflow-y-auto xl:overscroll-contain xl:pr-1">
       <div className="border-b border-border/80 bg-background py-5 pt-0 xl:sticky xl:top-0 xl:z-10">
-        <div className="font-mono text-[0.72rem] tracking-[0.08em] text-muted-foreground">
-          {issueDate}
-        </div>
+        <HomeIssueDate locale={locale} />
       </div>
 
       <div className="border-b border-border/80 py-5">
-        <p className="max-w-[28ch] text-[0.88rem] leading-[1.72] text-muted-foreground">
+        <p className="min-h-[calc(5*1.72em)] max-w-[28ch] text-[0.88rem] leading-[1.72] text-muted-foreground">
           {aboutText}
         </p>
       </div>
@@ -130,7 +120,7 @@ function HomeSidebarFooter({
   return (
     <div className={cn(className)}>
       <div className="border-b border-border/80 py-5">
-        <div className="font-mono text-[0.72rem] tracking-[0.08em] text-muted-foreground">
+        <div className="min-h-[1lh] font-mono text-[0.72rem] tracking-[0.08em] whitespace-nowrap text-muted-foreground">
           {socialTitle}
         </div>
         <div className="mt-4">
@@ -138,8 +128,8 @@ function HomeSidebarFooter({
         </div>
       </div>
 
-      <div className="border-b-0 py-5">
-        <SiteControls currentPath={`/${locale}`} locale={locale} />
+      <div className="min-h-[calc(2lh+4rem)] border-b-0 py-5">
+        <SiteControlsFooter currentPath={`/${locale}`} locale={locale} />
       </div>
     </div>
   );

@@ -1,8 +1,7 @@
 import { format } from "date-fns";
-import { getYear } from "date-fns";
 import { toDate } from "date-fns";
 
-import { SiteControls } from "@/components/site-controls";
+import { SiteControlsFooter } from "@/components/site-controls-footer";
 import { SiteLinks } from "@/components/site-links";
 import { TableOfContents } from "@/components/table-of-content";
 import { Link } from "@components/link";
@@ -63,7 +62,6 @@ export const Wrapper = ({
   const isEmbedded = variant === "embedded";
   const titleStyle = heading ? getTitleStyle(heading) : undefined;
   const summary = metadata.summary?.trim();
-  const currentYear = getYear(new Date());
 
   return (
     <main
@@ -83,7 +81,7 @@ export const Wrapper = ({
             <SidebarSection>
               <Link
                 href={`/${locale}`}
-                className="inline-flex items-center gap-2 font-mono text-[0.78rem] tracking-[0.12em] text-muted-foreground uppercase transition-colors hover:text-foreground"
+                className="inline-flex items-center gap-2 font-mono text-[0.78rem] tracking-[0.12em] whitespace-nowrap text-muted-foreground uppercase transition-colors hover:text-foreground"
               >
                 <span>{dictionary.home}</span>
                 <span>/</span>
@@ -97,7 +95,7 @@ export const Wrapper = ({
                   <p className="mb-1 font-sans text-[0.62rem] tracking-[0.12em] text-muted-foreground uppercase">
                     Published
                   </p>
-                  <div className="font-sans text-[0.92rem] leading-[1.45] text-muted-foreground">
+                  <div className="min-h-[calc(2*1.45em)] font-sans text-[0.92rem] leading-[1.45] text-muted-foreground">
                     {normalizedDate
                       ? format(normalizedDate, locale === "zh" ? "yyyy.MM.dd" : "MMM dd, yyyy", {
                           locale: getDateLocale(locale),
@@ -109,7 +107,7 @@ export const Wrapper = ({
                   <p className="mb-1 font-sans text-[0.62rem] tracking-[0.12em] text-muted-foreground uppercase">
                     Reading Time
                   </p>
-                  <div className="font-sans text-[0.9rem] leading-[1.5] text-muted-foreground">
+                  <div className="min-h-[calc(2*1.5em)] font-sans text-[0.9rem] leading-[1.5] text-muted-foreground">
                     {readingTime}
                   </div>
                 </div>
@@ -118,7 +116,7 @@ export const Wrapper = ({
                     <p className="mb-2 font-sans text-[0.62rem] tracking-[0.12em] text-muted-foreground uppercase">
                       Abstract
                     </p>
-                    <p className="font-sans text-[0.86rem] leading-[1.8] text-muted-foreground/88">
+                    <p className="min-h-[calc(4*1.8em)] font-sans text-[0.86rem] leading-[1.8] text-muted-foreground/88">
                       {summary}
                     </p>
                   </div>
@@ -141,10 +139,7 @@ export const Wrapper = ({
             </SidebarSection>
 
             <SidebarSection withBorder={false}>
-              <SiteControls currentPath={currentPath} locale={locale} />
-              <p className="mt-5 font-mono text-[0.68rem] tracking-[0.08em] text-muted-foreground">
-                © {currentYear} BenMix
-              </p>
+              <SiteControlsFooter currentPath={currentPath} locale={locale} />
             </SidebarSection>
           </aside>
         )}
@@ -199,10 +194,7 @@ export const Wrapper = ({
                 </div>
 
                 <div>
-                  <SiteControls currentPath={currentPath} locale={locale} />
-                  <p className="mt-5 font-mono text-[0.68rem] tracking-[0.08em] text-muted-foreground">
-                    © {currentYear} BenMix
-                  </p>
+                  <SiteControlsFooter currentPath={currentPath} locale={locale} />
                 </div>
               </div>
             </footer>
